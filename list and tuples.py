@@ -29,3 +29,27 @@
 
 
 
+# tup=(1,2,3,4,5)
+# print(tup)
+# print(type(tup))
+# print(tup[1:3])
+# print(tup.count(1))
+# print(len(tup))
+# print(tup.index(3))
+
+# movies = []
+
+# movies.append(input("Enter your first favorite movie: "))
+# movies.append(input("Enter your second favorite movie: "))
+# movies.append(input("Enter your third favorite movie: "))
+
+# print(movies)
+
+
+# list=[1,2,3,2,1]
+# list1 = list.copy()
+# list1.reverse()
+# print(list == list1)
+
+# tup =("A", "B", "A")
+# print(tup.count("A"))
