@@ -33,8 +33,8 @@
 
 # num= int(input("enter your number: "))
 # if(num%7==0):
-#     print("divisible")
+#     print("multiple of 7")
 # else:
-#     print("not divisible")
+#     print("not multiple of 7")
 
 
