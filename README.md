@@ -137,16 +137,16 @@ Start Here
 ## ✅ Progress Checklist
 
 ### 01 — Python Basics
-- [ ] Q01: Variables and Data Types
-- [ ] Q02: Type Casting
-- [ ] Q03: String Operations
-- [ ] Q04: Arithmetic Operators
-- [ ] Q05: Comparison and Logical Operators
-- [ ] Q06: Input and Output
-- [ ] Q07: String Formatting
-- [ ] Q08: Number Systems and Conversions
-- [ ] Q09: Variable Swapping and Multiple Assignment
-- [ ] Q10: Constants and Naming Conventions
+- [x] Q01: Variables and Data Types
+- [x] Q02: Type Casting
+- [x] Q03: String Operations
+- [x] Q04: Arithmetic Operators
+- [x] Q05: Comparison and Logical Operators
+- [x] Q06: Input and Output
+- [x] Q07: String Formatting
+- [x] Q08: Number Systems and Conversions
+- [x] Q09: Variable Swapping and Multiple Assignment
+- [x] Q10: Constants and Naming Conventions
 
 ### 02 — Control Flow
 - [ ] Q01: if/elif/else Basics
