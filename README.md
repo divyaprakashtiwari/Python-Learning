@@ -149,16 +149,16 @@ Start Here
 - [x] Q10: Constants and Naming Conventions
 
 ### 02 — Control Flow
-- [ ] Q01: if/elif/else Basics
-- [ ] Q02: Nested Conditionals
-- [ ] Q03: for Loop Fundamentals
-- [ ] Q04: while Loop Fundamentals
-- [ ] Q05: break and continue
-- [ ] Q06: Nested Loops
-- [ ] Q07: Loop with else
-- [ ] Q08: Pattern Printing
-- [ ] Q09: Ternary Operator
-- [ ] Q10: Match-Case (Structural Pattern Matching)
+- [x] Q01: if/elif/else Basics
+- [x] Q02: Nested Conditionals
+- [x] Q03: for Loop Fundamentals
+- [x] Q04: while Loop Fundamentals
+- [x] Q05: break and continue
+- [x] Q06: Nested Loops
+- [x] Q07: Loop with else
+- [x] Q08: Pattern Printing
+- [x] Q09: Ternary Operator
+- [x] Q10: Match-Case (Structural Pattern Matching)
 
 ### 03 — Data Structures
 - [ ] Q01: List Basics and Slicing
