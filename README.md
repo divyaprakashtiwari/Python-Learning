@@ -161,16 +161,16 @@ Start Here
 - [x] Q10: Match-Case (Structural Pattern Matching)
 
 ### 03 — Data Structures
-- [ ] Q01: List Basics and Slicing
-- [ ] Q02: List Methods and Manipulation
-- [ ] Q03: Tuple Operations
-- [ ] Q04: Set Operations
-- [ ] Q05: Dictionary Basics
-- [ ] Q06: Dictionary Methods
-- [ ] Q07: Nested Data Structures
-- [ ] Q08: List Comprehensions
-- [ ] Q09: Stack and Queue with Lists
-- [ ] Q10: Sorting and Searching
+- [x] Q01: List Basics and Slicing
+- [x] Q02: List Methods and Manipulation
+- [x] Q03: Tuple Operations
+- [x] Q04: Set Operations
+- [x] Q05: Dictionary Basics
+- [x] Q06: Dictionary Methods
+- [x] Q07: Nested Data Structures
+- [x] Q08: List Comprehensions
+- [x] Q09: Stack and Queue with Lists
+- [x] Q10: Sorting and Searching
 
 ### 04 — Functions
 - [ ] Q01: Function Basics
