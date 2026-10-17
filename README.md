@@ -173,16 +173,16 @@ Start Here
 - [x] Q10: Sorting and Searching
 
 ### 04 — Functions
-- [ ] Q01: Function Basics
-- [ ] Q02: Default and Keyword Arguments
-- [ ] Q03: *args and **kwargs
-- [ ] Q04: Return Values and Multiple Returns
-- [ ] Q05: Lambda Functions
-- [ ] Q06: Recursion
-- [ ] Q07: Scope and LEGB Rule
-- [ ] Q08: Closures
-- [ ] Q09: Higher-Order Functions (map, filter, reduce)
-- [ ] Q10: Function Annotations and Docstrings
+- [x] Q01: Function Basics
+- [x] Q02: Default and Keyword Arguments
+- [x] Q03: *args and **kwargs
+- [x] Q04: Return Values and Multiple Returns
+- [x] Q05: Lambda Functions
+- [x] Q06: Recursion
+- [x] Q07: Scope and LEGB Rule
+- [x] Q08: Closures
+- [x] Q09: Higher-Order Functions (map, filter, reduce)
+- [x] Q10: Function Annotations and Docstrings
 
 ### 05 — OOP
 - [ ] Q01: Classes and Objects
