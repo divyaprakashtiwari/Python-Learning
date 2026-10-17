@@ -185,16 +185,16 @@ Start Here
 - [x] Q10: Function Annotations and Docstrings
 
 ### 05 — OOP
-- [ ] Q01: Classes and Objects
-- [ ] Q02: Instance and Class Variables
-- [ ] Q03: Methods (instance, class, static)
-- [ ] Q04: Inheritance
-- [ ] Q05: Polymorphism
-- [ ] Q06: Encapsulation
-- [ ] Q07: Magic/Dunder Methods
-- [ ] Q08: Abstract Classes
-- [ ] Q09: Property Decorators
-- [ ] Q10: Composition vs Inheritance
+- [x] Q01: Classes and Objects
+- [x] Q02: Instance and Class Variables
+- [x] Q03: Methods (instance, class, static)
+- [x] Q04: Inheritance
+- [x] Q05: Polymorphism
+- [x] Q06: Encapsulation
+- [x] Q07: Magic/Dunder Methods
+- [x] Q08: Abstract Classes
+- [x] Q09: Property Decorators
+- [x] Q10: Composition vs Inheritance
 
 ### 06 — File Handling
 - [ ] Q01: Reading Files
