@@ -221,16 +221,16 @@ Start Here
 - [x] Q10: Graceful Degradation Patterns
 
 ### 08 — Modules and Packages
-- [ ] Q01: Importing Modules
-- [ ] Q02: Creating Your Own Module
-- [ ] Q03: __name__ == "__main__"
-- [ ] Q04: Standard Library Tour (os, sys, math)
-- [ ] Q05: datetime Module
-- [ ] Q06: collections Module
-- [ ] Q07: itertools Module
-- [ ] Q08: functools Module
-- [ ] Q09: Package Structure
-- [ ] Q10: Virtual Environments and pip
+- [x] Q01: Importing Modules
+- [x] Q02: Creating Your Own Module
+- [x] Q03: __name__ == "__main__"
+- [x] Q04: Standard Library Tour (os, sys, math)
+- [x] Q05: datetime Module
+- [x] Q06: collections Module
+- [x] Q07: itertools Module
+- [x] Q08: functools Module
+- [x] Q09: Package Structure
+- [x] Q10: Virtual Environments and pip
 
 ### 09 — Advanced Python
 - [ ] Q01: Iterators and __iter__/__next__
