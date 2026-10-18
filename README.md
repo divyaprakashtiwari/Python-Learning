@@ -197,16 +197,16 @@ Start Here
 - [x] Q10: Composition vs Inheritance
 
 ### 06 — File Handling
-- [ ] Q01: Reading Files
-- [ ] Q02: Writing Files
-- [ ] Q03: File Modes and Appending
-- [ ] Q04: Working with File Paths
-- [ ] Q05: CSV File Handling
-- [ ] Q06: Context Managers (with statement)
-- [ ] Q07: Binary Files
-- [ ] Q08: File Iteration and Large Files
-- [ ] Q09: Temporary Files
-- [ ] Q10: File Metadata and OS Operations
+- [x] Q01: Reading Files
+- [x] Q02: Writing Files
+- [x] Q03: File Modes and Appending
+- [x] Q04: Working with File Paths
+- [x] Q05: CSV File Handling
+- [x] Q06: Context Managers (with statement)
+- [x] Q07: Binary Files
+- [x] Q08: File Iteration and Large Files
+- [x] Q09: Temporary Files
+- [x] Q10: File Metadata and OS Operations
 
 ### 07 — Exceptions
 - [ ] Q01: Try/Except Basics
