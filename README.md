@@ -209,16 +209,16 @@ Start Here
 - [x] Q10: File Metadata and OS Operations
 
 ### 07 — Exceptions
-- [ ] Q01: Try/Except Basics
-- [ ] Q02: Multiple Exception Types
-- [ ] Q03: else and finally
-- [ ] Q04: Raising Exceptions
-- [ ] Q05: Custom Exceptions
-- [ ] Q06: Exception Chaining
-- [ ] Q07: Context Manager Exception Handling
-- [ ] Q08: Assertions
-- [ ] Q09: Logging Exceptions
-- [ ] Q10: Graceful Degradation Patterns
+- [x] Q01: Try/Except Basics
+- [x] Q02: Multiple Exception Types
+- [x] Q03: else and finally
+- [x] Q04: Raising Exceptions
+- [x] Q05: Custom Exceptions
+- [x] Q06: Exception Chaining
+- [x] Q07: Context Manager Exception Handling
+- [x] Q08: Assertions
+- [x] Q09: Logging Exceptions
+- [x] Q10: Graceful Degradation Patterns
 
 ### 08 — Modules and Packages
 - [ ] Q01: Importing Modules
