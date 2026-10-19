@@ -233,16 +233,16 @@ Start Here
 - [x] Q10: Virtual Environments and pip
 
 ### 09 — Advanced Python
-- [ ] Q01: Iterators and __iter__/__next__
-- [ ] Q02: Generators and yield
-- [ ] Q03: Decorators (Function)
-- [ ] Q04: Decorators (Class-based and Parameterized)
-- [ ] Q05: Context Managers (Custom)
-- [ ] Q06: List/Dict/Set Comprehensions (Advanced)
-- [ ] Q07: Regular Expressions
-- [ ] Q08: Type Hints and Annotations
-- [ ] Q09: Dataclasses
-- [ ] Q10: Walrus Operator and Modern Python
+- [x] Q01: Iterators and __iter__/__next__
+- [x] Q02: Generators and yield
+- [x] Q03: Decorators (Function)
+- [x] Q04: Decorators (Class-based and Parameterized)
+- [x] Q05: Context Managers (Custom)
+- [x] Q06: List/Dict/Set Comprehensions (Advanced)
+- [x] Q07: Regular Expressions
+- [x] Q08: Type Hints and Annotations
+- [x] Q09: Dataclasses
+- [x] Q10: Walrus Operator and Modern Python
 
 ### 10 — DSA
 - [ ] Q01: Arrays and Two-Pointer Technique
