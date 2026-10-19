@@ -269,16 +269,16 @@ Start Here
 - [x] Q10: Sudoku Validator
 
 ### 12 — JSON, CSV, API, Database
-- [ ] Q01: JSON Read/Write
-- [ ] Q02: CSV Processing
-- [ ] Q03: REST API Basics (urllib)
-- [ ] Q04: SQLite Database CRUD
-- [ ] Q05: Data Transformation Pipeline
-- [ ] Q06: Config File Parsing
-- [ ] Q07: Web Scraping Basics (urllib)
-- [ ] Q08: Email Validation and Processing
-- [ ] Q09: Async Basics (asyncio)
-- [ ] Q10: Command-Line Arguments (argparse)
+- [x] Q01: JSON Read/Write
+- [x] Q02: CSV Processing
+- [x] Q03: REST API Basics (urllib)
+- [x] Q04: SQLite Database CRUD
+- [x] Q05: Data Transformation Pipeline
+- [x] Q06: Config File Parsing
+- [x] Q07: Web Scraping Basics (urllib)
+- [x] Q08: Email Validation and Processing
+- [x] Q09: Async Basics (asyncio)
+- [x] Q10: Command-Line Arguments (argparse)
 
 ### 13 — Testing and Debugging
 - [ ] Q01: unittest Basics
