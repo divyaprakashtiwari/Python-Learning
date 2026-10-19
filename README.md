@@ -245,16 +245,16 @@ Start Here
 - [x] Q10: Walrus Operator and Modern Python
 
 ### 10 — DSA
-- [ ] Q01: Arrays and Two-Pointer Technique
-- [ ] Q02: Bubble Sort and Selection Sort
-- [ ] Q03: Binary Search
-- [ ] Q04: Stack Implementation
-- [ ] Q05: Queue Implementation
-- [ ] Q06: Linked List
-- [ ] Q07: Hash Table
-- [ ] Q08: Binary Tree and Traversals
-- [ ] Q09: Graph Representation and BFS/DFS
-- [ ] Q10: Dynamic Programming Basics
+- [x] Q01: Arrays and Two-Pointer Technique
+- [x] Q02: Bubble Sort and Selection Sort
+- [x] Q03: Binary Search
+- [x] Q04: Stack Implementation
+- [x] Q05: Queue Implementation
+- [x] Q06: Linked List
+- [x] Q07: Hash Table
+- [x] Q08: Binary Tree and Traversals
+- [x] Q09: Graph Representation and BFS/DFS
+- [x] Q10: Dynamic Programming Basics
 
 ### 11 — Problem Solving
 - [ ] Q01: FizzBuzz and Variants
