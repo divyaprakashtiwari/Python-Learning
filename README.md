@@ -257,16 +257,16 @@ Start Here
 - [x] Q10: Dynamic Programming Basics
 
 ### 11 — Problem Solving
-- [ ] Q01: FizzBuzz and Variants
-- [ ] Q02: Palindrome Checker
-- [ ] Q03: Prime Numbers
-- [ ] Q04: Fibonacci Sequence
-- [ ] Q05: Anagram Detector
-- [ ] Q06: Matrix Operations
-- [ ] Q07: String Compression
-- [ ] Q08: Number to Words
-- [ ] Q09: Caesar Cipher
-- [ ] Q10: Sudoku Validator
+- [x] Q01: FizzBuzz and Variants
+- [x] Q02: Palindrome Checker
+- [x] Q03: Prime Numbers
+- [x] Q04: Fibonacci Sequence
+- [x] Q05: Anagram Detector
+- [x] Q06: Matrix Operations
+- [x] Q07: String Compression
+- [x] Q08: Number to Words
+- [x] Q09: Caesar Cipher
+- [x] Q10: Sudoku Validator
 
 ### 12 — JSON, CSV, API, Database
 - [ ] Q01: JSON Read/Write
