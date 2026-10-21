@@ -1,2 +1,6 @@
-print("hello DPT")
-print("hello DPT")
+info = {
+    "name" : "Dpt",
+    "age" : 20
+}
+
+print(info)
