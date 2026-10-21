@@ -281,16 +281,16 @@ Start Here
 - [x] Q10: Command-Line Arguments (argparse)
 
 ### 13 — Testing and Debugging
-- [ ] Q01: unittest Basics
-- [ ] Q02: Test Fixtures (setUp/tearDown)
-- [ ] Q03: Assertions Deep Dive
-- [ ] Q04: Mocking
-- [ ] Q05: Parameterized Tests
-- [ ] Q06: Debugging with pdb
-- [ ] Q07: Logging
-- [ ] Q08: Profiling and Timing
-- [ ] Q09: Code Coverage Concepts
-- [ ] Q10: Defensive Programming
+- [x] Q01: unittest Basics
+- [x] Q02: Test Fixtures (setUp/tearDown)
+- [x] Q03: Assertions Deep Dive
+- [x] Q04: Mocking
+- [x] Q05: Parameterized Tests
+- [x] Q06: Debugging with pdb
+- [x] Q07: Logging
+- [x] Q08: Profiling and Timing
+- [x] Q09: Code Coverage Concepts
+- [x] Q10: Defensive Programming
 
 ---
 
