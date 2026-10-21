@@ -57,7 +57,7 @@
 # print(marks)
 
 
-set = {9,9.0}
-print(set)
-set1 = {9,"9.0"}
-print(set1)
+# set = {9,9.0}
+# print(set)
+# set1 = {9,"9.0"}
+# print(set1)
