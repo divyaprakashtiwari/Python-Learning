@@ -1,0 +1,147 @@
+===============================================================================
+TOPIC 02: CONTROL FLOW STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Control Flow: The order in which individual statements, instructions, or function
+  calls are executed or evaluated in a running program.
+- Conditionals (Branching): Making decisions dynamically using boolean expressions
+  (if, elif, else) to route execution down different paths.
+- Iteration (Loops): Repeating a block of code multiple times.
+  * 'for' loop: Definite iteration over an iterable (list, string, range, dict, etc.).
+  * 'while' loop: Indefinite iteration continuing as long as a condition remains True.
+- Loop Jump Statements:
+  * 'break': Immediately terminates the innermost loop.
+  * 'continue': Skips the remainder of the current iteration and jumps to the next.
+  * 'pass': A null operation placeholder where syntax requires a statement.
+- Loop 'else' clause: Executes ONLY if the loop completed naturally without
+  encountering a 'break' statement.
+- Ternary Operator: Inline conditional expression: <value_if_true> if <cond> else <value_if_false>.
+- Structural Pattern Matching (Python 3.10+): 'match' and 'case' statements for
+  declarative shape and value destructuring.
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Conditionals (if, elif, else)
+score = 85
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+else:
+    grade = "F"
+
+# 2. Ternary Operator (Conditional Expression)
+status = "Adult" if age >= 18 else "Minor"
+
+# 3. for Loop with range()
+for i in range(1, 10, 2):    # start=1, stop=10 (exclusive), step=2 -> 1, 3, 5, 7, 9
+    print(i)
+
+# 4. while Loop with Sentinel Condition
+count = 5
+while count > 0:
+    print(count)
+    count -= 1
+
+# 5. break and continue
+for num in range(1, 10):
+    if num % 2 == 0:
+        continue            # skip even numbers
+    if num > 7:
+        break               # exit loop once num > 7
+    print(num)              # prints 1, 3, 5, 7
+
+# 6. Loop with else (Search Sentinel Pattern)
+target = 42
+items = [10, 20, 30, 42, 50]
+for x in items:
+    if x == target:
+        print("Found target!")
+        break
+else:
+    print("Target not found.")   # Only runs if no break occurred
+
+# 7. Structural Pattern Matching (Python 3.10+)
+command = "quit"
+match command:
+    case "start":
+        print("Starting engine")
+    case "stop" | "halt":
+        print("Stopping engine")
+    case "quit":
+        print("Exiting application")
+    case _:
+        print("Unknown command")
+
+
+3. COMMON RULES AND MECHANICS
+-------------------------------------------------------------------------------
+- Indentation is Syntax: Python uses consistent whitespace indentation (4 spaces PEP 8)
+  instead of curly braces { } or begin/end blocks.
+- range(start, stop, step):
+  * stop is always EXCLUSIVE.
+  * range(5) -> 0, 1, 2, 3, 4.
+  * range(2, 6) -> 2, 3, 4, 5.
+  * range(10, 0, -2) -> 10, 8, 6, 4, 2.
+- Short-Circuit Evaluation:
+  * In 'A and B', if A is False, B is never evaluated.
+  * In 'A or B', if A is True, B is never evaluated.
+- Truthy vs Falsy Evaluation:
+  Empty sequences ("", [], ()), empty mappings ({}), 0, 0.0, None, and False
+  are falsy in boolean contexts. Everything else is truthy.
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Infinite while loops due to missing update step.
+  * Ensure the loop condition variable is modified inside the loop body!
+
+- Mistake: Misunderstanding 'for...else'.
+  * The 'else' block does NOT run if the loop was exited via 'break'.
+  * Think of 'for...else' as 'no-break-occurred' handler.
+
+- Mistake: Modifying a collection while iterating over it.
+  * Modifying (adding/deleting) a list while iterating with 'for item in lst:'
+    causes skipped items and unpredictable behavior.
+  * Tip: Iterate over a shallow copy instead: for item in lst[:]: or for item in list(lst):
+
+- Mistake: Off-by-one errors with range().
+  * range(1, 10) produces numbers 1 through 9, NOT 10!
+  * To include 10, write: range(1, 11).
+
+- Mistake: Overusing nested if-statements.
+  * Prefer guard clauses and early exits/returns to flatten deeply nested logic.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Python uses 4-space indentation to define code blocks.
+2. 'elif' is Python's keyword for else-if (not 'else if').
+3. Ternary syntax is: <val_if_true> if <condition> else <val_if_false>.
+4. range(stop) defaults to start=0 and step=1.
+5. 'break' stops the loop immediately; 'continue' skips to the next iteration.
+6. 'pass' is a placeholder that does nothing, used to write stubbed blocks.
+7. 'for...else' runs only if the loop finishes completely without hitting 'break'.
+8. Enumerate() yields index and value pairs cleanly: for idx, val in enumerate(items):.
+9. Zip() pairs elements from multiple iterables: for a, b in zip(list_a, list_b):.
+10. 'match...case' supports value matching, wildcard matching (_), guards (if), and sequence destructuring.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 02_control_flow/q01_if_elif_else.py
+- 02_control_flow/q02_nested_conditionals.py
+- 02_control_flow/q03_for_loop.py
+- 02_control_flow/q04_while_loop.py
+- 02_control_flow/q05_break_continue.py
+- 02_control_flow/q06_nested_loops.py
+- 02_control_flow/q07_loop_with_else.py
+- 02_control_flow/q08_pattern_printing.py
+- 02_control_flow/q09_ternary_operator.py
+- 02_control_flow/q10_match_case.py
+===============================================================================
