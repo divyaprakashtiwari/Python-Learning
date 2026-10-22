@@ -56,3 +56,41 @@ Constraints & Edge Cases:
 - String "True" or "false" must be converted to boolean, not treated as plain string.
 - Do not raise unhandled ValueError exceptions during conversion.
 ================================================================================
+
+Question 3 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that performs compound interest calculation and currency
+denomination breakdown:
+1. Given Principal (P), annual interest rate (r in percent), compounding
+   frequency per year (n), and time period in years (t), calculate the total
+   accrued amount using the formula:
+       A = P * (1 + r / (100 * n)) ** (n * t)
+2. Determine the total interest earned (A - P).
+3. Using integer division (//) and modulo (%) operators, break down the whole-dollar
+   portion of the interest earned into the minimum number of currency bills:
+   $100, $50, $20, $10, $5, and $1.
+
+Sample Input:
+Principal: 5000.00
+Annual Rate (%): 6.5
+Compounding Frequency (n): 4 (Quarterly)
+Years (t): 3
+
+Expected Output:
+Total Accrued Amount: $6,066.86
+Total Interest Earned: $1,066.86
+Whole Dollar Interest: $1066
+Currency Breakdown:
+- $100 bills: 10
+- $50 bills: 1
+- $20 bills: 0
+- $10 bills: 1
+- $5 bills: 1
+- $1 bills: 1
+
+Constraints & Edge Cases:
+- All inputs must be non-negative; n and t must be strictly positive.
+- Do not use floating-point modulo for bill distribution; cast the whole-dollar
+  portion to an integer before computing bill counts.
+================================================================================
