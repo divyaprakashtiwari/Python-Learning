@@ -1,0 +1,146 @@
+===============================================================================
+TOPIC 07: EXCEPTIONS STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Exception: An event detected during execution that interrupts the normal flow
+  of instructions (as opposed to syntax errors detected at parse time).
+- Exception Handling: Intercepting runtime errors using 'try', 'except', 'else',
+  and 'finally' blocks to prevent crashes and ensure graceful recovery.
+- Exception Hierarchy: All built-in exceptions inherit from BaseException:
+  * BaseException
+    ├── KeyboardInterrupt (Ctrl+C)
+    ├── SystemExit (sys.exit())
+    └── Exception (Root for all standard user/application errors)
+        ├── StandardError / ArithmeticError (ZeroDivisionError, OverflowError)
+        ├── LookupError (IndexError, KeyError)
+        ├── ValueError
+        ├── TypeError
+        └── OSError (FileNotFoundError, PermissionError)
+- Clause Roles:
+  * try: Code that may raise an exception.
+  * except: Handles specific matching exception classes.
+  * else: Runs ONLY if no exceptions were raised in the try block.
+  * finally: ALWAYS runs regardless of whether an exception occurred, was handled,
+    or was re-raised (ideal for resource cleanup).
+- Exception Chaining: Linking a caught exception to a new exception using 'raise ... from ...'
+  (populates __cause__ or __context__).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Full try / except / else / finally Structure
+try:
+    data = int("123")
+except ValueError as e:
+    print(f"Conversion error: {e}")
+else:
+    print(f"Success! Data = {data}")    # Runs ONLY if no exception
+finally:
+    print("Cleanup always executed")    # ALWAYS runs
+
+# 2. Handling Multiple Exception Types
+try:
+    result = 100 / int(input_str)
+except (ValueError, TypeError) as e:    # Grouped tuple of exceptions
+    print(f"Invalid input: {e}")
+except ZeroDivisionError:
+    print("Cannot divide by zero")
+
+# 3. Raising Custom Exceptions
+class InsufficientFundsError(Exception):
+    """Raised when account balance is lower than withdrawal amount."""
+    def __init__(self, balance: float, amount: float):
+        super().__init__(f"Attempted to withdraw ${amount} from balance ${balance}")
+        self.balance = balance
+        self.amount = amount
+
+def withdraw(balance: float, amount: float):
+    if amount > balance:
+        raise InsufficientFundsError(balance, amount)
+    return balance - amount
+
+# 4. Exception Chaining (raise ... from ...)
+try:
+    int("invalid")
+except ValueError as err:
+    # Explicit chaining: sets __cause__
+    raise RuntimeError("Configuration parsing failed") from err
+
+# Suppressing cause:
+# raise RuntimeError("Clean error") from None
+
+# 5. Context Manager Exception Handling (__exit__)
+class SuppressErrors:
+    def __enter__(self):
+        return self
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type is ValueError:
+            return True  # Returning True suppresses the exception!
+        return False     # Returning False propagates the exception
+
+
+3. COMMON RULES AND MECHANICS
+-------------------------------------------------------------------------------
+- Catch from Specific to General:
+  * Put child exceptions BEFORE parent exceptions in 'except' blocks!
+  * If 'except Exception:' comes first, it intercepts everything before specific handlers.
+- 'finally' Executes Before Returns:
+  * If a 'return' statement is inside 'try' or 'except', the 'finally' block STILL
+    executes before the function returns to the caller!
+  * If 'finally' has an explicit return, it overrides any return in 'try' or 'except'.
+- Re-raising:
+  * A bare 'raise' inside an except block re-raises the active exception currently
+    being handled, preserving the original traceback.
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Bare 'except:' clause (Anti-Pattern!).
+  * 'except:' catches BaseException, intercepting KeyboardInterrupt (Ctrl+C) and
+    SystemExit, preventing the user from killing the script!
+  * Always catch at least 'except Exception:' or preferably specific exceptions.
+
+- Mistake: Silently swallowing exceptions ('pass').
+  * try: do_something() except Exception: pass
+  * Hides critical bugs, makes debugging impossible. At minimum, log the exception!
+
+- Mistake: Putting non-risky code inside the 'try' block.
+  * Keep 'try' blocks as small and targeted as possible to avoid catching unrelated
+    exceptions by mistake. Use the 'else:' block for code following a successful try.
+
+- Mistake: Using exceptions for normal control flow (overuse).
+  * Exceptions have overhead. Use simple if-conditions for predictable cases
+    (e.g., checking len(lst) > 0 instead of catching IndexError).
+
+- Tip: Always inherit custom application exceptions from 'Exception', NOT 'BaseException'.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Catch specific exceptions (e.g. ValueError, KeyError) rather than generic Exception.
+2. 'else:' runs only when the 'try:' block succeeds without raising any exceptions.
+3. 'finally:' always executes, even across return statements or uncaught errors.
+4. 'raise ... from err' establishes explicit causal exception chaining (__cause__).
+5. 'raise ... from None' suppresses traceback clutter from underlying exceptions.
+6. A bare 'raise' re-raises the current exception with its original traceback intact.
+7. Custom exceptions should subclass 'Exception' and follow the PEP 8 Error suffix naming convention.
+8. In __exit__(self, exc_type, exc_val, exc_tb), return True to suppress the exception.
+9. ZeroDivisionError, OverflowError inherit from ArithmeticError.
+10. IndexError and KeyError inherit from LookupError.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 07_exceptions/q01_try_except_basics.py
+- 07_exceptions/q02_multiple_exception_types.py
+- 07_exceptions/q03_else_and_finally.py
+- 07_exceptions/q04_raising_exceptions.py
+- 07_exceptions/q05_custom_exceptions.py
+- 07_exceptions/q06_exception_chaining.py
+- 07_exceptions/q07_context_manager_exceptions.py
+- 07_exceptions/q08_assertions.py
+- 07_exceptions/q09_logging_exceptions.py
+- 07_exceptions/q10_graceful_degradation.py
+===============================================================================
