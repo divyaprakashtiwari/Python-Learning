@@ -1,0 +1,205 @@
+================================================================================
+PYTHON STUDY NOTES: TOPIC 12 - JSON, CSV, REST APIS, SQLITE & TOOLS
+================================================================================
+
+1. DEFINITION AND EXPLANATION
+--------------------------------------------------------------------------------
+Real-world Python programming relies heavily on data interchange formats,
+network requests, persistence engines, configuration management, and command-line
+interfaces.
+
+Core domains covered in this topic:
+- JSON (JavaScript Object Notation): Standard text format for serializing
+  structured data (objects, arrays, strings, numbers, booleans, null).
+- CSV (Comma-Separated Values): Delimited tabular plain-text format for tabular data.
+- REST APIs & HTTP Requests: Interacting with web services using the built-in
+  urllib.request module (GET, POST, headers, status codes, query encoding).
+- Relational Databases with SQLite3: Serverless, transactional ACID-compliant
+  embedded database included with Python standard library.
+- Data Transformation (ETL): Extracting data from disparate sources, cleaning/transforming
+  records, and loading into target datastores.
+- Configuration Parsing: Reading and writing INI/configuration files via configparser.
+- Web Scraping: Fetching HTML content and extracting tags/data using html.parser or regex.
+- Email Validation & Processing: Validating RFC email addresses using regex and building
+  MIME email structures via the email module.
+- Asynchronous Concurrency with Asyncio: Event loops, coroutines (async/await), tasks,
+  and non-blocking concurrent operations via asyncio.
+- CLI Argument Parsing: Building production CLI interfaces using argparse.
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+--------------------------------------------------------------------------------
+
+A. JSON Reading & Writing:
+    import json
+
+    data = {"name": "Alice", "skills": ["Python", "SQL"], "active": True}
+
+    # Serialization:
+    json_str = json.dumps(data, indent=2, sort_keys=True)
+    with open("data.json", "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2)
+
+    # Deserialization:
+    parsed_dict = json.loads(json_str)
+    with open("data.json", "r", encoding="utf-8") as f:
+        loaded_data = json.load(f)
+
+B. CSV Processing with DictReader and DictWriter:
+    import csv
+
+    # Writing CSV with headers:
+    records = [
+        {"id": 1, "name": "Alice", "score": 95},
+        {"id": 2, "name": "Bob", "score": 88}
+    ]
+    with open("scores.csv", "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["id", "name", "score"])
+        writer.writeheader()
+        writer.writerows(records)
+
+    # Reading CSV:
+    with open("scores.csv", "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            print(row["name"], row["score"])
+
+C. REST API Requests with urllib:
+    import urllib.request
+    import urllib.parse
+    import json
+
+    url = "https://api.example.com/items"
+    params = urllib.parse.urlencode({"category": "books", "limit": 10})
+    req = urllib.request.Request(
+        f"{url}?{params}",
+        headers={"User-Agent": "PythonClient/1.0", "Accept": "application/json"}
+    )
+    with urllib.request.urlopen(req) as response:
+        status_code = response.status
+        raw_body = response.read().decode("utf-8")
+        data = json.loads(raw_body)
+
+D. SQLite Database CRUD & Transactions:
+    import sqlite3
+
+    conn = sqlite3.connect("app.db")
+    cursor = conn.cursor()
+
+    # Create table:
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            email TEXT NOT NULL
+        )
+    """)
+
+    # Parameterized Insert (prevents SQL injection):
+    cursor.execute("INSERT INTO users (username, email) VALUES (?, ?)", ("alice", "alice@example.com"))
+    conn.commit()
+
+    # Query with fetchall:
+    cursor.execute("SELECT id, username, email FROM users WHERE username = ?", ("alice",))
+    rows = cursor.fetchall()
+
+    conn.close()
+
+E. ConfigParser for INI Files:
+    import configparser
+
+    config = configparser.ConfigParser()
+    config["DEFAULT"] = {"ServerAliveInterval": "45", "Compression": "yes"}
+    config["database"] = {"host": "localhost", "port": "5432", "user": "admin"}
+
+    with open("config.ini", "w") as f:
+        config.write(f)
+
+    # Reading config:
+    config.read("config.ini")
+    db_port = config.getint("database", "port")
+
+F. Asyncio Coroutines & Concurrent Tasks:
+    import asyncio
+
+    async def fetch_data(id: int, delay: float):
+        await asyncio.sleep(delay)  # non-blocking asynchronous sleep
+        return {"id": id, "status": "completed"}
+
+    async def main():
+        # Run concurrent coroutines:
+        results = await asyncio.gather(
+            fetch_data(1, 0.5),
+            fetch_data(2, 0.3),
+            fetch_data(3, 0.1)
+        )
+        for res in results:
+            print(res)
+
+    # asyncio.run(main())
+
+G. Command-Line Arguments with argparse:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Process batch data files.")
+    parser.add_argument("input_path", type=str, help="Path to input data file")
+    parser.add_argument("-o", "--output", type=str, default="out.csv", help="Output path")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose logging")
+
+    # args = parser.parse_args()
+
+
+3. COMMON METHODS, FUNCTIONS, AND RULES
+--------------------------------------------------------------------------------
+- json.dump(obj, fp) / json.load(fp): Directly serializes/deserializes to/from file objects.
+- json.dumps(obj) / json.loads(s): Converts between Python dict/list and JSON string.
+- csv.DictReader(f) / csv.DictWriter(f, fieldnames): Maps CSV rows to dictionaries.
+- newline="" in open() for CSV: Prevents blank extra rows on Windows systems.
+- urllib.parse.urlencode(dict): Safely escapes and formats URL query string parameters.
+- sqlite3.connect(":memory:"): In-memory SQLite database, ideal for fast unit tests.
+- cursor.executemany(sql, seq_of_params): High-performance batch insert/update in SQLite.
+- asyncio.run(coro): Runs the entry-point coroutine and manages the event loop lifecycle.
+- asyncio.gather(*coros): Runs multiple coroutines concurrently and returns ordered results.
+- argparse.ArgumentParser.add_argument(): Defines CLI positional & optional flags.
+
+
+4. COMMON MISTAKES AND TIPS
+--------------------------------------------------------------------------------
+- SQL Injection: NEVER use f"SELECT * FROM users WHERE name = '{name}'". Always use
+  parameter substitution with `?`: cursor.execute("SELECT * ... WHERE name = ?", (name,)).
+- Forgetting conn.commit(): SQLite transactions do not persist changes until explicitly
+  committed, or when using `with conn:` context manager.
+- Non-serializable JSON types: Standard JSON cannot serialize datetime, sets, or custom classes
+  by default. Provide a custom default encoder function: `json.dumps(obj, default=str)`.
+- CSV delimiter issues: European CSV files often use semicolons (`;`) instead of commas.
+  Use csv.Sniffer().sniff(sample) or specify delimiter=";" when necessary.
+- Asyncio blocking calls: Calling time.sleep() or blocking I/O inside an async def function
+  freezes the entire event loop. Use asyncio.sleep() or run_in_executor().
+- Missing User-Agent header: Many web servers reject HTTP requests lacking a standard User-Agent
+  header with a 403 Forbidden error.
+
+
+5. QUICK REVISION POINTS
+--------------------------------------------------------------------------------
+- JSON keys must always be strings; JSON uses double quotes (""), never single quotes.
+- DictReader uses the first line of CSV as header dictionary keys.
+- SQLite ? placeholders automatically handle quotation escaping and data type binding.
+- Transactions: Use `with conn:` so commits occur automatically on success and rollbacks on error.
+- configparser values are always read as strings; use getint(), getboolean(), getfloat() to cast.
+- Async coroutines must be awaited with `await`; calling a coroutine without `await` only creates a coroutine object.
+- argparse automatically generates `--help` / `-h` documentation and type-checks CLI arguments.
+
+
+6. MATCHING PRACTICE FILES
+--------------------------------------------------------------------------------
+- 12_json_csv_api_db/q01_json_read_write.py
+- 12_json_csv_api_db/q02_csv_processing.py
+- 12_json_csv_api_db/q03_rest_api_urllib.py
+- 12_json_csv_api_db/q04_sqlite_database_crud.py
+- 12_json_csv_api_db/q05_data_transformation_pipeline.py
+- 12_json_csv_api_db/q06_config_file_parsing.py
+- 12_json_csv_api_db/q07_web_scraping_urllib.py
+- 12_json_csv_api_db/q08_email_validation_processing.py
+- 12_json_csv_api_db/q09_async_basics_asyncio.py
+- 12_json_csv_api_db/q10_command_line_args_argparse.py
+================================================================================
