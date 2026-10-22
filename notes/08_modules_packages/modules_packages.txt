@@ -1,0 +1,160 @@
+===============================================================================
+TOPIC 08: MODULES AND PACKAGES STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Module: A single Python file (.py) containing executable code, functions, classes,
+  and variables designed for reusability.
+- Package: A directory containing multiple modules. In Python 3.3+, namespace packages
+  do not strictly require __init__.py, but regular packages use __init__.py to initialize
+  package state and expose public APIs.
+- Module Import System (sys.path & sys.modules):
+  * When 'import xyz' is executed, Python first checks sys.modules (cached modules).
+  * If absent, it searches through directories in sys.path in order:
+    1. Directory of the running script (or current working directory)
+    2. PYTHONPATH environment variable entries
+    3. Standard library directories
+    4. site-packages (third-party installed packages)
+- The __name__ == "__main__" Idiom:
+  * __name__ is a special built-in variable set by Python.
+  * When run directly: __name__ == "__main__".
+  * When imported: __name__ == "module_filename" (without .py).
+- Essential Standard Library Utilities:
+  * os, sys, math, random, time
+  * datetime: date, time, datetime, timedelta, timezone
+  * collections: Counter, defaultdict, deque, namedtuple, OrderedDict
+  * itertools: count, cycle, chain, islice, product, permutations, combinations
+  * functools: lru_cache, partial, wraps, reduce
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Importing Variations
+import math
+from math import sqrt, pi
+from math import factorial as fact      # Alias import
+import os.path as osp
+
+# 2. Executable Script Guard (__name__ == "__main__")
+def main():
+    print("Executing as standalone script")
+
+if __name__ == "__main__":
+    main()
+
+# 3. collections Module (Power Data Structures)
+from collections import Counter, defaultdict, deque, namedtuple
+
+# Counter
+counts = Counter(["apple", "banana", "apple", "cherry"]) # {'apple': 2, 'banana': 1, ...}
+
+# defaultdict (No KeyErrors!)
+d = defaultdict(list)
+d["users"].append("Alice")
+
+# deque (Fast O(1) appends and pops on both ends)
+dq = deque([1, 2, 3])
+dq.appendleft(0)
+dq.pop()
+
+# namedtuple (Lightweight immutable records)
+Point = namedtuple("Point", ["x", "y"])
+pt = Point(10, 20)
+print(pt.x, pt.y)
+
+# 4. itertools Module (Efficient Iteration)
+from itertools import chain, product, combinations
+
+# Chaining iterables
+combined = list(chain([1, 2], [3, 4]))                 # [1, 2, 3, 4]
+
+# Cartesian Product
+pairs = list(product(["A", "B"], [1, 2]))             # [('A',1), ('A',2), ...]
+
+# Combinations (order does not matter)
+combs = list(combinations([1, 2, 3], 2))              # [(1,2), (1,3), (2,3)]
+
+# 5. functools Module
+from functools import lru_cache, partial
+
+# Memoization cache
+@lru_cache(maxsize=128)
+def fib(n):
+    if n < 2: return n
+    return fib(n-1) + fib(n-2)
+
+# Partial function application (freezing arguments)
+base_two = partial(int, base=2)
+assert base_two("1010") == 10
+
+# 6. datetime Module
+from datetime import datetime, timedelta, timezone
+
+now = datetime.now(timezone.utc)
+future = now + timedelta(days=7, hours=2)
+formatted_str = now.strftime("%Y-%m-%d %H:%M:%S")
+
+
+3. COMMON RULES AND PACKAGING MECHANICS
+-------------------------------------------------------------------------------
+- __all__ Variable:
+  * A list of strings defining what gets imported when a user runs: from module import *
+  * e.g., __all__ = ["public_func", "PublicClass"]
+- Relative Imports:
+  * Used within packages:
+    from . import sibling_module
+    from ..subpackage import helper
+  * Relative imports only work inside imported package modules, not top-level entry scripts!
+- Virtual Environments:
+  * Created via: python -m venv .venv
+  * Activated via: source .venv/bin/activate (Unix) or .venv\Scripts\activate (Windows)
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Circular Imports (Module A imports B, while B imports A).
+  * Causes ImportError or AttributeError because one module is executed before the other finishes initializing.
+  * Solution: Refactor shared dependencies into a separate module (e.g. models.py or common.py), or import inside function bodies.
+
+- Mistake: Naming your script the same as a standard library module.
+  * e.g., naming your file 'math.py', 'random.py', or 'email.py'.
+  * Python finds your local file first in sys.path, shadowing the standard library!
+
+- Mistake: Wildcard imports (from module import *).
+  * Pollutes the local namespace, obscures origins of variables, and can cause silent name overwrites.
+  * Tip: Always import explicit names or import the module: import math; math.sqrt().
+
+- Mistake: Using naive datetimes without timezone awareness.
+  * Always use timezone-aware datetimes in backend and API development: datetime.now(timezone.utc).
+
+- Tip: Use functools.wraps inside custom decorators to preserve the wrapped function's __name__ and docstring.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. sys.path is the list of directory strings Python searches for imports.
+2. sys.modules is the dictionary cache of already-imported module objects.
+3. If run directly from terminal, __name__ is set to "__main__".
+4. 'import a.b' requires accessing via a.b.func(); 'from a.b import func' allows direct func().
+5. collections.defaultdict automatically initializes missing keys with the factory function.
+6. collections.deque provides O(1) popleft() and appendleft(), whereas list.pop(0) is O(n).
+7. itertools generates values lazily on-demand without storing entire sequences in RAM.
+8. functools.lru_cache provides zero-cost memoization for deterministic pure functions.
+9. Package directories should contain '__init__.py' to define public exports via '__all__'.
+10. Always develop inside virtual environments (.venv) to isolate pip package dependencies.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 08_modules_packages/q01_importing_modules.py
+- 08_modules_packages/q02_creating_modules.py
+- 08_modules_packages/q03_name_main.py
+- 08_modules_packages/q04_standard_library_tour.py
+- 08_modules_packages/q05_datetime_module.py
+- 08_modules_packages/q06_collections_module.py
+- 08_modules_packages/q07_itertools_module.py
+- 08_modules_packages/q08_functools_module.py
+- 08_modules_packages/q09_package_structure.py
+- 08_modules_packages/q10_virtual_environments_pip.py
+===============================================================================
