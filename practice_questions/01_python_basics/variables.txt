@@ -165,3 +165,40 @@ Constraints & Edge Cases:
 - Inactive accounts must be immediately denied.
 - Do not use loops or complex external libraries; use compound boolean expressions.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that parses multi-column inventory records from a raw
+multiline string or input stream and produces an aligned tabular invoice using
+built-in print() arguments (sep, end) and string justification methods (ljust, rjust):
+1. Each line has the format: "ItemName Quantity UnitPrice".
+2. Parse each line, stripping extraneous whitespace.
+3. Compute the subtotal per line (Quantity * UnitPrice).
+4. Calculate a 7.5% sales tax on the grand subtotal.
+5. Print a formatted invoice with headers "ITEM", "QTY", "UNIT PRICE", "TOTAL",
+   followed by a separator line, item details, and summary rows (Subtotal, Tax, Final Amount).
+
+Sample Input:
+raw_stream = """
+  Wireless_Mouse    3    25.50  
+  USB-C_Cable       5     8.99  
+  Mechanical_Keyboard  1  119.00  
+"""
+
+Expected Output:
+ITEM                 QTY     UNIT PRICE          TOTAL
+------------------------------------------------------
+Wireless_Mouse         3         $25.50         $76.50
+USB-C_Cable            5          $8.99         $44.95
+Mechanical_Keyboard    1        $119.00        $119.00
+------------------------------------------------------
+Subtotal:                                      $240.45
+Tax (7.5%):                                     $18.03
+Grand Total:                                   $258.48
+
+Constraints & Edge Cases:
+- Quantities must parse as integers; Unit prices must parse as floats.
+- Handle variable whitespace and empty lines gracefully.
+- Align all text columns to the left and numerical/currency columns to the right.
+================================================================================
