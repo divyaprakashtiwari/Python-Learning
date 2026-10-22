@@ -284,3 +284,40 @@ Constraints & Edge Cases:
 - Must use bitwise masking/operations (& 0b100, & 0b010, & 0b001) or modular conversion.
 - Do not hardcode strings for specific permission numbers.
 ================================================================================
+
+Question 9 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that utilizes starred expression unpacking (*), simultaneous
+multiple assignment, and in-place variable swapping to process telemetry packets:
+1. Given a variable-length data packet represented as a sequence of numbers:
+   packet = [0xAA, 1714000000, 24.5, 26.1, 23.8, 25.0, 18.2, 0x5D]
+   Unpack the packet into four variables in a single assignment statement:
+   - header (first element)
+   - timestamp (second element)
+   - sensor_readings (arbitrary number of intermediate float readings as a list)
+   - checksum (final element)
+2. Perform a 3-way circular rotation on three state variables (state_x, state_y, state_z)
+   such that state_x receives state_z's value, state_y receives state_x's value,
+   and state_z receives state_y's value in a single multiple assignment statement
+   without using any temporary variables.
+3. Validate packet integrity: verify whether the whole-number integer sum of
+   sensor_readings modulo 256 matches the checksum.
+
+Sample Input:
+packet = [170, 1714000000, 24.5, 26.1, 23.8, 25.0, 18.2, 117]
+state_x, state_y, state_z = 10, 20, 30
+
+Expected Output:
+Unpacked Header      : 170
+Unpacked Timestamp   : 1714000000
+Sensor Readings Count: 5 readings -> [24.5, 26.1, 23.8, 25.0, 18.2]
+Checksum             : 117
+Checksum Match       : True (Calculated: 117 == Expected: 117)
+Rotated States       : state_x = 30, state_y = 10, state_z = 20
+
+Constraints & Edge Cases:
+- The packet will always have at least 3 elements (header, at least 1 reading, checksum).
+- Use starred unpacking (e.g. `first, second, *middle, last = packet`).
+- Variable rotation must occur in one atomic Python assignment without temp variables.
+================================================================================
