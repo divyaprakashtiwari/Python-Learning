@@ -1,0 +1,142 @@
+===============================================================================
+TOPIC 03: DATA STRUCTURES STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Data Structure: A specialized format for organizing, storing, and retrieving data.
+- Built-in Collection Types:
+  * List: Ordered, mutable sequence of arbitrary objects. Allows duplicates.
+  * Tuple: Ordered, immutable sequence of arbitrary objects. Allows duplicates.
+    Can be used as dictionary keys if all contents are hashable.
+  * Set: Unordered, mutable collection of unique, hashable objects. No duplicates.
+    Optimized for O(1) membership testing and set-theoretic operations (union, intersection).
+  * Dictionary (dict): Key-value mapping. Keys must be unique and hashable (immutable);
+    values can be any object. Preserves insertion order (Python 3.7+).
+- Slicing: Extracting sub-sequences using [start:stop:step].
+- Comprehensions: Compact syntax for constructing lists, dicts, and sets from iterables.
+- Shallow Copy vs Deep Copy:
+  * Shallow copy (copy.copy, list.copy, [:]) copies container structure, not nested elements.
+  * Deep copy (copy.deepcopy) recursively copies all nested objects.
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Lists (Ordered, Mutable)
+fruits = ["apple", "banana", "cherry"]
+fruits.append("orange")         # Add to end
+fruits.insert(1, "mango")       # Insert at index
+fruits.pop()                    # Remove & return last item ("orange")
+fruits.remove("banana")         # Remove first occurrence by value
+
+# List Slicing: [start:stop:step]
+nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+sub = nums[2:7]                 # [2, 3, 4, 5, 6]
+rev = nums[::-1]                # Reverse list
+
+# 2. Tuples (Ordered, Immutable)
+coords = (10, 20)
+single_item = (42,)             # Note trailing comma required for single-element tuple!
+x, y = coords                   # Tuple unpacking
+
+# 3. Sets (Unordered, Unique, Fast O(1) Lookup)
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+union_set = a | b               # {1, 2, 3, 4, 5, 6}
+intersection = a & b            # {3, 4}
+difference = a - b              # {1, 2}
+symmetric_diff = a ^ b          # {1, 2, 5, 6}
+
+# 4. Dictionaries (Key-Value Mappings)
+person = {"name": "Alice", "age": 28, "role": "Engineer"}
+age = person.get("age", 0)      # Safe get with default fallback
+person["city"] = "San Francisco"
+
+# Iterating over dictionaries
+for key, value in person.items():
+    print(f"{key} -> {value}")
+
+# 5. Comprehensions (List, Set, Dict)
+squares = [x**2 for x in range(6) if x % 2 == 0]       # [0, 4, 16]
+unique_lengths = {len(w) for w in ["cat", "dog", "bird"]} # {3, 4}
+char_map = {ch: ord(ch) for ch in "ABC"}                # {'A': 65, 'B': 66, 'C': 67}
+
+
+3. COMMON METHODS AND TIME COMPLEXITIES
+-------------------------------------------------------------------------------
+- List:
+  * append(x): O(1) amortized
+  * pop(): O(1) from end, pop(0): O(n) from start
+  * insert(i, x): O(n)
+  * sort(): O(n log n) in-place Timsort; sorted(lst) returns new sorted list
+  * 'x in lst': O(n) linear search
+
+- Tuple:
+  * count(x): Returns number of occurrences
+  * index(x): Returns first index of item
+  * Immutable: memory efficient and hashable
+
+- Set:
+  * add(x), remove(x), discard(x): O(1) average
+  * 'x in s': O(1) average hash lookup
+  * discard(x) does NOT raise KeyError if x is missing; remove(x) DOES raise KeyError
+
+- Dict:
+  * d.get(key, default): Avoids KeyError
+  * d.keys(), d.values(), d.items(): Dynamic view objects
+  * d.pop(key, default): Removes and returns value
+  * d.setdefault(key, default): Sets key if absent, returns value
+  * d.update(other): Merges another dict or key-value pairs
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Using a single item without comma as a tuple.
+  * t = (42)   -> This is just the integer 42!
+  * t = (42,)  -> This is a tuple!
+
+- Mistake: Passing mutable default arguments (e.g. def fn(items=[]):).
+  * The list is created once at function definition, retaining state across calls.
+  * Correct: def fn(items=None): if items is None: items = []
+
+- Mistake: Unhandled KeyError when accessing dicts.
+  * Accessing person["missing"] raises KeyError. Use person.get("missing", default)
+    or collections.defaultdict.
+
+- Mistake: Modifying a list while iterating over it.
+  * Causes elements to be skipped. Iterate over a slice copy instead: for x in lst[:]:
+
+- Mistake: Expecting sets to maintain element order.
+  * Sets are unordered hash tables. If you need ordered unique items, use dict.fromkeys(seq).
+
+- Tip: Use collections.deque for efficient double-ended queues / FIFO queues.
+  * list.pop(0) takes O(n) time; deque.popleft() takes O(1) time.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Lists: [] (ordered, mutable, duplicates allowed).
+2. Tuples: () (ordered, immutable, hashable if members are hashable).
+3. Sets: set() or {1, 2} (unordered, unique elements, O(1) lookup).
+4. Dicts: {} or {k: v} (key-value mapping, keys must be hashable, O(1) lookup).
+5. Slicing syntax: sequence[start:stop:step] (stop is exclusive).
+6. Reverse any sequence cleanly with slice: seq[::-1].
+7. In-place sort: lst.sort() (returns None); new sorted copy: sorted(iterable).
+8. Use .get(k, default) on dicts to prevent KeyErrors.
+9. List comprehensions are faster and more idiomatic than map() + filter().
+10. Use 'copy.deepcopy()' for nested data structures to avoid shared reference mutations.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 03_data_structures/q01_list_basics_slicing.py
+- 03_data_structures/q02_list_methods.py
+- 03_data_structures/q03_tuple_operations.py
+- 03_data_structures/q04_set_operations.py
+- 03_data_structures/q05_dictionary_basics.py
+- 03_data_structures/q06_dictionary_methods.py
+- 03_data_structures/q07_nested_data_structures.py
+- 03_data_structures/q08_list_comprehensions.py
+- 03_data_structures/q09_stack_queue_lists.py
+- 03_data_structures/q10_sorting_searching.py
+===============================================================================
