@@ -94,3 +94,36 @@ Constraints & Edge Cases:
 - Do not use floating-point modulo for bill distribution; cast the whole-dollar
   portion to an integer before computing bill counts.
 ================================================================================
+
+Question 4 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that performs string slicing, indexing, and data masking
+on sensitive records:
+1. Given an email string, slice and extract the local part (before '@') and the
+   domain name (after '@').
+2. Mask the local part: keep the first and last character visible, replacing all
+   intermediate characters with asterisks '*' of the exact same length.
+   If the local part has 2 or fewer characters, retain only the first character
+   followed by a single '*'.
+3. Given an encoded transaction ID string formatted as "TXN-YYYYMMDD-SERIAL",
+   use slice indexing to extract the year, month, day, and serial number.
+4. Reverse the serial number using negative stride slicing [::-1].
+
+Sample Input:
+email = "alexander.dev@example.org"
+transaction_id = "TXN-20261022-987654"
+
+Expected Output:
+Email Local: "alexander.dev"
+Email Domain: "example.org"
+Masked Email: "a***********v@example.org"
+Transaction Year: "2026", Month: "10", Day: "22"
+Serial Number: "987654"
+Reversed Serial: "456789"
+
+Constraints & Edge Cases:
+- Assume valid standard email structure containing exactly one '@'.
+- Handle short usernames cleanly without index out-of-range errors.
+- Slicing operations must use slice syntax [start:stop:step] rather than regex.
+================================================================================
