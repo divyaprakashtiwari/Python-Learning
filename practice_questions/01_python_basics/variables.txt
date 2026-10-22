@@ -202,3 +202,48 @@ Constraints & Edge Cases:
 - Handle variable whitespace and empty lines gracefully.
 - Align all text columns to the left and numerical/currency columns to the right.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that formats various financial, scientific, and networking
+metrics into a standardized telemetry report using Python f-string format specifications
+(fill, alignment, sign flags, precision, thousands separators, and percentage formatting):
+1. Stock Performance:
+   - ticker: str ("NVDA"), current_price: float (142.876), price_change_pct: float (0.04382)
+   - Format price with two decimal places prefixed with '$'.
+   - Format price_change_pct as a signed percentage with sign explicitly shown (+4.38%).
+2. Scientific Constants:
+   - planck_constant: 6.62607015e-34
+   - Format in scientific notation (e) with 4 decimal places of precision.
+3. Network Throughput:
+   - transferred_bytes: int (14258790400), elapsed_sec: float (12.45)
+   - Calculate megabytes per second (transferred_bytes / (1024**2) / elapsed_sec).
+   - Format with thousands comma separators and 2 decimal places.
+4. Padded Identifier:
+   - server_id: int (42)
+   - Format with leading zeros to a width of 6 characters ("000042").
+
+Sample Input:
+ticker = "NVDA"
+current_price = 142.876
+price_change_pct = 0.04382
+planck_constant = 6.62607015e-34
+transferred_bytes = 14258790400
+elapsed_sec = 12.45
+server_id = 42
+
+Expected Output:
+[TELEMETRY REPORT]
+Server ID          : 000042
+Asset Ticker       : NVDA
+Current Price      : $142.88
+Change (24h)       : +4.38%
+Planck Constant    : 6.6261e-34
+Throughput         : 1,092.31 MB/s
+
+Constraints & Edge Cases:
+- Positive percentage changes must explicitly show a leading '+' sign ({val:+.2%}).
+- Negative changes must show a '-' sign.
+- All formatting must use f-string mini-language without manual string concatenation.
+================================================================================
