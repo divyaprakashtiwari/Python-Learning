@@ -247,3 +247,40 @@ Constraints & Edge Cases:
 - Negative changes must show a '-' sign.
 - All formatting must use f-string mini-language without manual string concatenation.
 ================================================================================
+
+Question 8 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that performs number system conversions (decimal, binary,
+octal, hexadecimal) and decodes POSIX file system permission modes using bitwise
+inspection:
+1. Accept an integer representing a POSIX permission code (e.g. decimal 509, which
+   corresponds to octal 0o775).
+2. Display its representation across all four number bases:
+   - Decimal
+   - Binary (padded to 9 bits)
+   - Octal (3 digits)
+   - Hexadecimal (prefixed with 0x)
+3. Using bitwise AND (&) and shifting (>>), decode the 9 permission bits into the
+   standard symbolic format "rwxrwxrwx", where the triplets represent Owner,
+   Group, and Others respectively (r=read: 4, w=write: 2, x=execute: 1; '-' if absent).
+4. Calculate the integer's bit length using int.bit_length() and the number of active
+   permissions using int.bit_count().
+
+Sample Input:
+permission_code = 493  # Octal 0o755
+
+Expected Output:
+Decimal Representation : 493
+Binary Representation  : 0b111101101 (9 bits: 111101101)
+Octal Representation   : 0o755
+Hexadecimal            : 0x1ed
+Symbolic Permissions   : rwxr-xr-x
+Bit Length             : 9 bits
+Active Permission Bits : 7
+
+Constraints & Edge Cases:
+- Permission integers will range from 0 (no permissions) to 511 (0o777, all permissions).
+- Must use bitwise masking/operations (& 0b100, & 0b010, & 0b001) or modular conversion.
+- Do not hardcode strings for specific permission numbers.
+================================================================================
