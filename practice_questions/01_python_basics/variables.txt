@@ -26,3 +26,33 @@ Constraints & Edge Cases:
 - Hourly wage must be non-negative.
 - Format the salary with two decimal places and comma separators for thousands.
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that takes a list of heterogeneous raw string inputs
+(such as data read from a CSV or web form) and performs safe type conversion:
+- If the string represents an integer, convert it to int.
+- If it contains a decimal point and represents a valid floating-point number,
+  convert it to float.
+- If it is case-insensitively "true" or "false", convert it to a boolean.
+- If it cannot be converted to any of the above, retain it as a string.
+Count how many elements of each type were successfully identified and compute
+the sum of all numeric values (integers + floats).
+
+Sample Input:
+raw_data = ["42", "3.14159", "True", "hello", "-18", "FALSE", "100.5", "Python3"]
+
+Expected Output:
+Parsed types count:
+- int: 2 (values: 42, -18)
+- float: 2 (values: 3.14159, 100.5)
+- bool: 2 (values: True, False)
+- str: 2 (values: 'hello', 'Python3')
+Total numeric sum: 127.64159
+
+Constraints & Edge Cases:
+- Handle negative numbers (e.g. "-18", "-0.75").
+- String "True" or "false" must be converted to boolean, not treated as plain string.
+- Do not raise unhandled ValueError exceptions during conversion.
+================================================================================
