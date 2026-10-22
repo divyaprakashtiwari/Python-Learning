@@ -1,0 +1,169 @@
+===============================================================================
+TOPIC 09: ADVANCED PYTHON STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Iterators and Iterables:
+  * Iterable: An object capable of returning its members one at a time (implements __iter__).
+  * Iterator: A stateful stream object that produces the next value upon next()
+    (implements both __iter__ returning self and __next__ raising StopIteration when exhausted).
+- Generators: A memory-efficient way of writing iterators using the 'yield' keyword.
+  Generators pause execution, save frame state, and yield control back to caller.
+- Decorators: Higher-order functions that wrap another function or class to dynamically
+  extend or modify behavior without modifying original source code.
+- Context Managers: Objects implementing __enter__ and __exit__ to manage resource acquisition
+  and release (or created via @contextlib.contextmanager).
+- Dataclasses (Python 3.7+): Decorator (@dataclass) that automatically generates boilerplate
+  dunder methods (__init__, __repr__, __eq__, __hash__) based on type annotations.
+- Regular Expressions (re module): Pattern matching engine for complex text validation,
+  extraction, and substitution.
+- Modern Python Features (Python 3.8+):
+  * Walrus Operator (:=): Assignment expression assigning values within larger expressions.
+  * Structural Pattern Matching (match/case).
+  * Type Hints (typing module: Union, Optional, Callable, Generic, Protocol).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Custom Iterator Protocol
+class CountUpTo:
+    def __init__(self, max_val: int):
+        self.max_val = max_val
+        self.current = 1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current > self.max_val:
+            raise StopIteration
+        val = self.current
+        self.current += 1
+        return val
+
+# 2. Generator Function & Expression
+def fibonacci_stream(limit: int):
+    a, b = 0, 1
+    while a < limit:
+        yield a
+        a, b = b, a + b
+
+gen_expr = (x**2 for x in range(1000000))   # O(1) memory generator expression
+
+# 3. Parameterized Function Decorator
+from functools import wraps
+
+def repeat(num_times: int):
+    def decorator(fn):
+        @wraps(fn)                          # Preserves docstring and name
+        def wrapper(*args, **kwargs):
+            for _ in range(num_times - 1):
+                fn(*args, **kwargs)
+            return fn(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@repeat(num_times=3)
+def greet(msg):
+    print(msg)
+
+# 4. Custom Context Manager via contextlib
+from contextlib import contextmanager
+
+@contextmanager
+def temporary_flag(obj, attr, temp_val):
+    old_val = getattr(obj, attr)
+    setattr(obj, attr, temp_val)
+    try:
+        yield
+    finally:
+        setattr(obj, attr, old_val)
+
+# 5. Dataclasses
+from dataclasses import dataclass, field
+
+@dataclass(frozen=True)                     # Immutable & hashable
+class UserProfile:
+    user_id: int
+    username: str
+    tags: tuple = field(default_factory=tuple)
+
+# 6. Regular Expressions
+import re
+
+pattern = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$")
+is_valid = bool(pattern.match("alice@domain.com"))
+
+# 7. Walrus Operator (:=) Assignment Expression
+# Without walrus:
+# line = file.readline()
+# while line:
+#     process(line); line = file.readline()
+# With walrus:
+# while (line := file.readline()):
+#     process(line)
+
+
+3. COMMON RULES AND PROTOCOLS
+-------------------------------------------------------------------------------
+- Iterator Protocol:
+  * __iter__() must return the iterator object itself.
+  * __next__() must return the next element, or raise StopIteration.
+- Decorator Chaining:
+  * When chaining decorators:
+    @dec_a
+    @dec_b
+    def func(): pass
+    Evaluates as: func = dec_a(dec_b(func))
+- Dataclass field rules:
+  * Mutable default arguments (list, dict, set) MUST use default_factory=list,
+    never default=[].
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Reusing an exhausted generator or iterator.
+  * Generators can only be consumed ONCE. A second iteration yields nothing!
+  * If reusable iteration is needed, use an iterable class defining __iter__ or convert to list.
+
+- Mistake: Forgetting @functools.wraps in custom decorators.
+  * Omitting @wraps overwrites the decorated function's __name__, __doc__, and type annotations.
+
+- Mistake: Using raw strings incorrectly in regex.
+  * Always use raw strings for regex patterns (r"\d+\.\d+") to prevent Python's
+    string escape parser from interpreting backslashes.
+
+- Mistake: Overusing the Walrus operator (:=).
+  * Keep expressions clear and readable; do not cram complex logic into a single line.
+
+- Tip: Use typing.Protocol (Python 3.8+) for static duck-typing and structural subtyping.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. 'yield' pauses the function and produces a value; execution resumes on next().
+2. Generator expressions (x for x in it) generate values lazily in O(1) memory.
+3. Decorators accept a callable and return a callable wrapper.
+4. Always apply @functools.wraps(fn) inside decorators.
+5. @contextmanager transforms a generator containing 'yield' into a 'with' context manager.
+6. @dataclass auto-generates __init__, __repr__, and __eq__ from type annotations.
+7. Dataclasses with frozen=True generate __hash__ and enforce immutability.
+8. Walrus operator (name := expr) assigns and returns the value in an expression.
+9. re.match matches at start of string; re.search searches anywhere in string.
+10. Iterators raise StopIteration when exhausted; for-loops handle this automatically.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 09_advanced_python/q01_iterators.py
+- 09_advanced_python/q02_generators.py
+- 09_advanced_python/q03_decorators_function.py
+- 09_advanced_python/q04_decorators_class_parameterized.py
+- 09_advanced_python/q05_context_managers_custom.py
+- 09_advanced_python/q06_comprehensions_advanced.py
+- 09_advanced_python/q07_regular_expressions.py
+- 09_advanced_python/q08_type_hints_annotations.py
+- 09_advanced_python/q09_dataclasses.py
+- 09_advanced_python/q10_walrus_and_modern_syntax.py
+===============================================================================
