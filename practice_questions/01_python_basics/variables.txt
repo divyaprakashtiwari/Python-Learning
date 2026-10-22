@@ -127,3 +127,41 @@ Constraints & Edge Cases:
 - Handle short usernames cleanly without index out-of-range errors.
 - Slicing operations must use slice syntax [start:stop:step] rather than regex.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements a multi-tier security authorization evaluator
+using logical and comparison operators (and, or, not, is, ==):
+1. A user session is represented by:
+   - role: str ("admin", "auditor", "viewer")
+   - is_active: bool
+   - mfa_verified: bool
+   - failed_attempts: int
+   - is_internal_ip: bool
+2. Access is GRANTED if and only if:
+   - The user account is strictly active (is_active is True), AND
+   - failed_attempts is strictly less than 3, AND
+   - EITHER:
+     a) role == "admin" and mfa_verified is True, OR
+     b) role in ("auditor", "viewer") and (is_internal_ip or mfa_verified).
+3. Demonstrate Python's short-circuit evaluation behavior by ordering conditions
+   such that inactive users or locked accounts fail immediately without checking
+   network or role status.
+4. Distinguish between identity ('is True') and truthy equality ('== 1').
+
+Sample Input:
+session_1 = {"role": "admin", "is_active": True, "mfa_verified": True, "failed_attempts": 0, "is_internal_ip": False}
+session_2 = {"role": "auditor", "is_active": True, "mfa_verified": False, "failed_attempts": 4, "is_internal_ip": True}
+session_3 = {"role": "viewer", "is_active": True, "mfa_verified": False, "failed_attempts": 1, "is_internal_ip": True}
+
+Expected Output:
+Session 1 Access: GRANTED (Reason: Admin with verified MFA)
+Session 2 Access: DENIED (Reason: Account locked due to excessive failed attempts)
+Session 3 Access: GRANTED (Reason: Viewer from trusted internal IP)
+
+Constraints & Edge Cases:
+- Account with failed_attempts >= 3 must be denied regardless of other privileges.
+- Inactive accounts must be immediately denied.
+- Do not use loops or complex external libraries; use compound boolean expressions.
+================================================================================
