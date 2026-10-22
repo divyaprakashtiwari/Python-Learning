@@ -1,0 +1,152 @@
+===============================================================================
+TOPIC 04: FUNCTIONS STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Function: A reusable, modular block of code that takes zero or more inputs (arguments),
+  executes an algorithm, and returns a result (or None by default).
+- First-Class Objects: In Python, functions are first-class citizens. They can be:
+  * Assigned to variables
+  * Passed as arguments to other functions
+  * Returned from other functions
+  * Stored in collections (lists, dicts, etc.)
+- Parameters vs Arguments:
+  * Parameter: The variable listed inside parentheses in the function definition (e.g. def fn(x):).
+  * Argument: The actual value passed to the function when calling it (e.g. fn(10)).
+- Argument Passing by Object Reference (Pass-by-Assignment):
+  * Rebinding a parameter name inside a function does NOT affect the caller's variable.
+  * Mutating a mutable object passed in (e.g. list.append()) DOES mutate caller's object.
+- Variable Scope and LEGB Rule:
+  Python searches for names in 4 hierarchical scopes:
+  1. L (Local): Inside current function
+  2. E (Enclosing): In enclosing functions from inner to outer (closures)
+  3. G (Global): At module top-level
+  4. B (Built-in): Predefined names (len, range, int, print, etc.)
+- Closures: An inner function that retains access to variables in its enclosing
+  lexical scope even after the outer function has finished executing.
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Basic Function Definition & Return
+def greet(name: str) -> str:
+    """Return a greeting message."""
+    return f"Hello, {name}!"
+
+# 2. Default & Keyword Arguments
+def connect(host="localhost", port=5432, timeout=30):
+    return f"Connecting to {host}:{port} (timeout={timeout}s)"
+
+connect(port=8080)              # Keyword call overriding port
+
+# 3. Arbitrary Positional (*args) and Keyword (**kwargs)
+def log_event(event_name, *args, **kwargs):
+    # args is a tuple of extra positional arguments
+    # kwargs is a dict of extra keyword arguments
+    print(f"Event: {event_name}, args={args}, kwargs={kwargs}")
+
+log_event("LOGIN", "ip_127", status="success", attempt=1)
+
+# 4. Keyword-Only and Positional-Only Parameters (Python 3.8+)
+def configure(pos_only, /, standard, *, kw_only):
+    # 'pos_only' must be passed positionally (before /)
+    # 'kw_only' must be passed by keyword (after *)
+    pass
+
+configure(10, 20, kw_only=30)
+
+# 5. Lambda Functions (Anonymous Single-Expression Functions)
+square = lambda x: x ** 2
+sorted_pairs = sorted([(1, 'b'), (2, 'a')], key=lambda p: p[1])
+
+# 6. Closures and Nonlocal State
+def make_multiplier(factor):
+    def multiply(number):
+        return number * factor   # 'factor' captured from enclosing scope
+    return multiply
+
+double = make_multiplier(2)
+double(5)                        # Returns 10
+
+# 7. Modifying Outer Scopes: global and nonlocal
+count = 0
+def increment():
+    global count
+    count += 1
+
+def outer_counter():
+    c = 0
+    def inner():
+        nonlocal c
+        c += 1
+        return c
+    return inner
+
+
+3. HIGHER-ORDER FUNCTIONS AND COMMON RULES
+-------------------------------------------------------------------------------
+- Higher-Order Function: A function that takes another function as an argument
+  or returns a function as its result.
+  * map(fn, iterable): Applies fn to each item, returns iterator.
+  * filter(predicate, iterable): Yields items where predicate(item) is True.
+  * functools.reduce(fn, iterable): Combines elements pairwise iteratively.
+- Multiple Return Values:
+  * Functions returning multiple comma-separated values return a single tuple:
+    def min_max(lst): return min(lst), max(lst)
+    lo, hi = min_max([1, 5, 3])  # Unpacks automatically
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Mutable Default Argument Bug (VERY COMMON).
+  * Wrong:   def add_item(item, target_list=[]): target_list.append(item); return target_list
+    (The default list is created once at definition time and shared across all calls!)
+  * Correct: def add_item(item, target_list=None):
+                 if target_list is None: target_list = []
+                 target_list.append(item)
+                 return target_list
+
+- Mistake: Shadowing built-in names.
+  * Avoid naming variables 'list', 'dict', 'str', 'id', 'min', 'max'. Doing so hides
+    the built-in functions in the local scope.
+
+- Mistake: Forgetting that lambda functions can only contain a single expression.
+  * Lambdas cannot contain statements (no 'return', 'pass', 'for', 'if...else' blocks
+    without ternary). If logic requires multiple lines, define a standard 'def'.
+
+- Mistake: Recursion without a base case.
+  * Causes RecursionError (maximum recursion depth exceeded, default ~1000 in Python).
+  * Always verify the base case terminates the recursive calls!
+
+- Tip: Use type hints and docstrings (PEP 257) for readable and maintainable APIs.
+  * Access docstring programmatically via func.__doc__.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Functions without an explicit 'return' statement return None.
+2. Positional parameters must precede default/keyword parameters in definitions.
+3. *args collects extra positional arguments into a tuple.
+4. **kwargs collects extra keyword arguments into a dictionary.
+5. In Python 3.8+: '/' marks positional-only; '*' marks keyword-only parameters.
+6. The LEGB rule governs variable resolution: Local -> Enclosing -> Global -> Built-in.
+7. Use 'global' to rebind module-level variables; use 'nonlocal' for enclosing closure variables.
+8. NEVER use mutable objects ([], {}) as default parameter values. Use None instead.
+9. A closure remembers variables from its enclosing scope even after outer has returned.
+10. Functions are objects: you can inspect func.__name__, func.__annotations__, and func.__doc__.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 04_functions/q01_function_basics.py
+- 04_functions/q02_default_and_keyword_arguments.py
+- 04_functions/q03_args_and_kwargs.py
+- 04_functions/q04_return_values.py
+- 04_functions/q05_lambda_functions.py
+- 04_functions/q06_recursion.py
+- 04_functions/q07_scope_and_legb.py
+- 04_functions/q08_closures.py
+- 04_functions/q09_higher_order_functions.py
+- 04_functions/q10_function_annotations_docstrings.py
+===============================================================================
