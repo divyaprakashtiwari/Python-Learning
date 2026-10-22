@@ -1,0 +1,233 @@
+================================================================================
+PYTHON STUDY NOTES: TOPIC 13 - TESTING, DEBUGGING, PROFILING & DEFENSIVE DESIGN
+================================================================================
+
+1. DEFINITION AND EXPLANATION
+--------------------------------------------------------------------------------
+Software testing and debugging ensure that Python code runs reliably, handles edge
+cases safely, adheres to contracts, and performs optimally in production.
+
+Core areas in this topic:
+- Unit Testing (unittest): Writing test cases, test suites, and test runners to
+  validate individual units of functionality.
+- Test Fixtures: Setting up prerequisites and tearing down test environments using
+  setUp(), tearDown(), setUpClass(), and tearDownClass().
+- Assertions Deep Dive: Specialized assertion methods (assertEqual, assertTrue,
+  assertRaises, assertAlmostEqual, assertCountEqual, assertRegex).
+- Mocking & Monkeypatching: Isolating units from external dependencies (HTTP, DB,
+  file system, system clock) using unittest.mock (Mock, MagicMock, patch, autospec).
+- Parameterized Testing: Running a single test method with varying input/output pairs
+  (subTest context manager, parameterized loops).
+- Interactive Debugging (pdb / breakpoint): Pausing execution, examining call stacks,
+  stepping through instructions, inspecting local scopes, and setting post-mortem traps.
+- Logging: Structured diagnostic recording (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  replacing print statements with formatters and handlers (FileHandler, StreamHandler).
+- Profiling & Timing: Identifying algorithmic bottlenecks and memory footprints using
+  timeit, cProfile, pstats, and tracemalloc.
+- Code Coverage: Measuring statement, branch, and condition coverage to uncover
+  untested code paths.
+- Defensive Programming: Guard clauses, input validation, invariant assertions,
+  graceful degradation, and fail-safe defaults.
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+--------------------------------------------------------------------------------
+
+A. Basic Unit Test with unittest.TestCase:
+    import unittest
+
+    def add(a: int, b: int) -> int:
+        return a + b
+
+    class TestAdd(unittest.TestCase):
+        def test_add_positive(self):
+            self.assertEqual(add(2, 3), 5)
+
+        def test_add_negative(self):
+            self.assertEqual(add(-1, -1), -2)
+
+    # if __name__ == "__main__":
+    #     unittest.main()
+
+B. Test Fixtures (setUp & tearDown):
+    import unittest
+    import tempfile
+    import os
+
+    class FileTest(unittest.TestCase):
+        @classmethod
+        def setUpClass(cls):
+            # Run once before all tests in class
+            cls.shared_resource = "Shared DB Connection"
+
+        def setUp(self):
+            # Run before every test method
+            self.temp_file = tempfile.NamedTemporaryFile(delete=False)
+
+        def tearDown(self):
+            # Run after every test method
+            if os.path.exists(self.temp_file.name):
+                os.remove(self.temp_file.name)
+
+        def test_write_and_read(self):
+            self.temp_file.write(b"Hello")
+            self.temp_file.flush()
+            with open(self.temp_file.name, "rb") as f:
+                self.assertEqual(f.read(), b"Hello")
+
+C. Exception Assertions & SubTest Parameterization:
+    import unittest
+
+    def divide(a: float, b: float) -> float:
+        if b == 0:
+            raise ZeroDivisionError("divisor cannot be zero")
+        return a / b
+
+    class TestDivide(unittest.TestCase):
+        def test_zero_division(self):
+            with self.assertRaises(ZeroDivisionError):
+                divide(10, 0)
+
+        def test_parameterized_division(self):
+            test_cases = [
+                (10, 2, 5.0),
+                (9, 3, 3.0),
+                (5, 2, 2.5),
+            ]
+            for a, b, expected in test_cases:
+                with self.subTest(a=a, b=b):
+                    self.assertAlmostEqual(divide(a, b), expected)
+
+D. Mocking External Dependencies with unittest.mock:
+    from unittest.mock import patch, MagicMock
+    import unittest
+
+    class APIClient:
+        def fetch_status(self) -> str:
+            # network call in real code
+            pass
+
+    class Service:
+        def __init__(self, client: APIClient):
+            self.client = client
+
+        def is_healthy(self) -> bool:
+            return self.client.fetch_status() == "OK"
+
+    class TestService(unittest.TestCase):
+        @patch.object(APIClient, "fetch_status", return_value="OK")
+        def test_is_healthy_success(self, mock_fetch):
+            client = APIClient()
+            service = Service(client)
+            self.assertTrue(service.is_healthy())
+            mock_fetch.assert_called_once()
+
+E. Logging Configuration:
+    import logging
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        handlers=[
+            logging.StreamHandler(),
+            logging.FileHandler("app.log", encoding="utf-8")
+        ]
+    )
+    logger = logging.getLogger(__name__)
+
+    logger.debug("Low-level diagnosis")
+    logger.info("Application initialized successfully")
+    logger.warning("Configuration fallback to defaults")
+    logger.error("Failed to connect to database")
+
+F. Profiling & Performance Timing:
+    import timeit
+    import cProfile
+    import pstats
+
+    # Micro-benchmarking with timeit:
+    duration = timeit.timeit("sum([i**2 for i in range(1000)])", number=1000)
+
+    # Profiling whole execution with cProfile:
+    def heavy_calculation():
+        return [x for x in range(100000) if x % 2 == 0]
+
+    profiler = cProfile.Profile()
+    profiler.enable()
+    heavy_calculation()
+    profiler.disable()
+
+    stats = pstats.Stats(profiler).sort_stats("cumulative")
+    # stats.print_stats(10)
+
+G. Defensive Programming & Guard Clauses:
+    def calculate_discount(price: float, discount_percent: float) -> float:
+        # Preconditions & type/boundary checking
+        if not isinstance(price, (int, float)) or not isinstance(discount_percent, (int, float)):
+            raise TypeError("Price and discount must be numerical values")
+        if price < 0:
+            raise ValueError("Price cannot be negative")
+        if not (0 <= discount_percent <= 100):
+            raise ValueError("Discount percent must be between 0 and 100")
+
+        final_price = price * (1 - discount_percent / 100)
+        # Postcondition check:
+        assert 0 <= final_price <= price, "Postcondition failed: invalid discounted price"
+        return round(final_price, 2)
+
+
+3. COMMON METHODS, FUNCTIONS, AND RULES
+--------------------------------------------------------------------------------
+- self.assertEqual(a, b) / self.assertNotEqual(a, b): Value equality check.
+- self.assertTrue(x) / self.assertFalse(x): Boolean truthiness evaluation.
+- self.assertIs(a, b) / self.assertIsNot(a, b): Object identity verification (`a is b`).
+- self.assertRaises(Exc): Context manager or callable wrapper for expected exceptions.
+- self.assertAlmostEqual(a, b, places=7): Safe floating-point comparison avoiding precision errors.
+- self.assertCountEqual(seq1, seq2): Verifies sequences have same elements regardless of order.
+- mock.patch("module.ClassName"): Temporarily replaces a target attribute with a Mock.
+- mock.assert_called_with(*args, **kwargs): Verifies mock invocation arguments.
+- breakpoint(): Built-in function (Python 3.7+) entering pdb interactive debugger.
+- pdb commands: `n` (next), `s` (step into), `c` (continue), `q` (quit), `p expr` (print), `w` (where/stack).
+
+
+4. COMMON MISTAKES AND TIPS
+--------------------------------------------------------------------------------
+- Mocking where the object is defined instead of where it is used: Always patch the
+  namespace where the symbol is imported, e.g., `@patch("my_module.requests.get")`
+  rather than `@patch("requests.get")`.
+- Asserting on Mock methods that do not exist: Mocks accept arbitrary method calls;
+  `mock.assert_caled_once()` (typo!) will silently return a new mock without throwing an error.
+  Always use `create_autospec=True` or `spec=Class` to prevent mock attribute drift.
+- Using assert in production logic: `assert condition` statements are stripped when Python
+  runs with optimizations (-O flag). Never use `assert` for critical business validation;
+  raise explicit exceptions instead.
+- Print statements for debugging: Avoid leftover `print()` calls in production code. Use
+  the standard `logging` library with configurable log levels.
+- Non-deterministic unit tests: Tests should never depend on random seeds, current wall-clock
+  time, or network availability without mocking or explicit seeds.
+
+
+5. QUICK REVISION POINTS
+--------------------------------------------------------------------------------
+- Test methods in unittest MUST start with the prefix `test_` to be discovered automatically.
+- setUp() runs before EACH test; setUpClass() runs ONCE per class.
+- with self.subTest(): Prevents one failed iteration from aborting the entire loop of test cases.
+- Mock objects return another Mock when called or accessed, enabling chained call mocking.
+- MagicMock implements Python dunder methods (__len__, __iter__, __enter__, etc.) automatically.
+- tracemalloc is built-in for pinpointing memory leaks and peak memory allocation.
+- Code coverage only measures what executed, not whether the assertions actually verified correctness.
+
+
+6. MATCHING PRACTICE FILES
+--------------------------------------------------------------------------------
+- 13_testing_debugging/q01_unittest_basics.py
+- 13_testing_debugging/q02_test_fixtures.py
+- 13_testing_debugging/q03_assertions_deep_dive.py
+- 13_testing_debugging/q04_mocking.py
+- 13_testing_debugging/q05_parameterized_tests.py
+- 13_testing_debugging/q06_debugging_with_pdb.py
+- 13_testing_debugging/q07_logging.py
+- 13_testing_debugging/q08_profiling_and_timing.py
+- 13_testing_debugging/q09_code_coverage_concepts.py
+- 13_testing_debugging/q10_defensive_programming.py
+================================================================================
