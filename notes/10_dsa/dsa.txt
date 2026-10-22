@@ -1,0 +1,159 @@
+===============================================================================
+TOPIC 10: DATA STRUCTURES & ALGORITHMS (DSA) STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Asymptotic Analysis (Big-O Notation): Quantifies algorithm performance as input
+  size (n) approaches infinity.
+  * O(1) Constant < O(log n) Logarithmic < O(n) Linear < O(n log n) Linearithmic
+    < O(n^2) Quadratic < O(2^n) Exponential.
+- Core Algorithmic Paradigms:
+  * Two-Pointer Technique: Using two indices moving inwards or in lockstep to solve
+    array/string problems in O(n) time and O(1) space.
+  * Binary Search: Divide-and-conquer on sorted sequences in O(log n) time.
+  * Stack (LIFO - Last-In First-Out): Push and pop operations at top; used for recursion,
+    expression parsing, backtracking.
+  * Queue (FIFO - First-In First-Out): Enqueue at rear, dequeue from front; used for
+    BFS graph traversal and task scheduling.
+  * Linked List: Nodes storing data and reference pointer(s) to next/prev nodes.
+  * Hash Table: Key-value map using hash functions with collision resolution (chaining/open addressing).
+  * Trees & Binary Search Trees (BST): Hierarchical structures; traversals: Inorder (LNR),
+    Preorder (NLR), Postorder (LRN), Level-order (BFS).
+  * Graphs: Vertices connected by edges; represented via Adjacency Lists or Matrices;
+    traversed using BFS (queue) and DFS (stack/recursion).
+  * Dynamic Programming (DP): Breaking problems into overlapping subproblems with optimal
+    substructure; Memoization (Top-Down) vs Tabulation (Bottom-Up).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Two-Pointer Technique (e.g., Two-Sum on Sorted Array)
+def two_sum_sorted(arr, target):
+    left, right = 0, len(arr) - 1
+    while left < right:
+        curr_sum = arr[left] + arr[right]
+        if curr_sum == target:
+            return left, right
+        elif curr_sum < target:
+            left += 1
+        else:
+            right -= 1
+    return None
+
+# 2. Binary Search (Iterative O(log n))
+def binary_search(arr, target):
+    low, high = 0, len(arr) - 1
+    while low <= high:
+        mid = (low + high) // 2
+        if arr[mid] == target:
+            return mid
+        elif arr[mid] < target:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+# 3. Stack (LIFO via list)
+stack = []
+stack.append(10)                # push: O(1)
+top = stack.pop()               # pop: O(1)
+
+# 4. Queue (FIFO via collections.deque)
+from collections import deque
+queue = deque()
+queue.append(10)                # enqueue: O(1)
+front = queue.popleft()         # dequeue: O(1)
+
+# 5. Singly Linked List Node
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+# 6. Tree Node & Inorder Traversal
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def inorder_traversal(root):
+    # Left -> Node -> Right (Yields sorted order in a BST!)
+    return inorder_traversal(root.left) + [root.val] + inorder_traversal(root.right) if root else []
+
+# 7. Graph BFS and DFS (Adjacency List)
+graph = {0: [1, 2], 1: [2], 2: [0, 3], 3: [3]}
+
+def bfs(graph, start):
+    visited = {start}
+    q = deque([start])
+    order = []
+    while q:
+        node = q.popleft()
+        order.append(node)
+        for neighbor in graph.get(node, []):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                q.append(neighbor)
+    return order
+
+
+3. COMMON TIME AND SPACE COMPLEXITIES
+-------------------------------------------------------------------------------
+- Algorithm / Structure         Average Time       Worst Time        Space
+- Binary Search                 O(log n)           O(log n)          O(1)
+- QuickSort                     O(n log n)         O(n^2)            O(log n)
+- MergeSort                     O(n log n)         O(n log n)        O(n)
+- Python Timsort (sort())       O(n log n)         O(n log n)        O(n)
+- Hash Table Lookup/Insert      O(1)               O(n)              O(n)
+- BST Search/Insert (Balanced)  O(log n)           O(n)              O(n)
+- BFS / DFS Graph Traversal     O(V + E)           O(V + E)          O(V)
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Using list.pop(0) for a queue.
+  * list.pop(0) shifts all remaining elements, taking O(n) time.
+  * Always use collections.deque.popleft() for O(1) FIFO dequeues.
+
+- Mistake: Integer overflow in binary search mid calculation.
+  * In other languages (C++/Java), (low + high) / 2 can overflow 32-bit int.
+  * Python has arbitrary-precision ints, but low + (high - low) // 2 is standard across all languages.
+
+- Mistake: Forgetting to track 'visited' in graph traversals.
+  * Omitting visited set causes infinite recursion/loops on cyclic graphs!
+
+- Mistake: Not identifying overlapping subproblems in recursion.
+  * Naive recursive Fibonacci takes O(2^n). Using memoization (@lru_cache) reduces it to O(n).
+
+- Tip: Inorder traversal of a Binary Search Tree (BST) always produces elements in ascending sorted order.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Binary search requires the input array to be sorted beforehand.
+2. Two-pointer technique solves pairwise search and partition problems in O(n).
+3. Use collections.deque for O(1) queue operations.
+4. Stack: LIFO (depth-first search, parenthesis matching, function call stack).
+5. Queue: FIFO (breadth-first search, buffering, level-order traversal).
+6. Inorder: Left, Node, Right. Preorder: Node, Left, Right. Postorder: Left, Right, Node.
+7. BFS uses a Queue (finds shortest unweighted path); DFS uses a Stack / Recursion.
+8. Dynamic programming requires Optimal Substructure and Overlapping Subproblems.
+9. Memoization is Top-Down (recursion + cache); Tabulation is Bottom-Up (iterative table).
+10. Space-time tradeoff: Hash tables trade O(n) memory to provide O(1) average lookup.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 10_dsa/q01_arrays_two_pointer.py
+- 10_dsa/q02_bubble_selection_sort.py
+- 10_dsa/q03_binary_search.py
+- 10_dsa/q04_stack_implementation.py
+- 10_dsa/q05_queue_implementation.py
+- 10_dsa/q06_linked_list.py
+- 10_dsa/q07_hash_table.py
+- 10_dsa/q08_binary_tree_traversals.py
+- 10_dsa/q09_graph_representation_bfs_dfs.py
+- 10_dsa/q10_dynamic_programming_basics.py
+===============================================================================
