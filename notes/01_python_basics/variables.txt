@@ -1,0 +1,140 @@
+===============================================================================
+TOPIC 01: PYTHON BASICS & VARIABLES STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Variable: A named reference or label bound to an object in memory. In Python,
+  variables do not hold values directly; they point to memory locations (object references).
+- Dynamic Typing: Variable types are resolved at runtime. You do not declare types
+  explicitly; Python determines the type based on the assigned object.
+- Strongly Typed: Python enforces type rules strictly (e.g., you cannot implicitly
+  add an integer and a string without explicit type casting).
+- Mutability:
+  * Immutable types: int, float, complex, bool, str, tuple, frozenset, bytes.
+    (Their value cannot be modified in-place; re-assignment creates a new object).
+  * Mutable types: list, dict, set, bytearray.
+    (Their contents can be modified in-place without changing object identity).
+- Identity vs Equality:
+  * '==' checks equality of values (calls __eq__).
+  * 'is' checks memory identity (compares id(a) == id(b)).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# Variable Assignment & Multiple Assignment
+x = 10                  # int
+price = 19.99           # float
+name = "Antigravity"    # str
+is_active = True        # bool
+none_val = None         # NoneType
+
+# Multiple Assignment
+a, b, c = 1, 2, 3
+x = y = z = 0
+
+# Swapping without temporary variable (tuple packing/unpacking)
+a, b = 10, 20
+a, b = b, a             # a = 20, b = 10
+
+# Type Casting (Explicit conversions)
+s = "123"
+n = int(s)              # str to int: 123
+flt = float(n)          # int to float: 123.0
+bool_val = bool(1)      # True (0, "", [], None, {} evaluate to False)
+
+# String Formatting
+# 1. f-strings (Python 3.6+, recommended):
+item = "Laptop"
+cost = 999.5
+msg = f"Product: {item}, Cost: ${cost:.2f}"
+
+# 2. str.format():
+msg2 = "Product: {}, Cost: ${:.2f}".format(item, cost)
+
+# 3. %-formatting (legacy):
+msg3 = "Product: %s, Cost: $%.2f" % (item, cost)
+
+# Console I/O
+# user_input = input("Enter your name: ")  # always returns str
+print("Hello", "World", sep=" - ", end="\n")
+
+
+3. COMMON OPERATORS AND RULES
+-------------------------------------------------------------------------------
+- Arithmetic:
+  + (addition), - (subtraction), * (multiplication)
+  / (true division -> always float, e.g., 7 / 2 = 3.5)
+  // (floor division -> rounds down to nearest integer, e.g., 7 // 2 = 3, -7 // 2 = -4)
+  % (modulo -> remainder, e.g., 7 % 2 = 1)
+  ** (exponentiation -> 2 ** 3 = 8)
+
+- Comparison (return bool):
+  == (equal), != (not equal), < (less), <= (less/equal), > (greater), >= (greater/equal)
+  Chained comparisons are valid in Python: 1 < x < 10
+
+- Logical (short-circuit evaluation):
+  and (returns first falsy value or last value)
+  or  (returns first truthy value or last value)
+  not (inverts boolean value)
+
+- Identity and Membership:
+  is / is not (checks object identity: id(a) == id(b))
+  in / not in (checks membership in container/sequence)
+
+- Bitwise Operators:
+  & (AND), | (OR), ^ (XOR), ~ (NOT), << (left shift), >> (right shift)
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Confusing '==' (equality) with 'is' (identity).
+  * Wrong:   if status is "active":
+  * Correct: if status == "active":
+  * Note: Use 'is' only for singletons like 'is None', 'is True', 'is False'.
+
+- Mistake: Integer caching assumption.
+  Python caches small integers (-5 to 256). Comparing larger integers with 'is'
+  may evaluate to False even if values are equal. Always use '==' for value comparison.
+
+- Mistake: Forgetting that input() always returns a string.
+  * Wrong:   age = input("Age: "); next_year = age + 1  # TypeError
+  * Correct: age = int(input("Age: ")); next_year = age + 1
+
+- Mistake: Negative floor division surprises.
+  * 7 // 2 is 3, but -7 // 2 is -4 (Python floors towards negative infinity).
+
+- Tip: Variable naming conventions (PEP 8):
+  * Variables and functions: snake_case (e.g., user_count, total_score)
+  * Constants: UPPER_SNAKE_CASE (e.g., MAX_RETRIES, DEFAULT_TIMEOUT)
+  * Classes: PascalCase (e.g., UserAccount, DataProcessor)
+  * Protected/Private: _single_leading_underscore, __double_leading_underscore
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Everything in Python is an object (including numbers, functions, and types).
+2. Variables are references pointing to objects in memory, not memory boxes.
+3. Python uses dynamic typing (no type declarations) and strong typing (no silent bad casts).
+4. Division with '/' always returns a float (even 4 / 2 -> 2.0).
+5. Integers in Python 3 have arbitrary precision (they never overflow into Infinity).
+6. Strings, tuples, and numbers are immutable; lists, dicts, and sets are mutable.
+7. Swap variables elegantly using: a, b = b, a.
+8. Format numbers in f-strings: f"{pi:.3f}", f"{num:04d}", f"{pct:.1%}".
+9. Falsy values: False, None, 0, 0.0, "", (), [], {}, set(). All other values are truthy.
+10. The 'is' operator checks if two references point to the exact same object in RAM.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 01_python_basics/q01_variables_and_types.py
+- 01_python_basics/q02_type_casting.py
+- 01_python_basics/q03_user_input_console_output.py
+- 01_python_basics/q04_arithmetic_operators.py
+- 01_python_basics/q05_comparison_logical_operators.py
+- 01_python_basics/q06_bitwise_operators.py
+- 01_python_basics/q07_identity_membership_operators.py
+- 01_python_basics/q08_string_basics_formatting.py
+- 01_python_basics/q09_variable_swapping.py
+- 01_python_basics/q10_constants_naming_conventions.py
+===============================================================================
