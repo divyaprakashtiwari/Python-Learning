@@ -321,3 +321,51 @@ Constraints & Edge Cases:
 - Use starred unpacking (e.g. `first, second, *middle, last = packet`).
 - Variable rotation must occur in one atomic Python assignment without temp variables.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements a runtime-enforced immutable constants namespace
+that adheres strictly to PEP 8 naming conventions:
+1. Implement a validator function `validate_constant_name(identifier: str) -> bool`
+   that verifies whether a name strictly follows SCREAMING_SNAKE_CASE:
+   - Must consist only of uppercase ASCII letters, digits, and underscores.
+   - Must begin with an uppercase letter.
+   - Must not contain consecutive underscores or end with an underscore.
+2. Implement a `FrozenConstants` container that:
+   - Accepts key-value constant pairs during initialization.
+   - Validates that every constant identifier satisfies `validate_constant_name()`,
+     raising a `ValueError` if an invalid identifier is provided.
+   - Overrides attribute assignment (`__setattr__`) and deletion (`__delattr__`)
+     so that attempting to rebind, alter, or delete any attribute raises an
+     `AttributeError` with an informative message.
+   - Provides an `as_dict()` method returning a read-only mapping of all configured constants.
+
+Sample Input:
+valid_config = {
+    "API_BASE_URL": "https://api.production.internal/v1",
+    "MAX_RETRY_COUNT": 5,
+    "TIMEOUT_SECONDS": 30.0,
+    "IS_PRODUCTION": True
+}
+invalid_name = "timeout_Seconds"
+
+Expected Output:
+Constants Initialized Successfully:
+- API_BASE_URL: https://api.production.internal/v1
+- MAX_RETRY_COUNT: 5
+- TIMEOUT_SECONDS: 30.0
+- IS_PRODUCTION: True
+
+Attempting Reassignment (MAX_RETRY_COUNT = 10):
+Caught Expected Error: AttributeError("Cannot modify frozen constant 'MAX_RETRY_COUNT'")
+
+Attempting Invalid Name ('timeout_Seconds'):
+Caught Expected Error: ValueError("Identifier 'timeout_Seconds' violates SCREAMING_SNAKE_CASE convention")
+
+Constraints & Edge Cases:
+- Modification of existing attributes and creation of new attributes post-initialization
+  must both be prohibited.
+- Container values may be of any data type (strings, integers, booleans, floats).
+- Deletion via `del constants.ATTR` must be prevented and raise an `AttributeError`.
+================================================================================
