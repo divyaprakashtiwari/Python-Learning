@@ -1,0 +1,197 @@
+================================================================================
+PYTHON STUDY NOTES: TOPIC 11 - PROBLEM SOLVING & ALGORITHMIC PUZZLES
+================================================================================
+
+1. DEFINITION AND EXPLANATION
+--------------------------------------------------------------------------------
+Problem solving in Python involves applying structured analytical techniques,
+mathematical logic, string manipulations, and data transformations to solve
+real-world computational puzzles and algorithmic interview challenges.
+
+Key concepts in this module include:
+- Rule-based filtering and pattern sequences (FizzBuzz variants, custom mappings)
+- Palindrome validation (two-pointer, string reversal, alphanumeric normalization)
+- Prime number generation and validation (trial division up to sqrt(n), Sieve of Eratosthenes)
+- Fibonacci sequence calculation (iterative, memoized recursion, generator streams, matrix exponentiation)
+- Anagram detection (frequency counting via collections.Counter, sorted comparison)
+- Matrix operations (transpose, 90-degree rotations, spiral traversal, matrix multiplication)
+- Run-Length Encoding (RLE) and string compression/decompression algorithms
+- Number-to-words conversion (chunking into groups of three digits, place values)
+- Cryptographic ciphers (Caesar cipher, rot13, modular arithmetic over alphabets)
+- Grid validation (Sudoku row, column, and 3x3 subgrid uniqueness validation using bitmasks or sets)
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+--------------------------------------------------------------------------------
+
+A. Palindrome Check with Normalization:
+    import re
+
+    def is_palindrome(s: str) -> bool:
+        cleaned = re.sub(r'[^a-zA-Z0-9]', '', s).lower()
+        left, right = 0, len(cleaned) - 1
+        while left < right:
+            if cleaned[left] != cleaned[right]:
+                return False
+            left += 1
+            right -= 1
+        return True
+
+B. Prime Checking & Sieve of Eratosthenes:
+    def is_prime(n: int) -> bool:
+        if n < 2:
+            return False
+        if n in (2, 3):
+            return True
+        if n % 2 == 0 or n % 3 == 0:
+            return False
+        i = 5
+        while i * i <= n:
+            if n % i == 0 or n % (i + 2) == 0:
+                return False
+            i += 6
+        return True
+
+    def sieve_of_eratosthenes(limit: int) -> list[int]:
+        sieve = [True] * (limit + 1)
+        sieve[0] = sieve[1] = False
+        for p in range(2, int(limit**0.5) + 1):
+            if sieve[p]:
+                for multiple in range(p * p, limit + 1, p):
+                    sieve[multiple] = False
+        return [num for num, prime in enumerate(sieve) if prime]
+
+C. Fibonacci Generator & Memoization:
+    from functools import lru_cache
+
+    @lru_cache(maxsize=None)
+    def fib_memo(n: int) -> int:
+        if n < 2:
+            return n
+        return fib_memo(n - 1) + fib_memo(n - 2)
+
+    def fib_generator(count: int):
+        a, b = 0, 1
+        for _ in range(count):
+            yield a
+            a, b = b, a + b
+
+D. Anagram Checking:
+    from collections import Counter
+
+    def is_anagram(s1: str, s2: str) -> bool:
+        return Counter(s1.replace(" ", "").lower()) == Counter(s2.replace(" ", "").lower())
+
+E. Matrix Transpose & 90-Degree Clockwise Rotation:
+    matrix = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ]
+
+    # Transpose:
+    transpose = [list(col) for col in zip(*matrix)]
+
+    # Rotate 90 degrees clockwise (reverse rows of transpose or transpose reversed rows):
+    rotated_90 = [list(reversed(col)) for col in zip(*matrix)]
+    # or:
+    # rotated_90 = [list(row) for row in zip(*matrix[::-1])]
+
+F. Run-Length Encoding (String Compression):
+    def compress_string(s: str) -> str:
+        if not s:
+            return ""
+        result = []
+        count = 1
+        for i in range(1, len(s)):
+            if s[i] == s[i - 1]:
+                count += 1
+            else:
+                result.append(f"{s[i-1]}{count}")
+                count = 1
+        result.append(f"{s[-1]}{count}")
+        compressed = "".join(result)
+        return compressed if len(compressed) < len(s) else s
+
+G. Caesar Cipher Encoding:
+    def caesar_cipher(text: str, shift: int) -> str:
+        res = []
+        for char in text:
+            if char.isalpha():
+                base = ord('A') if char.isupper() else ord('a')
+                res.append(chr((ord(char) - base + shift) % 26 + base))
+            else:
+                res.append(char)
+        return "".join(res)
+
+H. Sudoku Board Validator:
+    def is_valid_sudoku(board: list[list[str]]) -> bool:
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+
+        for r in range(9):
+            for c in range(9):
+                val = board[r][c]
+                if val == '.':
+                    continue
+                box_idx = (r // 3) * 3 + (c // 3)
+                if val in rows[r] or val in cols[c] or val in boxes[box_idx]:
+                    return False
+                rows[r].add(val)
+                cols[c].add(val)
+                boxes[box_idx].add(val)
+        return True
+
+
+3. COMMON METHODS, FUNCTIONS, AND RULES
+--------------------------------------------------------------------------------
+- zip(*matrix): Unpacks rows into columns for fast matrix transposition.
+- reversed(seq) / seq[::-1]: Reverses sequences without in-place mutation.
+- collections.Counter(iterable): O(N) frequency counts of characters/tokens.
+- ord(c) & chr(i): Convert characters to ASCII/Unicode code points and back.
+- (ord(c) - base + shift) % 26 + base: Canonical formula for modular alphabet rotation.
+- divmod(n, d): Computes both quotient (n // d) and remainder (n % d) simultaneously.
+- math.isqrt(n): Computes integer square root exactly without float precision issues.
+- re.sub(pattern, repl, string): Cleans and normalizes strings for palindrome/token checks.
+
+
+4. COMMON MISTAKES AND TIPS
+--------------------------------------------------------------------------------
+- Floating point inaccuracies: Using math.sqrt() on huge integers can lose precision;
+  prefer math.isqrt() for exact integer boundaries in prime checks.
+- Recursive depth limits: Naive recursive Fibonacci exceeds Python's default recursion
+  limit (sys.getrecursionlimit() ~ 1000). Always use iteration, memoization, or generators.
+- String concatenation in loops: Repeated `s += char` creates intermediate string objects
+  causing O(N^2) memory copies. Accumulate tokens in a list and use `" ".join(list)` O(N).
+- Shallow copies in 2D matrices: `[[0] * n] * m` repeats the same row reference `m` times.
+  Always use `[[0] * n for _ in range(m)]` to ensure row independence.
+- Off-by-one errors in modulo shifts: When shifting backward (negative shift in Caesar cipher),
+  Python handles negative modulo correctly: `(-1) % 26 == 25`, but languages like C/Java do not.
+- Modifying sequences while iterating: Never mutate a list or grid while looping through it.
+
+
+5. QUICK REVISION POINTS
+--------------------------------------------------------------------------------
+- Anagram: Two strings are anagrams if their sorted forms or character frequency maps match.
+- Palindrome: Reads same forwards and backwards; 2-pointer approach uses O(1) extra space.
+- Prime: Only divisible by 1 and itself; check up to floor(sqrt(n)) using 6k +/- 1 optimization.
+- Sieve: Best when querying multiple primes up to a limit N; runs in O(N log log N) time.
+- Fibonacci: Iterative dynamic programming uses O(N) time and O(1) auxiliary space.
+- Sudoku Validator: 9 rows, 9 columns, and 9 sub-boxes (box = (r//3)*3 + c//3) must contain no duplicate 1-9.
+- Matrix Traversal: In spiral order, maintain 4 boundaries: top, bottom, left, right.
+
+
+6. MATCHING PRACTICE FILES
+--------------------------------------------------------------------------------
+- 11_problem_solving/q01_fizzbuzz_variants.py
+- 11_problem_solving/q02_palindrome_checker.py
+- 11_problem_solving/q03_prime_numbers.py
+- 11_problem_solving/q04_fibonacci_sequence.py
+- 11_problem_solving/q05_anagram_detector.py
+- 11_problem_solving/q06_matrix_operations.py
+- 11_problem_solving/q07_string_compression.py
+- 11_problem_solving/q08_number_to_words.py
+- 11_problem_solving/q09_caesar_cipher.py
+- 11_problem_solving/q10_sudoku_validator.py
+================================================================================
