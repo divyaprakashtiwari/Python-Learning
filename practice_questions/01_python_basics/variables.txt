@@ -1,0 +1,28 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 01 - PYTHON BASICS & VARIABLES
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that accepts three distinct values representing a person's
+first name, age, and hourly wage. Store them in appropriately typed variables
+(string, integer, and float). Determine and print the data type of each variable,
+and compute their annual salary assuming a standard 2080-hour work year.
+
+Sample Input:
+First Name: "Elena"
+Age: 28
+Hourly Wage: 34.50
+
+Expected Output:
+Variable 'first_name' has type <class 'str'> with value 'Elena'
+Variable 'age' has type <class 'int'> with value 28
+Variable 'hourly_wage' has type <class 'float'> with value 34.5
+Calculated Annual Salary for Elena: $71,760.00
+
+Constraints & Edge Cases:
+- Age must be a positive integer.
+- Hourly wage must be non-negative.
+- Format the salary with two decimal places and comma separators for thousands.
+================================================================================
