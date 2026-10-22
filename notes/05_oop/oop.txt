@@ -1,0 +1,167 @@
+===============================================================================
+TOPIC 05: OBJECT-ORIENTED PROGRAMMING (OOP) STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- Object-Oriented Programming (OOP): A programming paradigm centered on 'objects'
+  combining state (attributes) and behavior (methods).
+- Four Pillars of OOP:
+  1. Encapsulation: Bundling data and methods into a single class while restricting
+     direct external access to internal state (_protected, __private name mangling).
+  2. Inheritance: Deriving a child/subclass from a parent/superclass to reuse,
+     extend, or specialize behavior (supports single and multiple inheritance).
+  3. Polymorphism: The ability for different classes to respond to the same method
+     call in their own specific way (duck typing: "if it quacks like a duck...").
+  4. Abstraction: Hiding internal implementation complexities and exposing only a
+     clean interface using Abstract Base Classes (abc.ABC, @abstractmethod).
+- Class vs Instance:
+  * Class: The blueprint defining structure and behavior.
+  * Instance (Object): A concrete realization of the class in memory.
+- Method Types:
+  * Instance Method: Receives 'self' as first argument; accesses/modifies instance state.
+  * Class Method (@classmethod): Receives 'cls' as first argument; accesses class-level state.
+  * Static Method (@staticmethod): Plain utility function namespace-bound to class; receives neither self nor cls.
+- Method Resolution Order (MRO): The C3 linearization algorithm determining the search
+  order for method/attribute lookups across complex inheritance graphs (inspect via Class.mro()).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Class Definition, __init__, and Encapsulation
+class BankAccount:
+    # Class variable (shared across all instances)
+    bank_name = "Global Reserve"
+
+    def __init__(self, owner: str, initial_balance: float = 0.0):
+        # Instance variables (unique per instance)
+        self.owner = owner
+        self._account_number = "AC-12345"    # Conventionally protected
+        self.__balance = initial_balance     # Private (name-mangled to _BankAccount__balance)
+
+    # 2. Property Decorators (Getters & Setters)
+    @property
+    def balance(self) -> float:
+        return self.__balance
+
+    @balance.setter
+    def balance(self, new_val: float):
+        if new_val < 0:
+            raise ValueError("Balance cannot be negative")
+        self.__balance = new_val
+
+    # 3. Instance, Class, and Static Methods
+    def deposit(self, amount: float):
+        self.__balance += amount
+
+    @classmethod
+    def set_bank_name(cls, name: str):
+        cls.bank_name = name
+
+    @staticmethod
+    def validate_routing(code: str) -> bool:
+        return len(code) == 9 and code.isdigit()
+
+# 4. Inheritance & super()
+class SavingsAccount(BankAccount):
+    def __init__(self, owner: str, balance: float, interest_rate: float):
+        super().__init__(owner, balance)     # Delegate initialization to parent
+        self.interest_rate = interest_rate
+
+    def apply_interest(self):
+        self.deposit(self.balance * self.interest_rate)
+
+# 5. Magic / Dunder Methods
+class Vector:
+    def __init__(self, x: int, y: int):
+        self.x, self.y = x, y
+
+    def __repr__(self) -> str:
+        return f"Vector({self.x}, {self.y})"
+
+    def __add__(self, other: "Vector") -> "Vector":
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, Vector):
+            return NotImplemented
+        return self.x == other.x and self.y == other.y
+
+# 6. Abstract Base Classes (abc module)
+from abc import ABC, abstractmethod
+
+class PaymentProcessor(ABC):
+    @abstractmethod
+    def process_payment(self, amount: float) -> bool:
+        pass
+
+
+3. COMMON RULES AND DUNDER METHODS
+-------------------------------------------------------------------------------
+- Standard Magic Methods:
+  * __init__(self, ...): Constructor initializer
+  * __repr__(self): Unambiguous developer string representation
+  * __str__(self): User-friendly readable string representation
+  * __len__(self): Called by len(obj)
+  * __getitem__(self, key): Subscript access obj[key]
+  * __setitem__(self, key, value): Subscript assignment obj[key] = val
+  * __iter__(self), __next__(self): Iterator protocol
+  * __enter__(self), __exit__(self): Context manager protocol (with statement)
+  * __call__(self, ...): Allows instance to be invoked as a function obj()
+  * __eq__, __ne__, __lt__, __le__, __gt__, __ge__: Rich comparisons
+
+- Name Mangling:
+  * Identifiers with two leading underscores (e.g., __balance) are rewritten by Python
+    as _ClassName__balance to prevent accidental override in subclasses.
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Forgetting 'self' as the first parameter of instance methods.
+  * TypeError: method() takes 0 positional arguments but 1 was given.
+
+- Mistake: Mutating mutable class variables via an instance.
+  * If a class has a class-level list 'items = []', doing 'self.items.append(x)'
+    mutates the list for ALL instances of the class!
+  * Tip: Initialize instance collections inside __init__: self.items = [].
+
+- Mistake: Overusing Inheritance instead of Composition.
+  * "Favor object composition over class inheritance" (GoF).
+  * Use inheritance only for true 'is-a' relationships; use composition ('has-a')
+    to assemble functionality flexibly.
+
+- Mistake: Calling super() incorrectly in multiple inheritance.
+  * In multiple inheritance, always pass required arguments cooperative with **kwargs
+    or follow consistent MRO initialization.
+
+- Tip: Implement both __repr__ and __str__.
+  * If __str__ is missing, Python falls back to __repr__.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. 'self' represents the specific instance on which a method is called.
+2. Class variables are shared by all instances; instance variables belong to one instance.
+3. @classmethod receives 'cls'; @staticmethod receives neither 'self' nor 'cls'.
+4. @property turns a method into a read-only attribute; add @name.setter for write validation.
+5. In Python, encapsulation is achieved by convention (_protected) and name mangling (__private).
+6. 'super()' delegates method calls to the next class in the Method Resolution Order (MRO).
+7. Inspect MRO with ClassName.mro() or ClassName.__mro__.
+8. Abstract Base Classes (ABC) prevent instantiation of incomplete subclasses.
+9. Duck Typing: Python checks capabilities at runtime rather than explicit type hierarchies.
+10. Composition ('has-a') provides looser coupling and higher modularity than deep inheritance hierarchies.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 05_oop/q01_classes_and_objects.py
+- 05_oop/q02_instance_and_class_variables.py
+- 05_oop/q03_methods.py
+- 05_oop/q04_inheritance.py
+- 05_oop/q05_polymorphism.py
+- 05_oop/q06_encapsulation.py
+- 05_oop/q07_magic_dunder_methods.py
+- 05_oop/q08_abstract_classes.py
+- 05_oop/q09_property_decorators.py
+- 05_oop/q10_composition_vs_inheritance.py
+===============================================================================
