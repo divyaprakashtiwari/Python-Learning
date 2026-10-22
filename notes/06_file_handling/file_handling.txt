@@ -1,0 +1,147 @@
+===============================================================================
+TOPIC 06: FILE HANDLING STUDY NOTES
+===============================================================================
+
+1. DEFINITIONS AND CORE CONCEPTS
+-------------------------------------------------------------------------------
+- File Handling: Creating, opening, reading, updating, and deleting files on disk.
+- File Streams and Descriptors: When Python opens a file, the OS allocates a file
+  descriptor and stream buffer.
+- Context Managers ('with' statement): Deterministically manages file lifecycle.
+  Automatically invokes f.__enter__() and guarantees f.__exit__() closes the file
+  descriptor even if exceptions occur.
+- Text vs Binary Mode:
+  * Text Mode ('t', default): Handles strings; automatically encodes/decodes bytes
+    using a character encoding (always specify encoding="utf-8"!).
+  * Binary Mode ('b'): Handles raw bytes (images, audio, PDFs, pickled data); no encoding.
+- File Modes:
+  * 'r': Read only (fails if file does not exist).
+  * 'w': Write only (creates or truncates file to 0 bytes).
+  * 'a': Append only (creates or writes at the end without truncating).
+  * 'x': Exclusive creation (fails if file already exists).
+  * '+': Update mode (read + write, e.g., 'r+', 'w+', 'a+').
+- Modern Path Operations (pathlib):
+  * Modern, cross-platform object-oriented filesystem manipulation (pathlib.Path).
+
+
+2. KEY SYNTAX AND SHORT EXAMPLES
+-------------------------------------------------------------------------------
+# 1. Reading Files with Context Manager
+with open("data.txt", mode="r", encoding="utf-8") as f:
+    content = f.read()          # Read entire file as string
+    # or: lines = f.readlines() # Read into list of lines
+    # or: for line in f:        # Memory-efficient line-by-line streaming
+
+# 2. Writing & Appending
+with open("output.txt", mode="w", encoding="utf-8") as f:
+    f.write("Line 1\n")
+    f.writelines(["Line 2\n", "Line 3\n"])
+
+with open("output.txt", mode="a", encoding="utf-8") as f:
+    f.write("Appended line\n")
+
+# 3. Binary Files (Images, Bytes)
+with open("image.png", mode="rb") as f:
+    byte_data = f.read()
+
+with open("copy.png", mode="wb") as f:
+    f.write(byte_data)
+
+# 4. CSV File Handling (csv module)
+import csv
+
+# Writing CSV
+with open("users.csv", mode="w", newline="", encoding="utf-8") as f:
+    writer = csv.writer(f)
+    writer.writerow(["id", "name", "role"])
+    writer.writerow([1, "Alice", "Admin"])
+
+# Reading CSV
+with open("users.csv", mode="r", newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        print(row["name"], row["role"])
+
+# 5. Modern pathlib.Path
+from pathlib import Path
+
+p = Path("workspace/reports") / "annual.csv"  # Cross-platform path concatenation
+p.parent.mkdir(parents=True, exist_ok=True)
+p.write_text("Year,Revenue\n2026,1000000", encoding="utf-8")
+data_text = p.read_text(encoding="utf-8")
+
+# 6. Temporary Files (tempfile module)
+import tempfile
+
+with tempfile.NamedTemporaryFile(mode="w+", delete=True) as temp:
+    temp.write("Transient data")
+    temp.seek(0)
+    assert temp.read() == "Transient data"
+
+
+3. COMMON METHODS AND BUFFERING RULES
+-------------------------------------------------------------------------------
+- File Object Methods:
+  * f.read(size=-1): Reads up to size bytes/chars (-1 reads entire file).
+  * f.readline(): Reads a single line including trailing '\n'.
+  * f.readlines(): Reads all remaining lines into a list of strings.
+  * f.write(s): Writes string or bytes; returns number of chars/bytes written.
+  * f.writelines(seq): Writes an iterable of strings (does NOT add newlines automatically!).
+  * f.seek(offset, whence=0): Repositions file pointer (0=start, 1=current, 2=end).
+  * f.tell(): Returns current file pointer position.
+  * f.flush(): Flushes internal Python buffer to the OS buffer.
+  * os.fsync(f.fileno()): Forces OS buffer flush to physical disk.
+
+
+4. COMMON MISTAKES AND TIPS
+-------------------------------------------------------------------------------
+- Mistake: Forgetting to specify encoding="utf-8".
+  * If omitted, Python defaults to the OS system locale (e.g. cp1252 on Windows),
+    causing UnicodeDecodeError when encountering emoji, accents, or UTF-8 characters.
+  * ALWAYS explicitly write: open(..., encoding="utf-8").
+
+- Mistake: Reading massive files entirely into memory with f.read().
+  * Calling f.read() on a 10 GB file will exhaust RAM.
+  * Tip: Iterate over the file object directly for O(1) memory streaming:
+    with open("large.log") as f:
+        for line in f:
+            process(line)
+
+- Mistake: Omitting newline="" when reading or writing CSVs.
+  * In Windows, omitting newline="" in open() causes double newlines (\r\r\n).
+  * Always use newline="" with csv.reader and csv.writer.
+
+- Mistake: Opening files without the 'with' statement.
+  * If an exception occurs before f.close(), file descriptors leak and locks persist.
+  * Always use: with open(...) as f:
+
+- Tip: Use os.replace() or Path.replace() for atomic file replacement.
+
+
+5. QUICK REVISION POINTS
+-------------------------------------------------------------------------------
+1. Always open files using the 'with open(...) as f:' context manager.
+2. Always specify encoding="utf-8" for text files.
+3. 'w' truncates the file immediately upon opening; 'a' appends to the end.
+4. 'r+' allows both reading and writing without truncation.
+5. In CSV handling, always pass 'newline=""' to open().
+6. Iterating 'for line in f:' uses a buffer and streams one line at a time in O(1) RAM.
+7. Use 'rb' and 'wb' for binary files (images, audio, pickles).
+8. seek(0) rewinds the file pointer back to the beginning of the file.
+9. pathlib.Path offers intuitive operators (/), .exists(), .is_file(), .stat().
+10. Temporary files created via tempfile are safely isolated and auto-cleaned.
+
+
+6. MATCHING PRACTICE SOLUTIONS (REFERENCE PATHS)
+-------------------------------------------------------------------------------
+- 06_file_handling/q01_reading_files.py
+- 06_file_handling/q02_writing_files.py
+- 06_file_handling/q03_file_modes_appending.py
+- 06_file_handling/q04_file_paths.py
+- 06_file_handling/q05_csv_file_handling.py
+- 06_file_handling/q06_context_managers.py
+- 06_file_handling/q07_binary_files.py
+- 06_file_handling/q08_file_iteration_large_files.py
+- 06_file_handling/q09_temporary_files.py
+- 06_file_handling/q10_file_metadata_os_operations.py
+===============================================================================
