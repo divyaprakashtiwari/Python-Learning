@@ -318,3 +318,57 @@ Constraints & Edge Cases:
 - Handle empty dictionaries `{}` and empty lists `[]` without infinite recursion.
 - Keys can be strings or integers; separator must not collide with standard keys.
 ================================================================================
+
+Question 8 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that processes matrices and text corpora using advanced
+comprehensions (nested list comprehensions, dictionary comprehensions, and set comprehensions):
+1. Matrix Operations via List Comprehensions:
+   - Given an (m x n) matrix:
+     `matrix = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]]`
+   - Compute its (n x m) transpose using a single nested list comprehension:
+     `[[row[c] for row in matrix] for c in range(len(matrix[0]))]`.
+   - Flatten the matrix into a 1D list retaining only even numbers divisible by 4.
+2. Inverted Text Index via Set and Dict Comprehensions:
+   - Given a dictionary mapping document IDs to text strings:
+     `corpus = {"doc1": "python list dict set", "doc2": "python tuple list", "doc3": "dict hash table"}`
+   - Extract the vocabulary of all unique words across the corpus using a set comprehension.
+   - Build an inverted index using a dictionary comprehension that maps each unique word
+     to the set of document IDs containing it.
+3. Dictionary Key Inversion & Filtering:
+   - Given a dictionary mapping `user_id -> {"username": str, "is_active": bool}`:
+   - Use a dictionary comprehension to construct an inverted lookup mapping
+     `username -> user_id` strictly for accounts where `is_active is True`.
+
+Sample Input:
+matrix = [
+    [1, 2, 3, 4],
+    [5, 6, 7, 8],
+    [9, 10, 11, 12]
+]
+corpus = {
+    "doc1": "python list dict set",
+    "doc2": "python tuple list",
+    "doc3": "dict hash table"
+}
+
+Expected Output:
+Transposed Matrix (4x3):
+[[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+Filtered Flattened List (Multiples of 4): [4, 8, 12]
+Unique Vocabulary (7 words): {'dict', 'hash', 'list', 'python', 'set', 'table', 'tuple'}
+Inverted Search Index:
+- 'python': {'doc1', 'doc2'}
+- 'list': {'doc1', 'doc2'}
+- 'dict': {'doc1', 'doc3'}
+- 'set': {'doc1'}
+- 'tuple': {'doc2'}
+- 'hash': {'doc3'}
+- 'table': {'doc3'}
+
+Constraints & Edge Cases:
+- All transformations must be implemented as single-expression comprehensions,
+  avoiding traditional multi-line for loops and manual appends.
+- Normalize word tokens to lowercase and split by whitespace.
+================================================================================
