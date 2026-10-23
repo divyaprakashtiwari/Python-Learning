@@ -405,3 +405,54 @@ Constraints & Edge Cases:
   not list comprehensions, demonstrating lazy iterator evaluation.
 - `reduce` must handle an empty filtered iterable safely by supplying an explicit `initializer`.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a runtime type-checking contract decorator
+`@enforce_contracts` by introspecting function annotations and signatures via the `inspect` module:
+1. Annotated Function Specification:
+   - Define a payment processing function:
+     ```python
+     def process_transaction(user_id: str, amount: float, currency: str = "USD", notify_user: bool = True) -> dict:
+     ```
+   - Provide a formal Google-style docstring containing `Args:`, `Returns:`, and `Raises:` sections.
+2. Runtime Type-Contract Decorator (`@enforce_contracts`):
+   - Wrap the target function using `functools.wraps` to preserve `__name__`, `__doc__`, and `__annotations__`.
+   - Use `inspect.signature(func)` to obtain parameter metadata and type hints.
+   - Bind incoming positional and keyword arguments using `sig.bind(*args, **kwargs)` and apply defaults with `bound.apply_defaults()`.
+   - Validate each bound argument against its annotated type:
+     * If an argument fails `isinstance(value, expected_type)`, immediately abort and raise
+       a `TypeError(f"Parameter '{param_name}' expected type {expected_type.__name__}, got {type(value).__name__}")`.
+   - Execute the wrapped function.
+   - Validate that the returned object satisfies the return annotation (`sig.return_annotation`).
+3. Introspection and Verification:
+   - Demonstrate successful execution with valid typed arguments.
+   - Demonstrate caught `TypeError` when passing an integer for `user_id` or string for `amount`.
+   - Programmatically extract and display the function's docstring (`func.__doc__`)
+     and raw annotations (`func.__annotations__`).
+
+Sample Input:
+Valid Call: process_transaction("usr_8821", 149.50, currency="EUR", notify_user=False)
+Invalid Call 1: process_transaction(12345, 149.50)  # user_id is int instead of str
+Invalid Call 2: process_transaction("usr_8821", "one hundred")  # amount is str instead of float
+
+Expected Output:
+Valid Transaction Processed:
+{'transaction_id': 'TXN-...', 'user_id': 'usr_8821', 'amount': 149.50, 'currency': 'EUR', 'status': 'COMPLETED'}
+
+Type Violation 1 (user_id):
+Caught Expected Error: TypeError("Parameter 'user_id' expected type str, got int")
+
+Type Violation 2 (amount):
+Caught Expected Error: TypeError("Parameter 'amount' expected type float, got str")
+
+Function Introspection:
+Name: 'process_transaction'
+Annotations: {'user_id': <class 'str'>, 'amount': <class 'float'>, 'currency': <class 'str'>, 'notify_user': <class 'bool'>, 'return': <class 'dict'>}
+
+Constraints & Edge Cases:
+- Parameter verification must handle both positional and keyword invocations using `BoundArguments`.
+- Allow `int` as a valid numeric subtype if `float` is expected, or strictly enforce `(int, float)`.
+- Use `functools.wraps` to prevent docstring and metadata erasure.
+================================================================================
