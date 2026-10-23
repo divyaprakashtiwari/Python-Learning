@@ -1,0 +1,31 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 02 - CONTROL FLOW
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that determines an employee's annual tax liability and
+effective tax rate based on progressive marginal tax brackets:
+- Income up to $10,000: 0% tax
+- Income from $10,001 to $40,000: 10% on the amount over $10,000
+- Income from $40,001 to $85,000: $3,000 plus 20% on the amount over $40,000
+- Income above $85,000: $12,000 plus 30% on the amount over $85,000
+Use if/elif/else statements to calculate the exact tax owed, the net post-tax income,
+and the effective overall tax rate (tax / gross income * 100).
+
+Sample Input:
+gross_income = 65000.00
+
+Expected Output:
+Gross Income: $65,000.00
+Tax Bracket: 20% Marginal Bracket
+Total Tax Owed: $8,000.00
+Net Income: $57,000.00
+Effective Tax Rate: 12.31%
+
+Constraints & Edge Cases:
+- Gross income cannot be negative (raise ValueError if negative).
+- Gross income of $0 or within the 0% bracket must yield $0 tax and 0.00% effective rate.
+- Display all monetary amounts to 2 decimal places.
+================================================================================
