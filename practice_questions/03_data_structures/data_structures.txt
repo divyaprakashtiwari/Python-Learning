@@ -217,3 +217,52 @@ Constraints & Edge Cases:
 - Headers must be matched case-insensitively via lowercase normalization.
 - Dictionary merge must use Python 3.9+ union syntax (`dict_a | dict_b`).
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that organizes flat organizational records into grouped
+department hierarchies using built-in dictionary methods (setdefault, get, fromkeys,
+update, popitem):
+1. Categorized Grouping with `setdefault()`:
+   - Given flat records of employees: `(id, name, department, salary)`:
+   - Using `dict.setdefault()`, group employees into a mapping of department names
+     to lists of employee tuples without using `collections.defaultdict` or manual `if key not in dict` checks.
+2. Defensive Retrieval with `get()`:
+   - Query average department compensation; safely handle non-existent departments
+     by returning a fallback value ("No active personnel") without raising KeyError.
+3. Template Initialization with `fromkeys()`:
+   - Given the unique set of discovered departments, use `dict.fromkeys()` to
+     initialize an audit status map where all departments start with status `"PENDING_AUDIT"`.
+4. Cache Eviction with `popitem()`:
+   - Remove and display the most recently registered department from the dictionary
+     using `popitem()` to demonstrate LIFO (Last-In, First-Out) removal order in modern Python.
+
+Sample Input:
+employees = [
+    (101, "Alice", "Engineering", 125000),
+    (102, "Bob", "Marketing", 90000),
+    (103, "Charlie", "Engineering", 140000),
+    (104, "Diana", "Human Resources", 85000),
+    (105, "Evan", "Marketing", 95000)
+]
+
+Expected Output:
+Grouped Departments via setdefault():
+- Engineering: [('Alice', 125000), ('Charlie', 140000)]
+- Marketing: [('Bob', 90000), ('Evan', 95000)]
+- Human Resources: [('Diana', 85000)]
+
+Defensive Lookup for 'Research & Development':
+Result: 'No active personnel'
+
+Initial Audit Status Map via fromkeys():
+{'Engineering': 'PENDING_AUDIT', 'Marketing': 'PENDING_AUDIT', 'Human Resources': 'PENDING_AUDIT'}
+
+Evicted Most Recent Department via popitem():
+Popped: ('Human Resources', [('Diana', 85000)])
+
+Constraints & Edge Cases:
+- Do not import `defaultdict`; use standard `dict.setdefault()`.
+- Python dictionaries preserve insertion order; verify that `popitem()` pops the last item inserted.
+================================================================================
