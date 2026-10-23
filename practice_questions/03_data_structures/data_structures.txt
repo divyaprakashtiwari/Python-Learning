@@ -161,3 +161,59 @@ Constraints & Edge Cases:
 - Use set operator syntax (| , &, -, ^) and method equivalents interchangeably.
 - Result sets must be unordered and strictly deduplicated.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that processes and canonicalizes HTTP request headers
+using dictionary operations and dictionary view objects:
+1. Header Key Normalization:
+   - Accept a raw dictionary of HTTP headers with inconsistent casing (e.g.,
+     "Content-Type", "AUTHORIZATION", "X-Request-Id").
+   - Construct a normalized dictionary where all header keys are strictly lowercase.
+2. Dynamic Dictionary Views:
+   - Obtain view objects: `.keys()`, `.values()`, and `.items()`.
+   - Add a new header `"x-forwarded-for": "10.0.0.1"` and demonstrate that the existing
+     view objects reflect this addition dynamically without re-assignment.
+3. Fast Key Membership Verification:
+   - Perform O(1) membership checks to verify that mandatory security headers
+     ("authorization" and "content-type") are present.
+4. Dictionary Merging with the Union Operator (|):
+   - Given a dictionary of default proxy headers `defaults = {"user-agent": "Proxy/1.0", "accept": "*/*"}`:
+   - Merge `defaults` and the client headers using the Python 3.9+ `|` operator,
+     guaranteeing that client-specified headers override defaults.
+
+Sample Input:
+raw_headers = {
+    "Content-Type": "application/json",
+    "AUTHORIZATION": "Bearer token_xyz_123",
+    "User-Agent": "MobileClient/2.4",
+    "X-Correlation-ID": "corr-98765"
+}
+defaults = {
+    "user-agent": "InternalGateway/1.0",
+    "accept": "application/json",
+    "cache-control": "no-cache"
+}
+
+Expected Output:
+Normalized Headers:
+{
+    'content-type': 'application/json',
+    'authorization': 'Bearer token_xyz_123',
+    'user-agent': 'MobileClient/2.4',
+    'x-correlation-id': 'corr-98765'
+}
+Security Headers Present:
+- authorization: True
+- content-type: True
+Merged Production Headers (Client overrides defaults):
+- user-agent: 'MobileClient/2.4'
+- accept: 'application/json'
+- cache-control: 'no-cache'
+- content-type: 'application/json'
+
+Constraints & Edge Cases:
+- Headers must be matched case-insensitively via lowercase normalization.
+- Dictionary merge must use Python 3.9+ union syntax (`dict_a | dict_b`).
+================================================================================
