@@ -315,3 +315,49 @@ Constraints & Edge Cases:
 - Binary triangle height must be >= 1.
 - Patterns must be constructed using loops rather than hardcoded string templates.
 ================================================================================
+
+Question 9 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that utilizes single-line conditional (ternary) expressions
+(`x if condition else y`) to perform data clamping, status mapping, and resilient
+fallback resolution:
+1. Numerical Signal Clamping:
+   - Given a sensor voltage signal `v` and bounds `[min_bound, max_bound]`:
+   - Using a nested ternary expression, clamp `v` so that if `v < min_bound` it evaluates
+     to `min_bound`, if `v > max_bound` it evaluates to `max_bound`, and otherwise retains `v`.
+2. Telemetry Severity Classifier:
+   - Given an integer error code:
+   - Use a chained ternary expression to assign an operational status string:
+     * code == 0 -> "NOMINAL"
+     * 1 <= code <= 99 -> "INFO"
+     * 100 <= code <= 299 -> "WARNING"
+     * code >= 300 -> "CRITICAL"
+     * code < 0 -> "CORRUPT_SIGNAL"
+3. Resilient Endpoint Resolver:
+   - Given three candidate endpoints: `primary_endpoint`, `backup_endpoint`, and a constant `DEFAULT_HOST`:
+   - Using inline ternary selection, select the first non-empty, valid string endpoint.
+4. Demonstrate that the false branch of a ternary expression is not evaluated when the
+   condition is true by including an expression that would otherwise raise a ZeroDivisionError
+   in the unreached branch.
+
+Sample Input:
+signal_voltage = 14.85
+min_bound = 0.0
+max_bound = 12.0
+error_code = 142
+primary_endpoint = None
+backup_endpoint = "https://backup-api.internal"
+DEFAULT_HOST = "https://fallback.internal"
+
+Expected Output:
+Raw Voltage: 14.85 V -> Clamped Voltage: 12.00 V
+Error Code: 142 -> Operational Status: "WARNING"
+Resolved Endpoint: "https://backup-api.internal"
+Safe Division Evaluation: 100.0 (Unreached division by zero avoided via short-circuit)
+
+Constraints & Edge Cases:
+- Clamping and classification must be implemented via conditional expressions
+  (`a if cond else b`), not multi-line if/elif blocks.
+- Endpoints can be None, empty string "", or valid URL strings.
+================================================================================
