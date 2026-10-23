@@ -270,3 +270,48 @@ Constraints & Edge Cases:
 - Integers tested for primality will be >= 2.
 - The `else` block must be attached directly to the loop, not an `if` statement.
 ================================================================================
+
+Question 8 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that generates complex geometric ASCII console patterns
+using structured nested loops and coordinate spacing logic:
+1. Symmetric Hollow Diamond:
+   - Given an odd integer width `n` (e.g., n = 7):
+   - The diamond spans `n` rows and `n` columns.
+   - For every row, calculate the appropriate leading spaces and internal hollow spacing
+     such that only the boundary outline contains asterisks '*' while the interior
+     is filled with spaces.
+   - The peak and bottom tips must consist of exactly one asterisk centered at index n // 2.
+2. Alternating Binary Floyd's Triangle:
+   - Given a height `h` (e.g., h = 5):
+   - Print `h` rows where row `r` (1-indexed) contains `r` numbers alternating
+     between 1 and 0, such that cell (r, c) is 1 if (r + c) is even, and 0 otherwise.
+
+Sample Input:
+diamond_width = 7
+binary_height = 5
+
+Expected Output:
+--- Hollow Diamond (n=7) ---
+   *
+  * *
+ *   *
+*     *
+ *   *
+  * *
+   *
+
+--- Alternating Binary Triangle (h=5) ---
+1
+0 1
+1 0 1
+0 1 0 1
+1 0 1 0 1
+
+Constraints & Edge Cases:
+- Diamond width `n` must be a positive odd integer >= 3; if an even integer or n < 3
+  is passed, raise a ValueError("Diamond width must be an odd integer >= 3").
+- Binary triangle height must be >= 1.
+- Patterns must be constructed using loops rather than hardcoded string templates.
+================================================================================
