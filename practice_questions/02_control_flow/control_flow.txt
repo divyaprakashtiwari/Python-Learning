@@ -72,3 +72,37 @@ Constraints & Edge Cases:
 - Credit scores must be bounded between 300 and 850.
 - All conditional paths must produce an explicit decision and reason.
 ================================================================================
+
+Question 3 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that processes a discrete time-series of sensor temperature
+readings using for loops and the range() function (testing start, stop, and step logic):
+1. Running Reductions: Iterate through the readings using a for loop to compute the
+   total sum, minimum value, and maximum value manually (without calling built-in
+   sum(), min(), or max()).
+2. Moving Window Average: Using range(len(readings) - window_size + 1), compute the
+   k-point simple moving average (SMA) for window size k = 3, rounding each window
+   mean to 2 decimal places.
+3. Downsampling: Use range() with a step size of 2 to extract every alternating
+   reading (subsampling at 50% frequency).
+4. Backward Spike Detection: Iterate backwards from the end of the list using
+   range(len(readings) - 1, -1, -1) to locate the index and value of the most recent
+   reading that exceeded a threshold of 30.0 degrees Celsius.
+
+Sample Input:
+temperatures = [21.5, 23.0, 28.5, 31.2, 29.8, 33.4, 27.1, 24.0]
+window_size = 3
+spike_threshold = 30.0
+
+Expected Output:
+Manual Reductions: Sum = 218.50, Min = 21.50, Max = 33.40, Average = 27.31
+3-Point Moving Averages: [24.33, 27.57, 29.83, 31.47, 30.10, 28.17]
+Downsampled (Step 2): [21.5, 28.5, 29.8, 27.1]
+Most Recent Spike Moving Backwards: Index 5 with value 33.40 C
+
+Constraints & Edge Cases:
+- Do not use NumPy or pandas; use standard Python loops and lists.
+- If no reading exceeds the spike threshold, report "No spike detected".
+- Temperature list must contain at least k elements for moving average calculation.
+================================================================================
