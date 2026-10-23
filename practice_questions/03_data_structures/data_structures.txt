@@ -78,3 +78,43 @@ Constraints & Edge Cases:
   (except for the query projection).
 - Use `remove()` safely by confirming membership first if an item might not exist.
 ================================================================================
+
+Question 3 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that utilizes standard tuples and `collections.namedtuple`
+to build an immutable geospatial navigation system:
+1. Named Tuple Definition:
+   - Create a `Waypoint` namedtuple with fields: `name`, `latitude`, `longitude`, `elevation_m`.
+   - Instantiate three waypoints: "Alpha", "Bravo", and "Charlie".
+   - Access attributes using both dot notation (`pt.latitude`) and positional indexing (`pt[1]`).
+2. Immutability Verification:
+   - Demonstrate that tuples are immutable by catching the `AttributeError` raised
+     when attempting to modify `point.latitude = 45.0`.
+3. Composite Dictionary Keys:
+   - Use raw 2-element tuples `(latitude, longitude)` as dictionary keys to map
+     coordinates to localized weather conditions (e.g., `(37.77, -122.41): "Foggy"`).
+   - Demonstrate why lists cannot be used as dictionary keys by catching `TypeError: unhashable type: 'list'`.
+4. Tuple Packing, Unpacking & Arithmetic:
+   - Compute the straight-line coordinate distance between consecutive waypoints.
+   - Concatenate two route tuples using `+` and repeat an alert tuple using `*`.
+
+Sample Input:
+Waypoints:
+- "Alpha": lat=37.7749, lon=-122.4194, elevation=15.0
+- "Bravo": lat=37.7833, lon=-122.4167, elevation=22.5
+- "Charlie": lat=37.7900, lon=-122.4000, elevation=8.0
+
+Expected Output:
+Waypoint Alpha: Waypoint(name='Alpha', latitude=37.7749, longitude=-122.4194, elevation_m=15.0)
+Positional Access: Name='Alpha', Elevation=15.0 m
+Immutability Verified: Caught AttributeError on attempted reassignment.
+Dictionary Key Lookup for (37.77, -122.42): "Clear Sky"
+Unhashable List Key Verified: Caught TypeError on list dictionary key.
+Total Route Waypoint Count: 3 waypoints
+
+Constraints & Edge Cases:
+- Latitude must be between -90.0 and 90.0; longitude between -180.0 and 180.0.
+- Namedtuples must come from standard library `collections.namedtuple`.
+- Unhashable type exceptions must be caught and handled cleanly.
+================================================================================
