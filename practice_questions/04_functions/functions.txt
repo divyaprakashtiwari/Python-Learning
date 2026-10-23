@@ -127,3 +127,47 @@ Constraints & Edge Cases:
 - Parameters must never be interpolated directly into the SQL string to avoid injection.
 - Handle zero columns cleanly by defaulting to `*`.
 ================================================================================
+
+Question 4 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that utilizes multiple return values (automatic tuple packing/unpacking),
+early return guard clauses, and callable factory functions:
+1. Multi-Value Statistical Analyzer:
+   - Implement `compute_descriptive_stats(dataset: list[float]) -> tuple`:
+   - Early Return Guard: If `dataset` is empty, immediately return `(0, 0.0, 0.0, 0.0, 0.0)`.
+   - Otherwise, compute:
+     * Count: number of elements
+     * Mean: arithmetic average
+     * Median: middle value (or average of two middle values if length is even)
+     * Variance: sample variance sum((x - mean)**2) / (n - 1) for n > 1 (0.0 if n == 1)
+     * Range: max_value - min_value
+   - Return all five metrics in a single `return` statement (tuple packing).
+   - Unpack the returned tuple into five individual variables at the call site.
+2. Function Factory (Returning Callables):
+   - Implement a converter factory `make_unit_converter(from_unit: str, to_unit: str)`:
+   - Return a specialized conversion function (e.g. converting Celsius to Fahrenheit: `lambda c: c * 9/5 + 32`).
+   - If the requested conversion pair is unrecognized, raise a `ValueError`.
+
+Sample Input:
+data = [12.5, 14.0, 15.5, 18.0, 20.0, 22.5, 24.0]
+c_to_f = make_unit_converter("C", "F")
+c_to_k = make_unit_converter("C", "K")
+
+Expected Output:
+Dataset Statistics:
+- Count: 7
+- Mean: 18.07
+- Median: 18.00
+- Variance: 18.29
+- Range: 11.50
+
+Factory Conversion:
+- 100.0 C -> F: 212.0 F
+- 0.0 C -> K: 273.15 K
+Empty Dataset Guard: (0, 0.0, 0.0, 0.0, 0.0)
+
+Constraints & Edge Cases:
+- Do not import external statistics libraries (`statistics`, `numpy`); calculate manually.
+- Handle datasets of length 0 and length 1 without division-by-zero errors.
+================================================================================
