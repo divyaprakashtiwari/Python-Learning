@@ -309,3 +309,53 @@ Constraints & Edge Cases:
   (it strictly targets enclosing non-global scopes).
 - Global scope changes must be verified outside the enclosing function.
 ================================================================================
+
+Question 8 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an in-memory API token bucket rate limiter
+using lexical closures, nonlocal variable bindings, and closure cell introspection:
+1. Stateful Rate Limiter Factory:
+   - Implement `create_rate_limiter(max_tokens: int, refill_rate_per_sec: float) -> Callable`:
+   - Maintain enclosing free variables: `current_tokens: float`, `last_update_ts: float`,
+     `max_capacity: int`, and `refill_rate: float`.
+   - The returned inner function `consume(cost: int = 1, current_ts: float = None) -> bool`:
+     * Refills tokens based on elapsed seconds: `current_tokens = min(max_capacity, current_tokens + elapsed * refill_rate)`.
+     * If `current_tokens >= cost`: deducts cost using `nonlocal`, updates `last_update_ts`, and returns `True`.
+     * Otherwise: returns `False` without deducting tokens.
+2. Closure Introspection:
+   - Access the returned function's `__closure__` attribute.
+   - Iterate over `fn.__closure__` and print each cell's bound contents (`cell.cell_contents`)
+     to inspect the private captured state.
+3. Multiple Independent Closure Instances:
+   - Create two separate rate limiters: `free_tier_limiter` (capacity=2) and
+     `premium_limiter` (capacity=10).
+   - Demonstrate that consuming requests against `free_tier_limiter` leaves the
+     enclosed state of `premium_limiter` completely isolated and unchanged.
+
+Sample Input:
+free_tier = create_rate_limiter(max_tokens=2, refill_rate_per_sec=1.0)
+premium_tier = create_rate_limiter(max_tokens=5, refill_rate_per_sec=5.0)
+
+Timeline:
+- T=0.0s: free_tier consumes 1 token
+- T=0.0s: free_tier consumes 1 token
+- T=0.0s: free_tier attempts to consume 1 token (exceeds capacity)
+- T=1.5s: free_tier attempts to consume 1 token (after refill)
+
+Expected Output:
+Free Tier T=0.0s (Req 1): Allowed=True (Tokens Remaining: 1.0)
+Free Tier T=0.0s (Req 2): Allowed=True (Tokens Remaining: 0.0)
+Free Tier T=0.0s (Req 3): Allowed=False (Rate Limit Exceeded)
+Free Tier T=1.5s (Req 4): Allowed=True (Refilled and Granted)
+Premium Tier T=1.5s: Allowed=True (Unimpacted, Initial Tokens: 5.0)
+
+Closure Cells Introspected:
+- Bound Tokens: ~0.5
+- Bound Max Capacity: 2
+
+Constraints & Edge Cases:
+- Do not use classes or object-oriented attributes; state retention must rely exclusively
+  on function closures and the `nonlocal` keyword.
+- Elapsed time cannot be negative.
+================================================================================
