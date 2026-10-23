@@ -138,3 +138,51 @@ Constraints & Edge Cases:
 - If starting_number is 1, stopping time is 0 steps and peak is 1.
 - Use integer arithmetic exclusively to avoid precision loss on large peaks.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that simulates a high-throughput network packet ingestion filter
+using break and continue statements:
+1. Iterate over a sequential list of packet dictionaries containing:
+   `packet_id`, `source_ip`, `payload_bytes`, `status_code`, and `is_malicious`.
+2. Apply the following control flow rules:
+   - If `source_ip` is present in a pre-configured `blocked_ips` set: increment
+     a `blocked_count` counter and invoke `continue` immediately to bypass inspection.
+   - If `status_code == 200` and `payload_bytes == 0` (empty health ping): invoke
+     `continue` to skip logging and processing without incrementing counters.
+   - If `is_malicious is True`: log a security alert and immediately invoke `break`
+     to shut down the ingestion pipeline to prevent compromise.
+   - For all other benign packets: accumulate the total bytes ingested into `total_bytes`
+     and increment `valid_packets_processed`.
+3. After the loop terminates, report whether ingestion completed cleanly or halted
+   due to a security breach, along with summary counts.
+
+Sample Input:
+blocked_ips = {"198.51.100.12", "203.0.113.5"}
+packets = [
+    {"packet_id": 101, "source_ip": "192.168.1.10", "payload_bytes": 1024, "status_code": 200, "is_malicious": False},
+    {"packet_id": 102, "source_ip": "198.51.100.12", "payload_bytes": 512, "status_code": 403, "is_malicious": False},
+    {"packet_id": 103, "source_ip": "192.168.1.15", "payload_bytes": 0, "status_code": 200, "is_malicious": False},
+    {"packet_id": 104, "source_ip": "192.168.1.20", "payload_bytes": 2048, "status_code": 200, "is_malicious": False},
+    {"packet_id": 105, "source_ip": "10.0.0.99", "payload_bytes": 8192, "status_code": 500, "is_malicious": True},
+    {"packet_id": 106, "source_ip": "192.168.1.25", "payload_bytes": 1024, "status_code": 200, "is_malicious": False}
+]
+
+Expected Output:
+Packet 101: Processed (1024 bytes)
+Packet 102: Blocked by IP filter
+Packet 103: Heartbeat ping skipped
+Packet 104: Processed (2048 bytes)
+CRITICAL ALERT: Malicious packet 105 detected! Pipeline shutdown initiated.
+Summary Report:
+- Ingestion Terminated Prematurely: True
+- Valid Packets Processed: 2
+- Total Bytes Ingested: 3,072 bytes
+- Blocked Packets: 1
+
+Constraints & Edge Cases:
+- Packets following the malicious packet must not be evaluated or processed.
+- Must use `continue` for skipping and `break` for emergency termination.
+- Empty packet streams must handle gracefully without errors.
+================================================================================
