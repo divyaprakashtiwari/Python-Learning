@@ -29,3 +29,46 @@ Constraints & Edge Cases:
 - Gross income of $0 or within the 0% bracket must yield $0 tax and 0.00% effective rate.
 - Display all monetary amounts to 2 decimal places.
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements a loan underwriting decision engine using
+nested conditional structures (nested if/elif/else):
+1. Age Check: The applicant must be at least 18 and at most 65 years old.
+   If outside this range, reject immediately with reason: "Age requirement not met".
+2. Credit Score & Risk Check:
+   - Credit score < 580: Reject with reason: "Poor credit rating".
+   - Credit score between 580 and 669 (inclusive): "Fair Credit" — requires a qualified
+     co-signer. If co-signer is present and has credit score >= 700, proceed to DTI check;
+     otherwise reject with reason: "Qualified co-signer required".
+   - Credit score >= 670: "Prime Credit" — proceed directly to DTI check.
+3. Debt-to-Income (DTI) Ratio Check:
+   - Calculate monthly income = annual_income / 12.
+   - Calculate DTI ratio = (monthly_debt / monthly_income) * 100.
+   - If DTI > 43.0%, reject with reason: "Debt-to-Income ratio exceeds limit".
+   - If DTI <= 43.0%, APPROVE loan and assign interest rate:
+     * Prime Credit: 5.25%
+     * Fair Credit (with co-signer): 7.15%
+
+Sample Input:
+applicant = {
+    "age": 29,
+    "annual_income": 72000.0,
+    "monthly_debt": 1800.0,
+    "credit_score": 640,
+    "has_cosigner": True,
+    "cosigner_credit_score": 745
+}
+
+Expected Output:
+Underwriting Decision: APPROVED
+Credit Tier: Fair Credit (Co-signer Qualified)
+Calculated DTI: 30.00%
+Approved Base Interest Rate: 7.15%
+
+Constraints & Edge Cases:
+- Monthly debt and annual income must be positive; annual income cannot be zero (prevent ZeroDivisionError).
+- Credit scores must be bounded between 300 and 850.
+- All conditional paths must produce an explicit decision and reason.
+================================================================================
