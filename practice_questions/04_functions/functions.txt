@@ -261,3 +261,51 @@ Constraints & Edge Cases:
 - Must handle negative exponents and base cases (exponent 0 and 1) correctly.
 - Base = 0 with negative exponent must raise `ZeroDivisionError`.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that systematically proves Python's LEGB (Local, Enclosing,
+Global, Built-in) scope lookup hierarchy and contrasts the `global` and `nonlocal` keywords:
+1. LEGB Scope Resolution & Shadowing:
+   - Declare a module-level global variable `state_val = "GLOBAL"`.
+   - Inside an outer enclosing function `outer_scope()`, declare `state_val = "ENCLOSING"`.
+   - Inside an inner function `read_local()`, declare `state_val = "LOCAL"`.
+   - Demonstrate that each scope resolves its own nearest variable definition.
+2. Enclosing Mutation via `nonlocal`:
+   - Within `outer_scope()`, implement a nested function `modify_enclosing()`:
+   - Use the `nonlocal` keyword to rebind `state_val = "MODIFIED_BY_NONLOCAL"`.
+   - Prove that this mutation alters the enclosing variable but leaves the module-level
+     global variable untouched.
+3. Global Rebinding via `global`:
+   - Within `outer_scope()`, implement another nested function `modify_global()`:
+   - Use the `global` keyword to rebind `state_val = "MODIFIED_BY_GLOBAL"`.
+   - Prove that this mutation changes the module-level variable while leaving the
+     enclosing scope untouched.
+4. Built-in Shadowing & Recovery:
+   - Shadow the built-in `sum` function by assigning `sum = 42` locally.
+   - Demonstrate that standard `sum([1, 2, 3])` fails with a `TypeError: 'int' object is not callable`.
+   - Recover the original built-in function via `import builtins; builtins.sum()`.
+
+Sample Input:
+Initial global state: state_val = "GLOBAL"
+Invoke outer_scope() execution sequence
+
+Expected Output:
+Initial Global State: "GLOBAL"
+Local Resolution Inside inner(): "LOCAL"
+After modify_nonlocal():
+- Enclosing state_val is now: "MODIFIED_BY_NONLOCAL"
+- Global state_val is still: "GLOBAL"
+After modify_global():
+- Enclosing state_val is still: "MODIFIED_BY_NONLOCAL"
+- Global state_val is now: "MODIFIED_BY_GLOBAL"
+Shadowed Built-in Recovery:
+- Attempted shadowed sum([1, 2]): Caught TypeError
+- Recovered via builtins.sum([1, 2]): 3
+
+Constraints & Edge Cases:
+- `nonlocal` must not be used on variables that only exist in global or local scopes
+  (it strictly targets enclosing non-global scopes).
+- Global scope changes must be verified outside the enclosing function.
+================================================================================
