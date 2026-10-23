@@ -81,3 +81,49 @@ Constraints & Edge Cases:
 - Never use mutable objects (lists, dicts, sets) as default argument values in production code.
 - Keyword-only parameters must be strictly guarded using the bare asterisk syntax `*`.
 ================================================================================
+
+Question 3 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a dynamic SQL query string builder function
+utilizing variable positional arguments (*args), keyword arguments (**kwargs), and argument unpacking:
+1. Function Specification:
+   `build_select_query(table_name: str, *columns: str, distinct: bool = False, **where_clauses) -> tuple[str, tuple]`
+2. Positional Unpacking (*columns):
+   - If `columns` is empty (no positional arguments provided), default to selecting all columns (`*`).
+   - If columns are supplied, join them with commas: `"col1, col2, col3"`.
+   - If `distinct is True`, prepend `DISTINCT` before the column list.
+3. Keyword Filtering (**where_clauses):
+   - If `where_clauses` contains items, generate a parameterized `WHERE` clause:
+     `" WHERE col1 = ? AND col2 = ?"` (joining criteria with `" AND "`).
+   - Collect all filter values into a parameter tuple in identical order.
+4. Call-Site Argument Unpacking:
+   - Given a list of target columns `target_cols = ["id", "username", "email"]` and a
+     filter dictionary `criteria = {"status": "ACTIVE", "role": "ADMIN"}`, invoke
+     the function using `*target_cols` and `**criteria` unpacking.
+
+Sample Input:
+Call 1: build_select_query("users")
+Call 2: build_select_query("orders", "order_id", "total_price", distinct=True, customer_id=42, status="SHIPPED")
+Call 3 (via unpacking):
+cols = ["first_name", "last_name", "department"]
+filters = {"active": True, "location": "NYC"}
+build_select_query("employees", *cols, **filters)
+
+Expected Output:
+Query 1:
+SQL: "SELECT * FROM users;"
+Params: ()
+
+Query 2:
+SQL: "SELECT DISTINCT order_id, total_price FROM orders WHERE customer_id = ? AND status = ?;"
+Params: (42, 'SHIPPED')
+
+Query 3 (Unpacked):
+SQL: "SELECT first_name, last_name, department FROM employees WHERE active = ? AND location = ?;"
+Params: (True, 'NYC')
+
+Constraints & Edge Cases:
+- Parameters must never be interpolated directly into the SQL string to avoid injection.
+- Handle zero columns cleanly by defaulting to `*`.
+================================================================================
