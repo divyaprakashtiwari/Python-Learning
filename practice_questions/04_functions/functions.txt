@@ -359,3 +359,49 @@ Constraints & Edge Cases:
   on function closures and the `nonlocal` keyword.
 - Elapsed time cannot be negative.
 ================================================================================
+
+Question 9 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that constructs a functional data transformation and reduction
+pipeline using higher-order functions (`map`, `filter`, `functools.reduce`, and `functools.partial`):
+1. Functional Stream Processing:
+   - Given raw transaction dictionaries:
+     `transactions = [{"id": int, "status": str, "amount_usd": float, "country": str}]`
+   - Use `filter()` to retain only settled transactions where `status == "SETTLED"`
+     and `amount_usd >= 100.0`.
+   - Use `map()` along with `functools.partial(convert_currency, rate=0.92)` to
+     project each transaction to an amount in EUR rounded to 2 decimal places.
+   - Use `functools.reduce()` with a lambda reducer to compute both the grand total EUR
+     volume and the maximum single EUR transaction in a single pass.
+2. Higher-Order Pipeline Composer:
+   - Implement a generic function `compose(*functions) -> Callable`:
+   - Returns a new function representing the mathematical composition:
+     `(f o g o h)(x) = f(g(h(x)))`.
+   - Test `compose` on a string cleaning pipeline: `strip_whitespace`, `lowercase`,
+     `remove_punctuation`, and `word_tokenize`.
+
+Sample Input:
+transactions = [
+    {"id": 101, "status": "SETTLED", "amount_usd": 250.00, "country": "US"},
+    {"id": 102, "status": "PENDING", "amount_usd": 500.00, "country": "CA"},
+    {"id": 103, "status": "SETTLED", "amount_usd": 75.00,  "country": "US"},
+    {"id": 104, "status": "SETTLED", "amount_usd": 1200.00,"country": "UK"},
+    {"id": 105, "status": "FAILED",  "amount_usd": 300.00, "country": "DE"}
+]
+raw_text = "  Hello, Functional Python WORLD! -- 2026.  "
+
+Expected Output:
+Filtered & Converted Transactions (EUR):
+- Txn 101: 230.00 EUR
+- Txn 104: 1,104.00 EUR
+Reduced Summary: Total EUR = 1,334.00 EUR, Max Single Txn = 1,104.00 EUR
+
+Composed Text Pipeline Result:
+['hello', 'functional', 'python', 'world', '2026']
+
+Constraints & Edge Cases:
+- Filtering and mapping must use Python's built-in `filter` and `map` generators,
+  not list comprehensions, demonstrating lazy iterator evaluation.
+- `reduce` must handle an empty filtered iterable safely by supplying an explicit `initializer`.
+================================================================================
