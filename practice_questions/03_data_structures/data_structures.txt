@@ -35,3 +35,46 @@ Constraints & Edge Cases:
 - The input list will contain at least 6 integer elements.
 - Do not use copy loops; leverage Python slice syntax exclusively.
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that manages a dynamic score registry using built-in list
+mutation methods (append, extend, insert, remove, pop, index, count, sort, reverse):
+1. Ingestion:
+   - Initialize an empty list `roster = []`.
+   - Use `append()` to add ("Alice", 92) and ("Bob", 85).
+   - Use `extend()` to batch-add [("Charlie", 100), ("Diana", 78), ("Evan", 100)].
+2. Positional Insertion & Removal:
+   - Use `insert()` to add a late entry ("Fiona", 88) at index 1.
+   - Use `remove()` to remove the tuple ("Diana", 78) from the registry.
+   - Use `pop()` to remove and capture the last entry in the list.
+3. Querying & Inspection:
+   - Extract only the numerical scores into a separate list.
+   - Use `count()` to find the frequency of scores equal to 100.
+   - Use `index()` to find the position of the first entry with score 92.
+4. In-Place Ordering:
+   - Sort the remaining entries in-place in descending order of score using `roster.sort(key=...)`.
+   - Reverse the list in-place using `roster.reverse()`.
+
+Sample Input:
+Initial submissions: [("Alice", 92), ("Bob", 85)]
+Batch additions: [("Charlie", 100), ("Diana", 78), ("Evan", 100)]
+Late insertion at index 1: ("Fiona", 88)
+
+Expected Output:
+Roster after insertions and removals:
+[('Alice', 92), ('Fiona', 88), ('Bob', 85), ('Charlie', 100)]
+Popped Entry: ('Evan', 100)
+Count of Perfect 100 Scores: 1
+Index of Alice (Score 92): 0
+Sorted Descending by Score:
+[('Charlie', 100), ('Alice', 92), ('Fiona', 88), ('Bob', 85)]
+Reversed (Ascending):
+[('Bob', 85), ('Fiona', 88), ('Alice', 92), ('Charlie', 100)]
+
+Constraints & Edge Cases:
+- Methods must mutate the list in-place without creating intermediate copy lists
+  (except for the query projection).
+- Use `remove()` safely by confirming membership first if an item might not exist.
+================================================================================
