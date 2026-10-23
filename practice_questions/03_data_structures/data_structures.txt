@@ -1,0 +1,37 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 03 - DATA STRUCTURES
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that performs list slicing, step indexing, and in-place slice
+assignments on an array of integers:
+1. Extraction via Slicing:
+   - Extract the first 4 elements using a slice.
+   - Extract the last 3 elements using negative indexing.
+   - Extract all elements at even indices (index 0, 2, 4, ...).
+   - Reverse the entire list using slicing with a negative step.
+2. In-Place Slice Mutation:
+   - Replace the middle slice (from index 2 up to index 5, exclusive) with three new
+     replacement values: [999, 888, 777].
+   - Delete elements at odd indices (indices 1, 3, 5, ...) using `del my_list[1::2]`.
+
+Sample Input:
+initial_list = [10, 20, 30, 40, 50, 60, 70, 80]
+
+Expected Output:
+First 4 Elements: [10, 20, 30, 40]
+Last 3 Elements: [60, 70, 80]
+Even Indices: [10, 30, 50, 70]
+Reversed List: [80, 70, 60, 50, 40, 30, 20, 10]
+After Slice Replacement [2:5] = [999, 888, 777]:
+[10, 20, 999, 888, 777, 60, 70, 80]
+After Deleting Odd Indices:
+[10, 999, 777, 70]
+
+Constraints & Edge Cases:
+- Perform slice modifications in-place on the original list object where specified.
+- The input list will contain at least 6 integer elements.
+- Do not use copy loops; leverage Python slice syntax exclusively.
+================================================================================
