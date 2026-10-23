@@ -186,3 +186,46 @@ Constraints & Edge Cases:
 - Must use `continue` for skipping and `break` for emergency termination.
 - Empty packet streams must handle gracefully without errors.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that computes the product of two 2-dimensional matrices
+and calculates its Frobenius norm using nested loops:
+1. Matrix Dimension Validation:
+   - Matrix A has shape (m x k) and Matrix B has shape (k x n).
+   - Verify that the number of columns in A matches the number of rows in B.
+     If dimensions do not match, raise a ValueError("Incompatible matrix dimensions for multiplication").
+2. Matrix Multiplication via 3-Level Nested Loops:
+   - Initialize an (m x n) result matrix C with zeros.
+   - Using three nested for loops (iterating over rows i of A, columns j of B,
+     and inner index k), compute each dot product:
+         C[i][j] = sum(A[i][k] * B[k][j] for k in range(K))
+3. Frobenius Norm Calculation:
+   - Using two nested for loops, iterate over every element in C to calculate
+     the sum of squared values, then compute the square root to obtain the Frobenius norm.
+
+Sample Input:
+matrix_a = [
+    [1, 2, 3],
+    [4, 5, 6]
+]
+matrix_b = [
+    [7, 8],
+    [9, 1],
+    [2, 3]
+]
+
+Expected Output:
+Matrix A Dimensions: 2x3
+Matrix B Dimensions: 3x2
+Result Matrix C (2x2):
+[31, 19]
+[85, 55]
+Frobenius Norm: 108.01
+
+Constraints & Edge Cases:
+- Do not import NumPy or external linear algebra libraries.
+- Matrix dimensions can be non-square (e.g. 2x3 and 3x2, or 1x4 and 4x1).
+- Elements can be positive or negative integers/floats.
+================================================================================
