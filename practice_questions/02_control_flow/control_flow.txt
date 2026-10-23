@@ -106,3 +106,35 @@ Constraints & Edge Cases:
 - If no reading exceeds the spike threshold, report "No spike detected".
 - Temperature list must contain at least k elements for moving average calculation.
 ================================================================================
+
+Question 4 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that uses a while loop to simulate and analyze the Collatz
+Conjecture (the 3n + 1 problem) for a given starting positive integer:
+1. While the current value of n is strictly greater than 1:
+   - If n is even: divide n by 2 (using integer floor division //).
+   - If n is odd: multiply n by 3 and add 1 (n = 3 * n + 1).
+2. During iteration, record:
+   - The complete sequence of values generated.
+   - The total number of steps (stopping time) required to reach 1.
+   - The peak (maximum) integer value encountered anywhere in the trajectory.
+3. Guard against infinite looping by maintaining a safety counter `max_iterations = 5000`;
+   terminate the loop and report an error if this threshold is exceeded.
+
+Sample Input:
+starting_number = 27
+
+Expected Output:
+Starting Value: 27
+Total Stopping Time (Steps): 111
+Peak Trajectory Value: 9232
+First 5 Values: [27, 82, 41, 124, 62]
+Last 5 Values: [8, 4, 2, 1]
+Safety Limit Triggered: False
+
+Constraints & Edge Cases:
+- Starting number must be an integer >= 1 (raise ValueError for n < 1).
+- If starting_number is 1, stopping time is 0 steps and peak is 1.
+- Use integer arithmetic exclusively to avoid precision loss on large peaks.
+================================================================================
