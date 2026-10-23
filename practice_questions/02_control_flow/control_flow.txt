@@ -229,3 +229,44 @@ Constraints & Edge Cases:
 - Matrix dimensions can be non-square (e.g. 2x3 and 3x2, or 1x4 and 4x1).
 - Elements can be positive or negative integers/floats.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that utilizes Python's `for...else` and `while...else` constructs
+to perform searches and divisibility tests cleanly without using boolean flag variables
+(such as `found = False`):
+1. Database Record Lookup (`for...else`):
+   - Given a list of employee dictionaries (each with `id`, `name`, `department`),
+     search for an employee by target `id`.
+   - If found: print their details and immediately invoke `break`.
+   - The loop's `else` block must execute if and only if the search was exhausted
+     without finding the target ID, printing: "Employee ID <id> not found in registry."
+2. Prime Number Validator without Flags (`for...else`):
+   - Given an integer n > 1:
+   - Use a for loop over potential divisors from 2 up to int(n**0.5) + 1.
+   - If `n % d == 0`: print that n is composite (with its first factor d) and `break`.
+   - In the `else` block (which executes only if no factor was found), confirm that n is prime.
+3. Queue Drain Validation (`while...else`):
+   - Drain a task queue while processing tasks; if an invalid poison-pill task is encountered,
+     `break`. In the `else` block, confirm that all tasks were completed successfully.
+
+Sample Input:
+employees = [
+    {"id": 101, "name": "Sarah Connor", "department": "Cyberdyne"},
+    {"id": 102, "name": "John Doe", "department": "Logistics"}
+]
+target_id_1 = 101
+target_id_2 = 999
+test_number = 97
+
+Expected Output:
+Lookup 101: Found Sarah Connor (Cyberdyne)
+Lookup 999: Employee ID 999 not found in registry.
+Prime Check 97: 97 is a prime number (no factors found in range 2 to 10).
+
+Constraints & Edge Cases:
+- Explicitly forbidden from using boolean search flags (e.g. `found = False`).
+- Integers tested for primality will be >= 2.
+- The `else` block must be attached directly to the loop, not an `if` statement.
+================================================================================
