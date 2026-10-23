@@ -419,3 +419,60 @@ Constraints & Edge Cases:
 - Underflow (pop/dequeue on empty) and Overflow (push/enqueue on full) must raise
   explicit exceptions rather than returning None or failing silently.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that simulates a financial trading order book engine using
+multi-key stable sorting (Timsort) and logarithmic binary searching via the `bisect` module:
+1. Multi-Criteria Order Book Priority Sorting:
+   - Orders are represented as tuples: `(order_id, client_id, side, price, timestamp_ms)`.
+   - Separate orders into two independent books: BIDs (Buy orders) and ASKs (Sell orders).
+   - Priority Rule for BIDs: Highest price takes priority (descending); ties are broken
+     by earliest submission timestamp (ascending).
+   - Priority Rule for ASKs: Lowest price takes priority (ascending); ties are broken
+     by earliest submission timestamp (ascending).
+   - Implement sorting using Python's stable sorting mechanism with `key=lambda x: ...`
+     or `operator.itemgetter`.
+2. Efficient Real-Time Order Insertion with `bisect`:
+   - Given a continuously sorted list of active BID price levels:
+     `active_bids = [100.50, 101.25, 101.75, 102.00, 103.50]`
+   - Use `bisect.bisect_left` to locate the insertion index for a new incoming bid price in O(log N) time.
+   - Use `bisect.insort` to insert the new bid into the list while preserving ascending order.
+3. Nearest Price Level Query:
+   - Implement a function `find_closest_level(sorted_levels, target_price) -> float`
+     that uses `bisect_left` to find the existing price level closest to a target quote in O(log N) time.
+
+Sample Input:
+orders = [
+    ("ord_1", "client_A", "BID", 150.25, 1002),
+    ("ord_2", "client_B", "BID", 151.00, 1000),
+    ("ord_3", "client_C", "BID", 150.25, 1001),
+    ("ord_4", "client_D", "ASK", 151.50, 1005),
+    ("ord_5", "client_E", "ASK", 151.20, 1003),
+    ("ord_6", "client_F", "ASK", 151.20, 1001)
+]
+new_bid_quote = 150.75
+query_target = 150.80
+
+Expected Output:
+Prioritized BID Book (Price DESC, Time ASC):
+1. ord_2: $151.00 (Time: 1000)
+2. ord_3: $150.25 (Time: 1001)
+3. ord_1: $150.25 (Time: 1002)
+
+Prioritized ASK Book (Price ASC, Time ASC):
+1. ord_6: $151.20 (Time: 1001)
+2. ord_5: $151.20 (Time: 1003)
+3. ord_4: $151.50 (Time: 1005)
+
+Binary Search Insertion:
+- Inserting Quote 150.75 into BIDs: Inserted at index 1
+- Updated Price Levels: [150.25, 150.75, 151.00]
+Nearest Price Level to 150.80: 150.75
+
+Constraints & Edge Cases:
+- Ties in price must strictly preserve timestamp precedence (demonstrating stability).
+- Binary searches must use the built-in `bisect` standard library module.
+- Handle empty books and exact matches gracefully without off-by-one index errors.
+================================================================================
