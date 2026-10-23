@@ -40,3 +40,44 @@ Constraints & Edge Cases:
 - Raise `ValueError("Dimensions must be strictly positive numbers")` if radius <= 0 or height <= 0.
 - Ensure the function has no side-effects (does not mutate outer state or print directly).
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that analyzes and repairs the "mutable default argument" trap
+while utilizing default, keyword, and keyword-only arguments:
+1. Demonstrating the Mutable Default Trap:
+   - Write a function `record_event_flawed(event_id: str, tags=[])`:
+   - In the body, append `event_id` to `tags` and return `tags`.
+   - Invoke `record_event_flawed("evt_1")` followed by `record_event_flawed("evt_2")`
+     without providing the `tags` argument.
+   - Demonstrate that the second call unexpectedly returns `['evt_1', 'evt_2']`
+     because the default list was evaluated only once at function definition time.
+2. Idiomatic Safe Default Pattern:
+   - Refactor the function to `record_event_safe(event_id: str, tags=None, *, log_level="INFO", dry_run=False)`:
+   - If `tags is None`: initialize a new empty list `tags = []` inside the function body.
+   - Enforce that `log_level` and `dry_run` are keyword-only parameters (placed after a bare `*`).
+3. Verification:
+   - Demonstrate that multiple consecutive invocations of `record_event_safe()` produce
+     isolated lists without state leakage.
+   - Demonstrate that passing `log_level` as a positional argument raises a `TypeError`.
+
+Sample Input:
+Call 1: record_event_flawed("login")
+Call 2: record_event_flawed("logout")
+Call 3: record_event_safe("purchase", log_level="AUDIT")
+Call 4: record_event_safe("refund")
+
+Expected Output:
+Flawed Call 1: ['login']
+Flawed Call 2: ['login', 'logout'] (Leaked previous invocation state!)
+
+Safe Call 1: ['purchase'] (Tags isolated)
+Safe Call 2: ['refund'] (Tags isolated)
+Positional Keyword-Only Test:
+Caught Expected Error: TypeError("record_event_safe() takes at most 2 positional arguments...")
+
+Constraints & Edge Cases:
+- Never use mutable objects (lists, dicts, sets) as default argument values in production code.
+- Keyword-only parameters must be strictly guarded using the bare asterisk syntax `*`.
+================================================================================
