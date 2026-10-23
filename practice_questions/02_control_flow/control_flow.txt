@@ -361,3 +361,51 @@ Constraints & Edge Cases:
   (`a if cond else b`), not multi-line if/elif blocks.
 - Endpoints can be None, empty string "", or valid URL strings.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements a robust event and command message dispatcher
+using Python's structural pattern matching (`match-case`), incorporating pattern guards,
+sequence/mapping patterns, and capture variables:
+1. Message Dispatcher Specification:
+   - Accept a sequence of heterogeneous event objects (dictionaries and tuples).
+   - `case {"type": "COMMAND", "action": str(action), "payload": {"key": str(k), "value": v}}`:
+     Dispatch configuration update; print "CONFIG SET: key='<k>' -> value='<v>'".
+   - `case {"type": "BATCH", "items": [first_item, *remaining_items]} if len(remaining_items) >= 2`:
+     Trigger chunked batch processor with guard; report head item and count of trailing items.
+   - `case {"type": "ERROR", "code": int(code), "details": str(msg)} if code >= 500`:
+     Trigger CRITICAL incident response for 5xx server-side errors.
+   - `case {"type": "ERROR", "code": int(code), "details": str(msg)}`:
+     Log standard client/operational error for non-5xx codes.
+   - `case ("PING", int(ts))`:
+     Respond with tuple ("PONG", ts, "ACK").
+   - `case _ as unhandled`:
+     Fallthrough default case: capture unrecognized message and raise a ValueError
+     or report "Unrecognized event format".
+2. Test the dispatcher across valid commands, guarded batches, server errors,
+   tuple pings, and malformed fallthrough payloads.
+
+Sample Input:
+events = [
+    {"type": "COMMAND", "action": "UPDATE_RATE", "payload": {"key": "refresh_hz", "value": 60}},
+    {"type": "BATCH", "items": ["job_alpha", "job_beta", "job_gamma", "job_delta"]},
+    {"type": "ERROR", "code": 503, "details": "Service Unavailable"},
+    {"type": "ERROR", "code": 404, "details": "Resource Not Found"},
+    ("PING", 1714001234),
+    {"invalid": "payload"}
+]
+
+Expected Output:
+Event 0: CONFIG SET: key='refresh_hz' -> value='60'
+Event 1: BATCH PROCESSING: Primary='job_alpha', Trailing Items Count=3
+Event 2: CRITICAL INCIDENT TRIGGERED: Error 503 - Service Unavailable
+Event 3: CLIENT ERROR LOGGED: Error 404 - Resource Not Found
+Event 4: PING RECEIVED -> Responded: ('PONG', 1714001234, 'ACK')
+Event 5: REJECTED: Unrecognized event structure: {'invalid': 'payload'}
+
+Constraints & Edge Cases:
+- Must use Python 3.10+ `match / case` syntax, not multiple if/isinstance checks.
+- Guard expressions (`if ...`) must be used to differentiate 5xx errors and minimum batch lengths.
+- Sequence unpacking (`[first, *rest]`) must be used within the case pattern.
+================================================================================
