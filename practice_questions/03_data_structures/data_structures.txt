@@ -372,3 +372,50 @@ Constraints & Edge Cases:
   avoiding traditional multi-line for loops and manual appends.
 - Normalize word tokens to lowercase and split by whitespace.
 ================================================================================
+
+Question 9 (Intermediate to Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements and contrasts custom bounded Stack (LIFO) and
+Queue (FIFO) data structures, analyzing time complexity between `list` and `collections.deque`:
+1. Bounded LIFO Stack via List:
+   - Implement a class `BoundedStack(capacity: int)` using a Python list internally:
+     * `push(item)`: Add item; raise `OverflowError("Stack is full")` if at capacity.
+     * `pop()`: Remove and return top item; raise `IndexError("Stack is empty")` if empty.
+     * `peek()`: Return top item without removing it.
+     * `is_empty()` and `is_full()` helper properties.
+2. Bounded FIFO Queue via `collections.deque`:
+   - Implement a class `BoundedQueue(capacity: int)` using `collections.deque`:
+     * `enqueue(item)`: Add item to the right; raise `OverflowError("Queue is full")` if at capacity.
+     * `dequeue()`: Remove and return oldest item from the left (O(1) operation).
+     * `peek()`: Inspect front item without removing it.
+3. Algorithmic Complexity Comparison:
+   - Explain why `deque.popleft()` achieves O(1) amortized time whereas `list.pop(0)`
+     requires O(N) time due to contiguous memory re-indexing.
+4. Workflow Simulation:
+   - Simulate browser tab history navigation (back button traversal) using `BoundedStack`.
+   - Simulate a print spooler job pipeline using `BoundedQueue`.
+
+Sample Input:
+stack_ops = ["push(Page1)", "push(Page2)", "push(Page3)", "pop()", "peek()"]
+queue_ops = ["enqueue(JobA)", "enqueue(JobB)", "dequeue()", "enqueue(JobC)"]
+
+Expected Output:
+--- Bounded Stack Simulation ---
+Pushed: 'Page1', 'Page2', 'Page3' (Current Size: 3/5)
+Popped Top Page: 'Page3'
+Current Active Page (Peek): 'Page2'
+Attempted Overflow: Caught OverflowError on capacity breach.
+
+--- Bounded Queue Simulation ---
+Enqueued: 'JobA', 'JobB' (Current Size: 2/4)
+Processed Job (Dequeued): 'JobA'
+Enqueued: 'JobC'
+Next Up in Spooler (Peek): 'JobB'
+Dequeued Remaining: ['JobB', 'JobC']
+
+Constraints & Edge Cases:
+- Capacities must be positive integers >= 1.
+- Underflow (pop/dequeue on empty) and Overflow (push/enqueue on full) must raise
+  explicit exceptions rather than returning None or failing silently.
+================================================================================
