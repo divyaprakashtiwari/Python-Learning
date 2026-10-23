@@ -171,3 +171,52 @@ Constraints & Edge Cases:
 - Do not import external statistics libraries (`statistics`, `numpy`); calculate manually.
 - Handle datasets of length 0 and length 1 without division-by-zero errors.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that uses anonymous lambda functions as custom evaluation
+predicates and ranking keys for sorting and metric extraction:
+1. Multi-Criteria Ranking via Lambda:
+   - Given a list of financial asset dictionaries:
+     `assets = [{"ticker": str, "sector": str, "market_cap_b": float, "pe_ratio": float, "div_yield": float}]`
+   - Use `sorted()` with a single `key=lambda x: ...` to sort the assets primarily
+     by sector alphabetically (ascending), and secondarily by market capitalization
+     descending (highest market cap first within each sector).
+2. Extremum Extraction via `min()` and `max()`:
+   - Identify the asset with the highest dividend yield using `max()` with a lambda key.
+   - Identify the asset with the lowest valuation (P/E ratio) using `min()` with a lambda key.
+3. Anonymous Fee Calculator Dispatcher:
+   - Construct a dictionary mapping transaction types ("BUY", "SELL", "TRANSFER")
+     to anonymous lambda fee calculators:
+     * "BUY": fee is 0.1% of principal or $1.00, whichever is greater (`lambda p: max(1.0, p * 0.001)`)
+     * "SELL": fee is 0.15% of principal plus $0.50 regulatory fee (`lambda p: p * 0.0015 + 0.50`)
+     * "TRANSFER": flat fee of $2.50 (`lambda p: 2.50`)
+
+Sample Input:
+assets = [
+    {"ticker": "AAPL", "sector": "Technology", "market_cap_b": 3400.0, "pe_ratio": 33.2, "div_yield": 0.55},
+    {"ticker": "JNJ",  "sector": "Healthcare", "market_cap_b": 380.0,  "pe_ratio": 24.1, "div_yield": 3.10},
+    {"ticker": "MSFT", "sector": "Technology", "market_cap_b": 3100.0, "pe_ratio": 35.8, "div_yield": 0.72},
+    {"ticker": "PFE",  "sector": "Healthcare", "market_cap_b": 160.0,  "pe_ratio": 15.4, "div_yield": 5.80}
+]
+
+Expected Output:
+Sorted Assets (Sector ASC, Market Cap DESC):
+1. Healthcare: JNJ ($380.0B)
+2. Healthcare: PFE ($160.0B)
+3. Technology: AAPL ($3400.0B)
+4. Technology: MSFT ($3100.0B)
+
+Highest Dividend Yield: PFE (5.80%)
+Lowest P/E Valuation: PFE (15.4)
+
+Transaction Fees for $10,000 Trade:
+- BUY Fee: $10.00
+- SELL Fee: $15.50
+- TRANSFER Fee: $2.50
+
+Constraints & Edge Cases:
+- All sorting and extremum selection must be performed using `lambda` functions.
+- Principal amounts must be non-negative.
+================================================================================
