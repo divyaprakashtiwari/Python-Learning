@@ -266,3 +266,55 @@ Constraints & Edge Cases:
 - Do not import `defaultdict`; use standard `dict.setdefault()`.
 - Python dictionaries preserve insertion order; verify that `popitem()` pops the last item inserted.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that manipulates arbitrarily nested JSON-like dictionary and list
+hierarchies by implementing recursive key-path flattening and path traversal:
+1. Recursive Dictionary Flattener:
+   - Implement `flatten_dict(nested_dict, parent_key="", sep=".") -> dict`:
+   - Flatten nested dictionaries into single-level dictionaries where nested keys
+     are joined by the separator (e.g., `{"db": {"host": "10.0.0.1"}}` -> `{"db.host": "10.0.0.1"}`).
+   - If a list is encountered, encode indices as numeric path tokens
+     (e.g., `{"nodes": ["master", "worker"]}` -> `{"nodes.0": "master", "nodes.1": "worker"}`).
+2. Safe Path-Based Getter:
+   - Implement `get_by_path(nested_dict, key_path, default=None)`:
+   - Traverse the nested structure using a dot-separated string (e.g., `"services.cache.port"`).
+   - Return the scalar or sub-object if every key exists; return `default` cleanly
+     if any intermediate key or index is missing or out of range.
+3. Maximum Nesting Depth Calculator:
+   - Calculate the maximum depth of the nested dictionary structure recursively.
+
+Sample Input:
+config = {
+    "app": "DataPipeline",
+    "services": {
+        "database": {
+            "primary": {"host": "db-1.internal", "port": 5432},
+            "replicas": [{"host": "db-2.internal"}, {"host": "db-3.internal"}]
+        },
+        "cache": {"enabled": True, "ttl": 3600}
+    }
+}
+
+Expected Output:
+Flattened Configuration:
+{
+    'app': 'DataPipeline',
+    'services.database.primary.host': 'db-1.internal',
+    'services.database.primary.port': 5432,
+    'services.database.replicas.0.host': 'db-2.internal',
+    'services.database.replicas.1.host': 'db-3.internal',
+    'services.cache.enabled': True,
+    'services.cache.ttl': 3600
+}
+Path Lookup ('services.database.primary.port'): 5432
+Path Lookup ('services.database.replicas.1.host'): 'db-3.internal'
+Path Lookup with Fallback ('services.metrics.endpoint'): 'NOT_FOUND'
+Maximum Tree Depth: 5
+
+Constraints & Edge Cases:
+- Handle empty dictionaries `{}` and empty lists `[]` without infinite recursion.
+- Keys can be strings or integers; separator must not collide with standard keys.
+================================================================================
