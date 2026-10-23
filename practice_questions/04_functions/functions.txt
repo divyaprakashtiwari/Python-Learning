@@ -220,3 +220,44 @@ Constraints & Edge Cases:
 - All sorting and extremum selection must be performed using `lambda` functions.
 - Principal amounts must be non-negative.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements divide-and-conquer recursion and nested
+tree-traversal algorithms with explicit base cases and call-stack protection:
+1. Logarithmic Exponentiation via Divide-and-Conquer:
+   - Implement `power_recursive(base: float, exponent: int) -> float` in O(log N) time:
+     * Base case 1: If `exponent == 0`, return 1.0.
+     * Base case 2: If `exponent < 0`, return `1.0 / power_recursive(base, -exponent)`.
+     * Even case: If `exponent % 2 == 0`: compute `half = power_recursive(base, exponent // 2)`
+       and return `half * half`.
+     * Odd case: If `exponent % 2 != 0`: return `base * power_recursive(base, exponent - 1)`.
+2. Recursive Nested List Leaf Summation:
+   - Implement `recursive_leaf_sum(data: list | int | float) -> float`:
+   - Recursively traverse an irregularly nested list structure (representing an AST or category tree),
+     summing all leaf numerical values without using iterative loops or external libraries.
+   - Base case: If an item is an `int` or `float`, return its numeric value.
+   - Recursive case: If an item is a list, sum the recursive evaluations of its elements.
+3. Recursion Safety Guard:
+   - Demonstrate handling of Python's `RecursionError` by configuring a maximum
+     depth threshold parameter `max_depth = 50`.
+
+Sample Input:
+base = 2.0
+exp = 10
+nested_tree = [1, [2, [3, 4], 5], [[6, 7], 8], 9]
+negative_exp_base = 2.0
+negative_exp = -3
+
+Expected Output:
+2.0^10 via Logarithmic Recursion: 1024.0 (Computed in ~4 recursive subdivisions)
+2.0^-3 via Logarithmic Recursion: 0.125
+Recursive Leaf Sum of Nested Tree: 45
+Recursion Depth Guard: Handled safely within stack budget.
+
+Constraints & Edge Cases:
+- Exponentiation must run in O(log N) operations, NOT O(N) linear recursive calls.
+- Must handle negative exponents and base cases (exponent 0 and 1) correctly.
+- Base = 0 with negative exponent must raise `ZeroDivisionError`.
+================================================================================
