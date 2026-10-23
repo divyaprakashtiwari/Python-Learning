@@ -118,3 +118,46 @@ Constraints & Edge Cases:
 - Namedtuples must come from standard library `collections.namedtuple`.
 - Unhashable type exceptions must be caught and handled cleanly.
 ================================================================================
+
+Question 4 (Easy to Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that evaluates an enterprise Role-Based Access Control (RBAC)
+permission matrix using Python set operations (union |, intersection &, difference -,
+symmetric difference ^, subset <=, superset >=, and isdisjoint):
+1. Given three role permission sets:
+   - `admin_perms`: {"read", "write", "delete", "deploy", "audit", "manage_users"}
+   - `dev_perms`: {"read", "write", "deploy", "debug"}
+   - `auditor_perms`: {"read", "audit", "export_logs"}
+2. Compute the following security audit sets using operator syntax:
+   - Shared Permissions: Privileges held by BOTH dev and auditor (`dev & auditor`).
+   - Developer-Exclusive Permissions: Privileges held by dev but NOT auditor (`dev - auditor`).
+   - Divergent Permissions: Privileges held by dev OR auditor, but NOT both (`dev ^ auditor`).
+   - Total System Capabilities: All unique permissions across all roles (`admin | dev | auditor`).
+3. Structural Relationship Audits:
+   - Verify if `dev_perms` is a subset of `admin_perms` (`dev <= admin`). If not, identify
+     the rogue permissions not present in the admin role (`dev - admin`).
+   - Given a guest role `guest_perms = {"guest_login", "browse"}`, test if it is completely
+     disjoint from `admin_perms` using `.isdisjoint()`.
+4. In-Place Mutation:
+   - Modify a copy of `dev_perms` using `.intersection_update(auditor_perms)` to retain only
+     read-only capabilities.
+
+Sample Input:
+admin_perms = {"read", "write", "delete", "deploy", "audit", "manage_users"}
+dev_perms = {"read", "write", "deploy", "debug"}
+auditor_perms = {"read", "audit", "export_logs"}
+guest_perms = {"guest_login", "browse"}
+
+Expected Output:
+Shared Dev & Auditor: {'read'}
+Developer-Exclusive: {'deploy', 'write', 'debug'}
+Divergent Privileges (Symmetric Diff): {'deploy', 'write', 'audit', 'export_logs', 'debug'}
+Total Unique System Privileges: 8 permissions
+Is Dev a Subset of Admin: False (Rogue Permissions: {'debug'})
+Is Guest Disjoint from Admin: True
+
+Constraints & Edge Cases:
+- Use set operator syntax (| , &, -, ^) and method equivalents interchangeably.
+- Result sets must be unordered and strictly deduplicated.
+================================================================================
