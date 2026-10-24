@@ -100,3 +100,56 @@ Constraints & Edge Cases:
 - Parent directories for `target_filepath` must be created if they do not exist (`os.makedirs(..., exist_ok=True)`).
 - If writing fails midway (e.g. malformed record or disk write simulation error), the original target file must remain intact and the `.tmp` staging file must be purged.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an append-only transaction ledger utility `LedgerManager`
+demonstrating the exact behavioral differences among file open modes (`'x'`, `'a'`, `'r+'`, and `'w+'`):
+1. Exclusive File Initialization (`'x'` mode):
+   - `init_ledger(filepath: str, initial_tx_capacity: int = 0) -> bool`:
+     Opens file using mode `'x'` (exclusive creation). Writes a standardized fixed-width header:
+     `"LEDGER_HEADER | TX_COUNT: 00000 | STATUS: ACTIVE       \n"`.
+     If the file already exists, catches `FileExistsError` and returns `False` without modifying the file.
+2. Appending Transactions (`'a'` mode):
+   - `append_transaction(filepath: str, tx_id: str, sender: str, recipient: str, amount: float) -> None`:
+     Opens file in mode `'a'` (append). Writes formatted line:
+     `f"TX | ID: {tx_id:<8} | FROM: {sender:<12} | TO: {recipient:<12} | AMT: ${amount:>10.2f}\n"`.
+     Guarantees that new transactions always write to the end of the file.
+3. In-Place Header Mutation (`'r+'` mode):
+   - `update_ledger_header(filepath: str, new_tx_count: int, new_status: str) -> None`:
+     Opens file using mode `'r+'` (read/write in place without truncating).
+     Uses `file.seek(0)` to rewind to the very beginning and overwrites only the 52-character
+     header block formatted as:
+     `f"LEDGER_HEADER | TX_COUNT: {new_tx_count:05d} | STATUS: {new_status:<12}\n"`.
+     Ensures existing appended transaction records below the header remain completely intact.
+4. Truncation Hazard Demonstration (`'w+'` mode):
+   - Implement a test demonstrating that opening an existing file with mode `'w+'` immediately truncates
+     its file size to 0 bytes before any read or write occurs, unlike `'r+'`.
+
+Sample Input:
+ledger = LedgerManager()
+ledger.init_ledger("vault_ledger.txt")
+ledger.append_transaction("vault_ledger.txt", "TX-001", "Alice", "Bob", 250.00)
+ledger.append_transaction("vault_ledger.txt", "TX-002", "Charlie", "Diana", 750.50)
+ledger.update_ledger_header("vault_ledger.txt", new_tx_count=2, new_status="VERIFIED")
+
+# Test exclusive creation on existing file:
+created_again = ledger.init_ledger("vault_ledger.txt")
+
+Expected Output:
+Ledger initialized successfully with mode 'x'.
+Appended TX-001.
+Appended TX-002.
+Header updated in-place via mode 'r+' (offset 0).
+Attempting re-initialization on existing file: False (Safely blocked)
+
+# Resulting File Content ("vault_ledger.txt"):
+LEDGER_HEADER | TX_COUNT: 00002 | STATUS: VERIFIED    
+TX | ID: TX-001   | FROM: Alice        | TO: Bob          | AMT: $    250.00
+TX | ID: TX-002   | FROM: Charlie      | TO: Diana        | AMT: $    750.50
+
+Constraints & Edge Cases:
+- The fixed-width header must match the exact line character length on update to avoid displacing or clipping subsequent lines.
+- Updating header on a non-existent file in `'r+'` mode must catch `FileNotFoundError`.
+================================================================================
