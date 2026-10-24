@@ -315,3 +315,61 @@ Constraints & Edge Cases:
 - Raw password must never be stored in plain text anywhere in instance attributes.
 - Rotating token with an invalid password must raise `PermissionError("Invalid password; token rotation aborted")`.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a 2D Euclidean geometry class `Vector2D` that overloads
+core Python dunder (magic) methods to seamlessly integrate with native language operators:
+1. Representation Dunders:
+   - `__init__(self, x: float, y: float)`: Stores coordinate values as floats.
+   - `__repr__(self) -> str`: Unambiguous developer string: `"Vector2D(x=3.0, y=4.0)"`.
+   - `__str__(self) -> str`: Readable user string: `"(3.0, 4.0)"`.
+2. Arithmetic Operator Overloading:
+   - `__add__(self, other: "Vector2D") -> "Vector2D"`: Returns new `Vector2D(self.x + other.x, self.y + other.y)`.
+   - `__sub__(self, other: "Vector2D") -> "Vector2D"`: Returns new `Vector2D(self.x - other.x, self.y - other.y)`.
+   - `__mul__(self, scalar: float | int) -> "Vector2D"`: Returns new `Vector2D(self.x * scalar, self.y * scalar)`.
+   - `__rmul__(self, scalar: float | int) -> "Vector2D"`: Supports reverse multiplication (`3 * v`).
+3. Comparison and Measurement Dunders:
+   - `__abs__(self) -> float`: Computes Euclidean magnitude `math.hypot(self.x, self.y)`.
+   - `__eq__(self, other: object) -> bool`: Checks equality using `math.isclose` for both `x` and `y`.
+   - `__lt__(self, other: "Vector2D") -> bool`: Compares vectors by magnitude (`abs(self) < abs(other)`),
+     enabling native sorting via `sorted()`.
+   - `__bool__(self) -> bool`: Truthy if magnitude > 0; returns `False` for the origin `(0.0, 0.0)`.
+4. Indexing Protocol:
+   - `__getitem__(self, index: int) -> float`: Allows index-based coordinate access:
+     `v[0]` yields `x`, `v[1]` yields `y`. Any other index raises an `IndexError`.
+
+Sample Input:
+v1 = Vector2D(3.0, 4.0)
+v2 = Vector2D(1.0, 2.0)
+v_origin = Vector2D(0.0, 0.0)
+
+v_sum = v1 + v2
+v_diff = v1 - v2
+v_scaled = v1 * 2.5
+v_rscaled = 3 * v2
+magnitude_v1 = abs(v1)
+
+vector_list = [Vector2D(10.0, 10.0), Vector2D(1.0, 1.0), Vector2D(3.0, 4.0)]
+sorted_vectors = sorted(vector_list)
+
+Expected Output:
+repr(v1): Vector2D(x=3.0, y=4.0)
+str(v1): (3.0, 4.0)
+v1 + v2: Vector2D(x=4.0, y=6.0)
+v1 - v2: Vector2D(x=2.0, y=2.0)
+v1 * 2.5: Vector2D(x=7.5, y=10.0)
+3 * v2: Vector2D(x=3.0, y=6.0)
+abs(v1): 5.0
+bool(v1): True
+bool(v_origin): False
+Index Access: v1[0] = 3.0, v1[1] = 4.0
+Sorted Vectors by Magnitude:
+[Vector2D(x=1.0, y=1.0), Vector2D(x=3.0, y=4.0), Vector2D(x=10.0, y=10.0)]
+
+Constraints & Edge Cases:
+- Adding or subtracting non-`Vector2D` types must return `NotImplemented` or raise `TypeError`.
+- Multiplying by a non-numeric type must return `NotImplemented` or raise `TypeError`.
+- Out-of-bounds indexing (e.g. `v[2]` or `v[-3]`) must raise `IndexError("Vector index out of range (0 or 1 only)")`.
+================================================================================
