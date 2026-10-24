@@ -1,0 +1,47 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 07 - EXCEPTION HANDLING
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a robust mathematical input evaluator `safe_compute_ratio(numerator_str: str, denominator_str: str) -> dict`
+demonstrating elementary `try...except` handling and targeted exception capture:
+1. Parsing & Computation Logic:
+   - Within a `try` block:
+     * Convert `numerator_str` to `float`.
+     * Convert `denominator_str` to `float`.
+     * Compute `ratio = numerator / denominator`.
+     * Return `{"status": "SUCCESS", "ratio": round(ratio, 4)}`.
+2. Targeted Exception Handlers:
+   - Handle string conversion failures with a dedicated `except ValueError as err:` block:
+     * Return `{"status": "ERROR", "error_type": "ValueError", "message": str(err)}`.
+   - Handle zero division with a dedicated `except ZeroDivisionError as err:` block:
+     * Return `{"status": "ERROR", "error_type": "ZeroDivisionError", "message": "Denominator cannot be zero"}`.
+3. Clean Exception Trapping:
+   - Ensure the function never raises unhandled exceptions to the caller during normal parsing or calculation,
+     returning a structured diagnostic dictionary instead.
+
+Sample Input:
+test1 = safe_compute_ratio("100", "4")
+test2 = safe_compute_ratio("75.5", "0")
+test3 = safe_compute_ratio("abc", "10")
+test4 = safe_compute_ratio("22", "7")
+
+Expected Output:
+Test 1 (100 / 4):
+{'status': 'SUCCESS', 'ratio': 25.0}
+
+Test 2 (75.5 / 0):
+{'status': 'ERROR', 'error_type': 'ZeroDivisionError', 'message': 'Denominator cannot be zero'}
+
+Test 3 ('abc' / 10):
+{'status': 'ERROR', 'error_type': 'ValueError', 'message': "could not convert string to float: 'abc'"}
+
+Test 4 (22 / 7):
+{'status': 'SUCCESS', 'ratio': 3.1429}
+
+Constraints & Edge Cases:
+- Do not use a bare `except:` or catch universal `Exception` here; handlers must target `ValueError` and `ZeroDivisionError` specifically.
+- Leading or trailing whitespace in numeric strings (e.g., `" 42 "`) should parse successfully as standard Python `float()` permits.
+================================================================================
