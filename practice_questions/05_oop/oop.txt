@@ -39,3 +39,57 @@ Constraints & Edge Cases:
 - Initial balance must be >= 0.0.
 - All monetary amounts should format with 2 decimal places.
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a `CloudServerNode` class to illustrate the
+operational distinctions between class variables and instance variables:
+1. Shared Class Variables:
+   - Maintain class-level state:
+     * `total_active_nodes = 0` (tracks count of currently operational nodes)
+     * `cluster_datacenter = "us-east-1"` (default shared datacenter region)
+     * `node_registry = []` (list referencing all active node instances)
+2. Instance Attributes:
+   - `__init__(self, node_id: str, cpu_cores: int, ram_gb: int)`:
+   - Store instance-specific attributes: `node_id`, `cpu_cores`, `ram_gb`, `is_online = True`.
+   - Automatically increment `CloudServerNode.total_active_nodes` and register `self`.
+3. Instance Decommissioning:
+   - Implement `terminate(self)`:
+   - Sets `is_online = False`, decrements `total_active_nodes`, and removes `self` from `node_registry`.
+4. Class Attribute Shadowing Gotcha:
+   - Rebind `node1.cluster_datacenter = "ap-south-1"` on an individual instance.
+   - Prove that this creates an instance-level attribute that shadows the class variable for `node1`,
+     while `CloudServerNode.cluster_datacenter` and other nodes remain unchanged.
+   - Mutate the shared class variable via `CloudServerNode.cluster_datacenter = "eu-central-1"`
+     and verify that unshadowed instances reflect the change immediately.
+
+Sample Input:
+node_a = CloudServerNode("node-01", 8, 32)
+node_b = CloudServerNode("node-02", 16, 64)
+node_c = CloudServerNode("node-03", 4, 16)
+node_b.terminate()
+node_a.cluster_datacenter = "ap-south-1"  # Shadowing
+
+Expected Output:
+Initial Cluster Status:
+- Active Nodes: 3
+- Node IDs: ['node-01', 'node-02', 'node-03']
+- Default Region: "us-east-1"
+
+After Terminating node-02:
+- Active Nodes: 2
+- Node IDs: ['node-01', 'node-03']
+
+Shadowing Verification:
+- node_a Region (Instance Override): "ap-south-1"
+- node_c Region (Inherited Class Default): "us-east-1"
+
+After Updating Class Region (CloudServerNode.cluster_datacenter = "eu-central-1"):
+- node_a Region: "ap-south-1" (Still shadowed)
+- node_c Region: "eu-central-1" (Reflects class update)
+
+Constraints & Edge Cases:
+- Terminating an already terminated node must raise a `RuntimeError("Node already offline")`.
+- `total_active_nodes` must never drop below 0.
+================================================================================
