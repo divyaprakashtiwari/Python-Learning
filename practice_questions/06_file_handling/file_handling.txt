@@ -153,3 +153,61 @@ Constraints & Edge Cases:
 - The fixed-width header must match the exact line character length on update to avoid displacing or clipping subsequent lines.
 - Updating header on a non-existent file in `'r+'` mode must catch `FileNotFoundError`.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a filesystem path inspection and security utility
+`ProjectAssetAuditor` using modern object-oriented `pathlib.Path`:
+1. Root Path Normalization:
+   - `__init__(self, root_directory: str | Path)`:
+     Resolves the provided path to its absolute canonical form (`Path(root_directory).resolve()`).
+     Validates that the target path exists and is a directory (`root.is_dir()`).
+     If non-existent or a file, raises `NotADirectoryError(f"Path '{root}' is not a valid directory")`.
+2. Recursive File Discovery & Auditing:
+   - `audit_extensions(self, target_extensions: tuple[str, ...]) -> list[dict]`:
+     Recursively searches through the root directory tree using `path.rglob("*")`.
+     Filters files matching the given extensions (e.g., `(".py", ".json", ".txt")`).
+     For each matching regular file (`file.is_file()`), extracts:
+     * `relative_path`: Path relative to root (`file.relative_to(self.root)`) as POSIX string.
+     * `stem`: File name without suffix.
+     * `suffix`: File extension (e.g. `".py"`).
+     * `parent_folder`: Immediate parent directory name.
+     * `size_bytes`: Integer byte size via `file.stat().st_size`.
+3. Mirror Backup Path Generator:
+   - `generate_backup_path(self, source_file: Path, backup_root: Path) -> Path`:
+     Calculates relative subpath of `source_file` from `self.root`, prepends `backup_root`,
+     and appends `".bak"` to the extension (e.g., `"src/app.py"` -> `"backups/src/app.py.bak"`).
+4. Path Traversal Security Guard:
+   - `safe_resolve_subpath(self, untrusted_relative_path: str) -> Path`:
+     Resolves the joined path `(self.root / untrusted_relative_path).resolve()`.
+     Verifies that the resolved path is strictly within `self.root` using `is_relative_to(self.root)`.
+     If it escapes (e.g., `"../../etc/passwd"`), raises `PermissionError("Path traversal attack detected")`.
+
+Sample Input:
+auditor = ProjectAssetAuditor("./workspace/sample_project")
+matched_assets = auditor.audit_extensions(target_extensions=(".py", ".txt"))
+backup_target = auditor.generate_backup_path(
+    Path("./workspace/sample_project/utils/helper.py"),
+    Path("./backups")
+)
+
+# Traversal exploit simulation:
+try:
+    auditor.safe_resolve_subpath("../../outside_secret.key")
+except PermissionError as err:
+    print("Caught Security Violation:", err)
+
+Expected Output:
+Auditor Root: /workspace/sample_project
+Found 2 matching assets:
+1. utils/helper.py | Size: 1048 bytes | Parent: utils
+2. config.txt      | Size: 256 bytes  | Parent: sample_project
+
+Backup Destination: backups/utils/helper.py.bak
+Caught Security Violation: Path traversal attack detected
+
+Constraints & Edge Cases:
+- All returned relative paths must use forward slashes (via `as_posix()`) for cross-platform consistency.
+- Paths pointing to symlinks pointing outside the root directory must be caught by traversal checks.
+================================================================================
