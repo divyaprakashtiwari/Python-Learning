@@ -268,3 +268,60 @@ Constraints & Edge Cases:
 - Both input and output CSV files must be handled with `newline=""` parameter as specified in PEP 305 to prevent phantom blank lines across platforms.
 - Commas inside quoted strings (e.g., `"Smith, Alice"`) must be properly parsed without splitting.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a transactional file editor context manager `TransactionalFileEditor`
+using `__enter__` and `__exit__` dunder methods to guarantee automatic rollback if an error occurs mid-edit:
+1. Context Manager Protocol:
+   - `__init__(self, filepath: str)`: Stores target path and backup path (`f"{filepath}.bak"`).
+   - `__enter__(self) -> "TransactionalFileEditor"`:
+     * If the target file exists, creates an exact binary backup copy at `f"{filepath}.bak"`.
+     * If the target file does not exist, marks a flag that creation is pending.
+     * Returns `self`.
+   - `__exit__(self, exc_type, exc_val, exc_tb) -> bool`:
+     * If `exc_type is not None` (an unhandled exception occurred within the `with` block):
+       - Triggers automatic rollback: restores original file from `.bak` (or deletes target if newly created).
+       - Cleans up backup file.
+       - Returns `False` to propagate the exception.
+     * If `exc_type is None` (block completed successfully):
+       - Commits transaction by removing the `.bak` staging file.
+2. Editing API on the Context Instance:
+   - `write_lines(self, lines: list[str]) -> None`: Overwrites or appends lines to target.
+   - `append_text(self, text: str) -> None`: Appends string to the working file.
+3. Generator Context Manager with `@contextlib.contextmanager`:
+   - Implement `@contextmanager def suppress_and_log_io_errors(logger_tag: str)`:
+     Yields execution; if an `OSError` or `FileNotFoundError` occurs, logs error message
+     and suppresses the exception so the calling program does not crash.
+
+Sample Input:
+# Scenario A: Successful transactional update
+with TransactionalFileEditor("config.ini") as editor:
+    editor.append_text("timeout = 60\n")
+    editor.append_text("retries = 3\n")
+
+# Scenario B: Failed transaction triggers automatic rollback
+try:
+    with TransactionalFileEditor("config.ini") as editor:
+        editor.append_text("corrupted_line = True\n")
+        raise RuntimeError("Simulated process crash during file update!")
+except RuntimeError as err:
+    print("Caught:", err)
+
+Expected Output:
+Scenario A:
+Backup created at: config.ini.bak
+Transaction committed successfully. Backup removed.
+
+Scenario B:
+Backup created at: config.ini.bak
+Exception encountered: RuntimeError('Simulated process crash during file update!')
+Rollback executed: Restored config.ini from config.ini.bak.
+Caught: Simulated process crash during file update!
+File content verified: Matches pre-transaction state without corrupted_line.
+
+Constraints & Edge Cases:
+- Rollback must be completely resilient: original file content and permissions must be restored.
+- If backup creation fails in `__enter__`, `__exit__` must not attempt to restore non-existent backup.
+================================================================================
