@@ -194,3 +194,59 @@ Constraints & Edge Cases:
 - `charger_power_kw <= 0` must raise `ValueError("Charger power must be positive")`.
 - Method overrides must properly leverage `super()` rather than duplicating arithmetic.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a multi-channel notification engine to demonstrate
+polymorphism and duck typing without rigid class inheritance hierarchies:
+1. Distinct Service Providers (Duck Typing):
+   - `EmailService(smtp_host: str, port: int)`:
+     Implements `send(self, recipient: str, message: str) -> dict`:
+     Returns `{"channel": "EMAIL", "recipient": recipient, "status": "SENT", "server": f"{smtp_host}:{port}"}`.
+   - `SMSService(gateway_url: str, sender_id: str)`:
+     Implements `send(self, recipient: str, message: str) -> dict`:
+     If `len(message) > 160`, raises a `ValueError("SMS message exceeds 160 character limit")`.
+     Returns `{"channel": "SMS", "recipient": recipient, "status": "SENT", "gateway": gateway_url}`.
+   - `WebhookService(endpoint_url: str, auth_token: str)`:
+     Implements `send(self, recipient: str, message: str) -> dict`:
+     Returns `{"channel": "WEBHOOK", "target": recipient, "status": "POSTED", "endpoint": endpoint_url}`.
+2. Uniform Dispatcher `NotificationDispatcher`:
+   - `__init__(self)`:
+     Initializes an internal registry list of notification channels.
+   - `register_channel(self, channel_obj)`:
+     Verifies duck-typing conformance: checks that `channel_obj` has a callable attribute
+     named `send`. If missing or not callable, raises `TypeError("Invalid channel: must implement callable send()")`.
+   - `broadcast(self, recipient: str, message: str) -> list[dict]`:
+     Iterates through all registered channels, invokes `.send(recipient, message)` polymorphically,
+     catches and records any channel-specific errors cleanly, and returns a list of result receipts.
+
+Sample Input:
+dispatcher = NotificationDispatcher()
+email_svc = EmailService("smtp.corp.net", 587)
+sms_svc = SMSService("https://api.sms-relay.io", "ALERTS")
+webhook_svc = WebhookService("https://hooks.slack.com/services/XYZ", "secret-token")
+
+dispatcher.register_channel(email_svc)
+dispatcher.register_channel(sms_svc)
+dispatcher.register_channel(webhook_svc)
+
+receipts = dispatcher.broadcast("admin@corp.net", "Critical: High memory utilization detected!")
+
+Expected Output:
+Broadcast Results (3 channels dispatched):
+1. [EMAIL] To: admin@corp.net | Status: SENT | Server: smtp.corp.net:587
+2. [SMS] To: admin@corp.net | Status: SENT | Gateway: https://api.sms-relay.io
+3. [WEBHOOK] Target: admin@corp.net | Status: POSTED | Endpoint: https://hooks.slack.com/services/XYZ
+
+Attempting invalid registration (int object 42):
+Caught Expected Error: TypeError("Invalid channel: must implement callable send()")
+
+Attempting SMS message with 170 characters:
+SMS Failed: ValueError("SMS message exceeds 160 character limit")
+Dispatch continues without crashing other channels.
+
+Constraints & Edge Cases:
+- The dispatcher must not use `isinstance()` checks against specific provider classes; it must strictly inspect capability via duck typing (`callable(getattr(..., 'send', None))`).
+- If an individual channel fails during broadcast, the dispatcher should record `{"status": "FAILED", "error": str(err)}` for that channel and proceed with the remaining channels.
+================================================================================
