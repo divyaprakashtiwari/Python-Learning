@@ -47,3 +47,56 @@ Constraints & Edge Cases:
 - Empty log files must return `total_lines: 0`, all zero counts, and an empty list of IPs.
 - Blank/empty lines or whitespace-only lines in the log must be ignored.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a safe, atomic audit report writer `generate_audit_report(target_filepath: str, records: list[dict], overwrite: bool = False) -> int`:
+1. Overwrite Protection:
+   - Check if `target_filepath` already exists. If it exists and `overwrite is False`,
+     raise `FileExistsError(f"Target '{target_filepath}' already exists and overwrite is False")`.
+2. Atomic Temporary File Pattern:
+   - To guarantee data integrity against partial writes or mid-execution crashes, write all output
+     first to a sibling temporary file (e.g., `f"{target_filepath}.tmp"`).
+   - Use `try...finally` or equivalent cleanup to guarantee that the `.tmp` staging file is removed
+     if an error or exception occurs before completion.
+3. Writing Content & Structuring Output:
+   - Open the staging file with UTF-8 encoding.
+   - Format and write an audit report header:
+     `"=== SYSTEM AUDIT REPORT ==="` and column headers: `"TIMESTAMP | EVENT_ID | SEVERITY | DESCRIPTION\n"`.
+   - Prepare lines from `records` and write them efficiently using `file.writelines()` with newline characters.
+   - Flush and sync buffered data to ensure all bytes reach disk before atomic rename.
+4. Atomic Promotion:
+   - Atomically replace the temporary file to the final destination path using `os.replace()`.
+   - Return the count of audit records written.
+
+Sample Input:
+audit_data = [
+    {"timestamp": "2026-10-24 10:15:00", "id": "EVT-101", "severity": "LOW", "desc": "Config reloaded"},
+    {"timestamp": "2026-10-24 10:17:30", "id": "EVT-102", "severity": "HIGH", "desc": "TLS cert expired"},
+    {"timestamp": "2026-10-24 10:20:10", "id": "EVT-103", "severity": "CRITICAL", "desc": "Kernel panic avoided"}
+]
+
+count = generate_audit_report("reports/audit_2026.log", audit_data, overwrite=True)
+
+Expected Output:
+Staging written to: reports/audit_2026.log.tmp
+Atomic commit completed: reports/audit_2026.log
+Total Audit Records Written: 3
+
+# Generated File Content:
+=== SYSTEM AUDIT REPORT ===
+TIMESTAMP           | EVENT_ID | SEVERITY | DESCRIPTION
+2026-10-24 10:15:00 | EVT-101  | LOW      | Config reloaded
+2026-10-24 10:17:30 | EVT-102  | HIGH     | TLS cert expired
+2026-10-24 10:20:10 | EVT-103  | CRITICAL | Kernel panic avoided
+=== END OF REPORT ===
+
+Overwrite Conflict Test:
+generate_audit_report("reports/audit_2026.log", audit_data, overwrite=False)
+Caught Expected: FileExistsError("Target 'reports/audit_2026.log' already exists and overwrite is False")
+
+Constraints & Edge Cases:
+- Parent directories for `target_filepath` must be created if they do not exist (`os.makedirs(..., exist_ok=True)`).
+- If writing fails midway (e.g. malformed record or disk write simulation error), the original target file must remain intact and the `.tmp` staging file must be purged.
+================================================================================
