@@ -92,4 +92,55 @@ After Updating Class Region (CloudServerNode.cluster_datacenter = "eu-central-1"
 Constraints & Edge Cases:
 - Terminating an already terminated node must raise a `RuntimeError("Node already offline")`.
 - `total_active_nodes` must never drop below 0.
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements an `EmployeeRecord` class demonstrating the
+distinct roles and implementations of instance methods, `@classmethod` factory methods,
+and `@staticmethod` utility functions:
+1. Core Class & Instance Attributes:
+   - `__init__(self, emp_id: str, name: str, base_salary: float, department: str)`:
+     Initializes an employee record. Validates `emp_id` using the static validator.
+   - Instance Method:
+     * `calculate_annual_bonus(self, performance_multiplier: float) -> float`:
+       Computes bonus as `base_salary * (performance_multiplier / 100.0)`.
+     * `get_summary(self) -> str`:
+       Returns `"Employee[ID: <emp_id>, Name: <name>, Dept: <department>, Base: $<base_salary>]"`.
+2. Alternative Constructors with `@classmethod`:
+   - `from_csv_row(cls, csv_text: str) -> "EmployeeRecord"`:
+     Accepts a comma-delimited string (e.g., `"EMP101,Diana Prince,85000.0,Security"`),
+     strips whitespace, casts numeric fields, and returns a new instance.
+   - `from_dict(cls, data_dict: dict) -> "EmployeeRecord"`:
+     Extracts corresponding keys from a dictionary and returns a new instance.
+3. Utility & Validation with `@staticmethod`:
+   - `is_valid_emp_id(emp_id: str) -> bool`:
+     Validates whether `emp_id` begins with prefix `"EMP-"` followed by exactly 4 digits (e.g., `"EMP-4092"`).
+   - `calculate_tax_bracket(annual_income: float) -> str`:
+     Returns tax tier: `"TIER_1"` for <= $50,000, `"TIER_2"` for $50,001 - $100,000,
+     and `"TIER_3"` for > $100,000. Does not access class or instance state.
+
+Sample Input:
+emp1 = EmployeeRecord("EMP-1001", "Alice Vance", 72000.0, "Engineering")
+emp2 = EmployeeRecord.from_csv_row("EMP-2002, Bob Martinez , 95000.0 , Data")
+emp3 = EmployeeRecord.from_dict({
+    "emp_id": "EMP-3003",
+    "name": "Charlie King",
+    "base_salary": 115000.0,
+    "department": "Finance"
+})
+
+Expected Output:
+Employee 1 Summary: Employee[ID: EMP-1001, Name: Alice Vance, Dept: Engineering, Base: $72000.00]
+Employee 1 Bonus (Rating 15%): $10800.00
+Employee 2 from CSV: Employee[ID: EMP-2002, Name: Bob Martinez, Dept: Data, Base: $95000.00]
+Employee 3 from Dict: Employee[ID: EMP-3003, Name: Charlie King, Dept: Finance, Base: $115000.00]
+Tax Bracket for $115000.00: TIER_3
+ID Validation Test ("INVALID-99"): False
+ID Validation Test ("EMP-4092"): True
+
+Constraints & Edge Cases:
+- Invalid `emp_id` in constructor must raise `ValueError("Invalid employee ID format")`.
+- CSV strings with leading or trailing whitespace must be properly trimmed.
+- Malformed CSV strings with fewer or more than 4 tokens must raise `ValueError("Malformed CSV row")`.
 ================================================================================
