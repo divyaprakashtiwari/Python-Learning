@@ -497,3 +497,76 @@ Constraints & Edge Cases:
 - `humidity_pct` must strictly be within `[0.0, 100.0]`.
 - All conversions between Fahrenheit and Celsius must maintain numerical consistency within standard float tolerances.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise e-commerce checkout and settlement system
+applying the "Favor Object Composition Over Class Inheritance" design principle, Dependency
+Injection, and the Strategy Design Pattern:
+1. Pluggable Payment Strategies:
+   - Define a shared contract (either via ABC `PaymentStrategy` or duck typing) with `process_payment(self, amount: float) -> dict`.
+   - Implement concrete strategy `CreditCardPayment(card_number: str, cvv: str)`:
+     * Validates that `card_number` contains 16 numeric digits and `cvv` contains 3 digits.
+     * Computes a 2.5% card processing fee on top of `amount`.
+     * Returns receipt dict: `{"method": "CREDIT_CARD", "base_amount": amount, "fee": fee, "total_charged": amount + fee, "status": "APPROVED"}`.
+   - Implement concrete strategy `CryptoPayment(wallet_address: str)`:
+     * Validates that `wallet_address` starts with `"0x"` and is 42 characters long.
+     * Computes a flat $4.50 network gas fee regardless of amount.
+     * Returns receipt dict: `{"method": "CRYPTO", "base_amount": amount, "fee": 4.50, "total_charged": amount + 4.50, "status": "CONFIRMED"}`.
+   - Implement concrete strategy `PayPalPayment(email: str)`:
+     * Validates standard email structure (contains `@` and `.`).
+     * Computes a 3.0% variable fee + $0.30 fixed fee.
+     * Returns receipt dict: `{"method": "PAYPAL", "base_amount": amount, "fee": fee, "total_charged": amount + fee, "status": "SETTLED"}`.
+2. Composed Domain Components:
+   - `OrderItem(sku: str, title: str, unit_price: float, quantity: int)`:
+     * Property `subtotal -> float`: Returns `unit_price * quantity`.
+     * Validates that `quantity >= 1` and `unit_price > 0`.
+3. Orchestrator Engine `Order`:
+   - `__init__(self, order_id: str, customer_id: str, payment_strategy)`:
+     * Composes an empty list of `OrderItem` objects.
+     * Injects the payment strategy via constructor dependency injection.
+   - `add_item(self, item: OrderItem) -> None`: Appends item to order.
+   - `set_payment_strategy(self, new_strategy) -> None`:
+     * Dynamically swaps the payment strategy at runtime.
+   - `calculate_subtotal(self) -> float`: Sums up all item subtotals.
+   - `checkout(self) -> dict`:
+     * Checks that order has at least 1 item (otherwise raises `ValueError("Cannot checkout empty order")`).
+     * Injects subtotal into `self.payment_strategy.process_payment(subtotal)`.
+     * Marks order as `is_paid = True` and returns an invoice combining items, subtotal, and payment receipt.
+
+Sample Input:
+item1 = OrderItem("SKU-101", "Mechanical Keyboard", 120.0, 1)
+item2 = OrderItem("SKU-202", "USB-C Cable", 15.0, 2)
+
+order = Order("ORD-9001", "CUST-42", CreditCardPayment("4111222233334444", "123"))
+order.add_item(item1)
+order.add_item(item2)
+
+# Subtotal: (120.0 * 1) + (15.0 * 2) = $150.00
+# Swap strategy to Crypto right before payment:
+order.set_payment_strategy(CryptoPayment("0x5aAeb6053F3E94C9b9A09f33669435E7Ef1bEAed"))
+invoice = order.checkout()
+
+Expected Output:
+Order ID: ORD-9001
+Items Ordered:
+- Mechanical Keyboard (x1): $120.00
+- USB-C Cable (x2): $30.00
+Order Subtotal: $150.00
+Payment Strategy: CRYPTO
+Network Fee: $4.50
+Total Billed: $154.50
+Payment Status: CONFIRMED
+Order Checkout Status: COMPLETED
+
+Validation Tests:
+- Invalid Card Number ("1234"): ValueError("Credit card must be 16 digits")
+- Empty Order Checkout: ValueError("Cannot checkout empty order")
+- Double Checkout Attempt: RuntimeError("Order is already paid and completed")
+
+Constraints & Edge Cases:
+- Empty order checkout must raise `ValueError`.
+- Checking out an already paid order must raise `RuntimeError`.
+- Replacing payment strategy with an object lacking `process_payment` must raise `TypeError`.
+================================================================================
