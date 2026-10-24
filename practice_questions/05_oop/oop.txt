@@ -250,3 +250,68 @@ Constraints & Edge Cases:
 - The dispatcher must not use `isinstance()` checks against specific provider classes; it must strictly inspect capability via duck typing (`callable(getattr(..., 'send', None))`).
 - If an individual channel fails during broadcast, the dispatcher should record `{"status": "FAILED", "error": str(err)}` for that channel and proceed with the remaining channels.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a `SecureUserSession` class to demonstrate data
+encapsulation, private vs. protected attribute conventions, and Python name mangling:
+1. Attribute Visibility & Conventions:
+   - `username: str` (Public: open access)
+   - `_session_timeout_seconds: int = 3600` (Protected convention: intended for internal or subclass use)
+   - `__auth_token: str` (Private: name-mangled to prevent accidental outside overwrite)
+   - `__password_hash: str` (Private: stores simulated hashed secret)
+   - `__failed_attempts: int = 0` (Private: internal counter)
+2. Initialization & Hashing:
+   - `__init__(self, username: str, raw_password: str)`:
+     Generates a unique `__auth_token` (e.g., using `uuid4().hex` or pseudo-random hex),
+     stores password using a simple hashing function (e.g., `hashlib.sha256(raw_password.encode()).hexdigest()`),
+     and sets `__failed_attempts = 0`.
+3. Authentication & Controlled Access:
+   - `verify_password(self, candidate_password: str) -> bool`:
+     Hashes candidate and compares against `__password_hash`. If match, resets `__failed_attempts = 0`
+     and returns `True`. If mismatch, increments `__failed_attempts`. If `__failed_attempts >= 3`,
+     locks session and raises `PermissionError("Account locked due to consecutive failed attempts")`.
+   - `get_masked_token(self) -> str`:
+     Returns only the first 4 characters followed by `"****"` (e.g., `"a1b2****"`).
+   - `rotate_token(self, current_password: str) -> str`:
+     Requires valid password verification before generating and returning a new `__auth_token`.
+4. Demonstration of Name Mangling:
+   - Demonstrate that `session.__auth_token` raises an `AttributeError`.
+   - Demonstrate that the attribute is physically stored under the mangled key
+     `session._SecureUserSession__auth_token`.
+
+Sample Input:
+session = SecureUserSession("dev_admin", "SuperSecret99!")
+auth_success = session.verify_password("SuperSecret99!")
+token_display = session.get_masked_token()
+new_token = session.rotate_token("SuperSecret99!")
+
+# Attempt direct private access:
+try:
+    print(session.__auth_token)
+except AttributeError as err:
+    print("Caught:", err)
+
+# Inspect via name mangling:
+mangled_token = session._SecureUserSession__auth_token
+
+Expected Output:
+User: dev_admin
+Authentication with Valid Password: True
+Masked Session Token: a1b2****
+Rotated Token Generated: Successfully Updated
+Direct Private Access (session.__auth_token):
+Caught: 'SecureUserSession' object has no attribute '__auth_token'
+Mangled Private Attribute Access (_SecureUserSession__auth_token): Verified Accessible
+
+Failed Attempts Lockout Test:
+Attempt 1 (Bad Pass): False
+Attempt 2 (Bad Pass): False
+Attempt 3 (Bad Pass): Caught PermissionError("Account locked due to consecutive failed attempts")
+
+Constraints & Edge Cases:
+- Account lockout must trigger on the 3rd failed attempt.
+- Raw password must never be stored in plain text anywhere in instance attributes.
+- Rotating token with an invalid password must raise `PermissionError("Invalid password; token rotation aborted")`.
+================================================================================
