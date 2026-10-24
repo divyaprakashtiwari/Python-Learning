@@ -1,0 +1,49 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 06 - FILE HANDLING
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that creates a text log inspection utility `analyze_server_log(filepath: str) -> dict`:
+1. File Navigation & Inspection:
+   - Safely open the target file using context management (`with open(..., mode="r", encoding="utf-8")`).
+   - Demonstrate cursor positioning using `tell()` and `seek()`:
+     * Check initial stream position with `file.tell()` (verifying it is 0).
+     * Read the first line using `file.readline()` to inspect header/preview.
+     * Rewind the stream cursor back to byte offset 0 using `file.seek(0)`.
+2. Metric Parsing & Extraction:
+   - Stream through the file line by line:
+     * Count total valid non-empty log lines.
+     * Track occurrences of log levels: `"INFO"`, `"WARNING"`, `"ERROR"`, and `"CRITICAL"`.
+     * Extract client IPv4 addresses (e.g. `"192.168.1.10"`) and collect unique occurrences.
+3. Return Summary Dictionary:
+   - Return a dictionary with structure:
+     `{"total_lines": int, "counts": {"INFO": int, "WARNING": int, "ERROR": int, "CRITICAL": int}, "unique_ips": list[str]}`.
+
+Sample Input:
+# Contents of "server.log":
+# 2026-10-24 10:00:01 INFO 192.168.1.10 System started
+# 2026-10-24 10:00:15 WARNING 10.0.0.5 High memory usage
+# 2026-10-24 10:01:22 ERROR 192.168.1.10 Database connection failed
+# 2026-10-24 10:02:05 INFO 172.16.0.2 User login success
+
+result = analyze_server_log("server.log")
+
+Expected Output:
+Cursor at start: 0
+Header preview: '2026-10-24 10:00:01 INFO 192.168.1.10 System started\n'
+Cursor reset: 0
+Log Analysis Summary:
+- Total Lines: 4
+- INFO Count: 2
+- WARNING Count: 1
+- ERROR Count: 1
+- CRITICAL Count: 0
+- Unique Client IPs: ['10.0.0.5', '172.16.0.2', '192.168.1.10']
+
+Constraints & Edge Cases:
+- Missing file must raise `FileNotFoundError("Log file not found")`.
+- Empty log files must return `total_lines: 0`, all zero counts, and an empty list of IPs.
+- Blank/empty lines or whitespace-only lines in the log must be ignored.
+================================================================================
