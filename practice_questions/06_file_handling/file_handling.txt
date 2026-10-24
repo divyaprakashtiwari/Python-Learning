@@ -211,3 +211,60 @@ Constraints & Edge Cases:
 - All returned relative paths must use forward slashes (via `as_posix()`) for cross-platform consistency.
 - Paths pointing to symlinks pointing outside the root directory must be caught by traversal checks.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise payroll CSV transformation pipeline
+`process_payroll_csv(input_csv_path: str, output_csv_path: str) -> dict` utilizing
+Python's standard `csv.DictReader` and `csv.DictWriter`:
+1. CSV Parsing with `csv.DictReader`:
+   - Open the input file with `newline=""` and `encoding="utf-8"`.
+   - Strip leading/trailing whitespace from field headers and row string values.
+   - Expect columns: `emp_id`, `full_name`, `department`, `hours_worked`, `hourly_rate`.
+2. Computational Logic & Validation:
+   - Convert `hours_worked` and `hourly_rate` to floats.
+   - If either value is negative, raise a `ValueError("Hours and rates must be non-negative")`.
+   - Calculate gross pay with overtime support:
+     * Regular hours (up to 40.0) paid at `hourly_rate`.
+     * Overtime hours (> 40.0) paid at `1.5 * hourly_rate`.
+   - Compute standard tax deduction of 20% (`gross_pay * 0.20`).
+   - Compute net pay: `gross_pay - tax_deduction`.
+3. Output Export with `csv.DictWriter`:
+   - Write transformed records to `output_csv_path` with `newline=""`, `encoding="utf-8"`.
+   - Target headers: `["emp_id", "full_name", "department", "gross_pay", "tax_withheld", "net_pay"]`.
+   - Ensure numeric currency amounts are formatted to 2 decimal places.
+   - Explicitly write the header row using `writer.writeheader()`.
+4. Return Metrics:
+   - Return summary dictionary:
+     `{"records_processed": int, "total_gross": float, "total_net": float}`.
+
+Sample Input:
+# Input CSV file ("raw_timesheets.csv"):
+# emp_id, full_name, department, hours_worked, hourly_rate
+# E101, Alice Smith , Engineering , 40.0 , 50.00
+# E102, Bob Jones   , Support     , 45.0 , 30.00
+# E103, Charlie Ray , Marketing   , 35.0 , 40.00
+
+summary = process_payroll_csv("raw_timesheets.csv", "processed_payroll.csv")
+
+Expected Output:
+Processed 3 payroll records.
+Summary:
+- Total Gross Payout: $3825.00
+- Total Net Payout:   $3060.00
+
+# Generated CSV File ("processed_payroll.csv"):
+emp_id,full_name,department,gross_pay,tax_withheld,net_pay
+E101,Alice Smith,Engineering,2000.00,400.00,1600.00
+E102,Bob Jones,Support,1425.00,285.00,1140.00
+E103,Charlie Ray,Marketing,1400.00,280.00,1120.00
+
+Validation Tests:
+- Negative hours input: ValueError("Hours and rates must be non-negative")
+- Missing required column (e.g. absent `hourly_rate`): KeyError("Missing required column in CSV: 'hourly_rate'")
+
+Constraints & Edge Cases:
+- Both input and output CSV files must be handled with `newline=""` parameter as specified in PEP 305 to prevent phantom blank lines across platforms.
+- Commas inside quoted strings (e.g., `"Smith, Alice"`) must be properly parsed without splitting.
+================================================================================
