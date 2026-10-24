@@ -373,3 +373,61 @@ Constraints & Edge Cases:
 - Multiplying by a non-numeric type must return `NotImplemented` or raise `TypeError`.
 - Out-of-bounds indexing (e.g. `v[2]` or `v[-3]`) must raise `IndexError("Vector index out of range (0 or 1 only)")`.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an abstract persistence framework using Python's `abc` module
+(`ABC`, `@abstractmethod`) to enforce interface contracts for heterogeneous storage engines:
+1. Abstract Base Class `DataStorageEngine(ABC)`:
+   - Define abstract methods that all concrete storage engines must implement:
+     * `@abstractmethod connect(self) -> None`: Establishes connection / verifies storage target.
+     * `@abstractmethod save(self, key: str, payload: dict) -> bool`: Persists payload under `key`.
+     * `@abstractmethod load(self, key: str) -> dict | None`: Retrieves dictionary by `key`, or `None` if absent.
+     * `@abstractmethod delete(self, key: str) -> bool`: Removes record by `key`. Returns `True` if found and deleted.
+   - Concrete Template Method:
+     * `batch_save(self, items: dict[str, dict]) -> int`:
+       Iterates through key-payload pairs, invokes `self.save(k, v)`, and returns the count of successful saves.
+2. Abstract Contract Enforcement:
+   - Create an incomplete class `IncompleteEngine(DataStorageEngine)` that omits `delete`.
+   - Demonstrate that attempting to instantiate `IncompleteEngine()` fails immediately with a `TypeError`.
+3. Concrete Implementations:
+   - `InMemoryStorageEngine(DataStorageEngine)`:
+     * Initializes an internal dict `_store = {}`.
+     * Implements `connect()`, `save()`, `load()`, and `delete()` fully using in-memory dictionary operations.
+   - `CacheBackedStorageEngine(DataStorageEngine)`:
+     * Accepts a primary `DataStorageEngine` and an in-memory cache dict.
+     * Implements `load()` with a read-through cache strategy (checks cache first; on miss, fetches from primary and warms cache).
+     * Implements `save()` writing to both cache and primary.
+
+Sample Input:
+memory_engine = InMemoryStorageEngine()
+memory_engine.connect()
+memory_engine.batch_save({
+    "user:1": {"name": "Alice", "role": "Engineer"},
+    "user:2": {"name": "Bob", "role": "Architect"}
+})
+
+user1 = memory_engine.load("user:1")
+deleted = memory_engine.delete("user:2")
+missing = memory_engine.load("user:2")
+
+# Contract enforcement check:
+try:
+    incomplete = IncompleteEngine()
+except TypeError as err:
+    print("Caught instantiation error:", err)
+
+Expected Output:
+InMemory Storage Connected Successfully.
+Batch Saved: 2 records.
+Retrieved user:1: {'name': 'Alice', 'role': 'Engineer'}
+Deleted user:2: True
+Retrieved user:2 (post-delete): None
+Caught instantiation error: Can't instantiate abstract class IncompleteEngine with abstract method delete
+
+Constraints & Edge Cases:
+- Direct instantiation of `DataStorageEngine()` must raise `TypeError`.
+- `save()` must reject non-string keys by raising a `TypeError("Key must be a string")`.
+- `load()` must return `None` rather than raising a KeyError when a key does not exist.
+================================================================================
