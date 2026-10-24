@@ -325,3 +325,65 @@ Constraints & Edge Cases:
 - Rollback must be completely resilient: original file content and permissions must be restored.
 - If backup creation fails in `__enter__`, `__exit__` must not attempt to restore non-existent backup.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a binary asset analyzer and cryptographic masking tool
+`BinaryAssetInspector` using binary stream modes (`'rb'` and `'wb'`) and Python's `struct` module:
+1. Magic Byte Signature Identification:
+   - `identify_file_type(filepath: str) -> str`:
+     Opens the file with `mode="rb"` and inspects the leading bytes against known binary headers:
+     * PNG: Starts with `b"\x89PNG\r\n\x1a\n"` (8 bytes) -> returns `"PNG"`
+     * JPEG: Starts with `b"\xff\xd8\xff"` (3 bytes) -> returns `"JPEG"`
+     * GIF: Starts with `b"GIF87a"` or `b"GIF89a"` (6 bytes) -> returns `"GIF"`
+     * PDF: Starts with `b"%PDF-"` (5 bytes) -> returns `"PDF"`
+     * Any other prefix -> returns `"UNKNOWN"`
+2. Structured Binary Parsing (PNG Header Extraction):
+   - `parse_png_dimensions(filepath: str) -> dict`:
+     If verified as PNG, seeks to byte offset 16 (start of the IHDR chunk width and height fields).
+     Uses `struct.unpack(">II", file.read(8))` to unpack two big-endian 32-bit unsigned integers
+     representing image pixel width and height.
+     Returns `{"format": "PNG", "width": width, "height": height, "size_bytes": file_size}`.
+3. Stream-Based XOR Binary Obfuscation:
+   - `xor_cipher_file(source_path: str, output_path: str, key_byte: int) -> int`:
+     Opens `source_path` in `'rb'` and `output_path` in `'wb'`.
+     Streams the binary data in chunks (e.g. 4096 bytes per buffer).
+     Applies bitwise XOR (`byte ^ key_byte`) to each byte using `bytes([b ^ key_byte for b in chunk])`
+     or a mutable `bytearray`.
+     Writes ciphered chunks to `output_path` and returns total bytes processed.
+   - Prove idempotency: running `xor_cipher_file` again on the ciphered output with the same key
+     restores the original binary file byte-for-byte.
+
+Sample Input:
+# Create a synthetic 24-byte PNG stub:
+# Signature (8 bytes) + Chunk Len (4 bytes) + "IHDR" (4 bytes) + Width=800 (4 bytes) + Height=600 (4 bytes)
+png_bytes = (
+    b"\x89PNG\r\n\x1a\n"
+    b"\x00\x00\x00\x0d"
+    b"IHDR"
+    b"\x00\x00\x03\x20"  # 800 in big-endian hex
+    b"\x00\x00\x02\x58"  # 600 in big-endian hex
+)
+
+inspector = BinaryAssetInspector()
+file_type = inspector.identify_file_type("sample.png")
+meta = inspector.parse_png_dimensions("sample.png")
+inspector.xor_cipher_file("sample.png", "sample.png.enc", key_byte=0xAA)
+inspector.xor_cipher_file("sample.png.enc", "sample_restored.png", key_byte=0xAA)
+
+Expected Output:
+Detected File Type: PNG
+PNG Metadata:
+- Width: 800 px
+- Height: 600 px
+- Size: 24 bytes
+Obfuscation: Processed 24 bytes with key 0xAA.
+Decryption: Processed 24 bytes with key 0xAA.
+Binary Identity Verification (Original == Restored): True
+
+Constraints & Edge Cases:
+- Files smaller than signature length must return `"UNKNOWN"` without throwing index/EOF errors.
+- `key_byte` must be an integer between 0 and 255; values outside must raise `ValueError("Key must be a single byte (0-255)")`.
+- Chunk reading must handle files of arbitrary size without loading the entire payload into RAM at once.
+================================================================================
