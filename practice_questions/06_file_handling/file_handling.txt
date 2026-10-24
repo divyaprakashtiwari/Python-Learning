@@ -387,3 +387,52 @@ Constraints & Edge Cases:
 - `key_byte` must be an integer between 0 and 255; values outside must raise `ValueError("Key must be a single byte (0-255)")`.
 - Chunk reading must handle files of arbitrary size without loading the entire payload into RAM at once.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a memory-bounded streaming data engine `LargeFileStreamEngine`
+capable of processing multi-gigabyte files without exceeding a fixed RAM footprint:
+1. Generator-Based Line Streaming:
+   - `stream_grep(filepath: str, pattern: str, case_sensitive: bool = False) -> Iterator[tuple[int, str]]`:
+     Yields `(line_number, stripped_line)` for every line matching `pattern`.
+     Must use lazy line iteration (`for line_num, line in enumerate(file, start=1): ...`) rather than
+     `file.readlines()` or `file.read().splitlines()`.
+2. Bounded Chunk Digest Computation:
+   - `compute_file_sha256(filepath: str, chunk_size: int = 65536) -> str`:
+     Initializes `hashlib.sha256()`.
+     Streams the file in binary chunks using `iter(lambda: file.read(chunk_size), b"")`.
+     Updates the hasher incrementally and returns the 64-character hex digest string.
+3. Rolling Window Spike Detector:
+   - `detect_error_spikes(filepath: str, window_size: int = 10, spike_threshold: int = 3) -> list[dict]`:
+     Using a fixed-capacity buffer (`collections.deque(maxlen=window_size)`), slides over the file line-by-line.
+     Detects any sequence of `window_size` consecutive lines where occurrences of token `"ERROR"`
+     reach or exceed `spike_threshold`.
+     Records and returns non-overlapping alert blocks:
+     `[{"window_end_line": int, "error_count": int, "recent_errors": list[str]}]`.
+
+Sample Input:
+# Simulation log stream with 15 lines where lines 7, 8, 9 contain ERROR:
+engine = LargeFileStreamEngine()
+grep_results = list(engine.stream_grep("gigantic_server.log", pattern="DATABASE", case_sensitive=False))
+file_hash = engine.compute_file_sha256("gigantic_server.log", chunk_size=1024)
+spike_alerts = engine.detect_error_spikes("gigantic_server.log", window_size=5, spike_threshold=3)
+
+Expected Output:
+Pattern Matches Found: 2
+- Line 3: 2026-10-24 12:00:10 INFO Connecting to Database cluster
+- Line 8: 2026-10-24 12:00:25 ERROR Database connection pool exhausted
+
+SHA-256 Digest (64KB chunks):
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+
+Spike Alert Detected:
+- Window End Line: 9
+- Error Count in Window: 3
+- Trigger: Error count (3) >= threshold (3)
+
+Constraints & Edge Cases:
+- Memory footprint must remain O(1) relative to total file size (proportional only to `chunk_size` or `window_size`).
+- Non-existent files must raise `FileNotFoundError`.
+- `chunk_size` <= 0 must raise `ValueError("Chunk size must be strictly positive")`.
+================================================================================
