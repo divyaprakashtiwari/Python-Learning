@@ -436,3 +436,69 @@ Constraints & Edge Cases:
 - Non-existent files must raise `FileNotFoundError`.
 - `chunk_size` <= 0 must raise `ValueError("Chunk size must be strictly positive")`.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an ephemeral execution and artifact staging engine
+`EphemeralSandboxEngine` leveraging Python's standard `tempfile` module:
+1. Isolated Build Workspace (`tempfile.TemporaryDirectory`):
+   - `execute_isolated_task(file_manifest: dict[str, str], task_callback: Callable[[Path], dict]) -> dict`:
+     * Spawns an isolated directory using `tempfile.TemporaryDirectory(prefix="sandbox_run_")`.
+     * Writes all specified files from `file_manifest` (mapping relative path -> text content).
+     * Invokes `task_callback(Path(temp_dir_path))` and stores the result.
+     * Exits context and explicitly validates that the directory no longer exists on disk
+       (`Path(temp_dir_path).exists() == False`), ensuring no filesystem debris remains.
+2. In-Memory to Disk Spooling (`tempfile.SpooledTemporaryFile`):
+   - `buffer_incoming_stream(byte_stream: Iterable[bytes], rollover_threshold_bytes: int = 2048) -> dict`:
+     * Creates a `tempfile.SpooledTemporaryFile(max_size=rollover_threshold_bytes, mode="w+b")`.
+     * Iterates over `byte_stream`, writing chunks into the spool.
+     * Inspects whether the spool is still residing in RAM (`isinstance(spool._file, io.BytesIO)`)
+       or has automatically rolled over to an OS filesystem disk file.
+     * Rewinds with `spool.seek(0)` and computes total byte size and MD5 hash.
+3. Named File Interop for Subprocesses:
+   - `stage_transient_script(script_body: str, suffix: str = ".py") -> str`:
+     * Generates a `tempfile.NamedTemporaryFile(mode="w", suffix=suffix, delete=False, encoding="utf-8")`.
+     * Writes script content, flushes and closes handle, and returns the path string so an external
+       runtime or interpreter can invoke it.
+     * Uses a `try...finally` cleanup wrapper function `run_and_cleanup_script(script_body)` to ensure
+       the unmanaged temporary file is removed immediately after use.
+
+Sample Input:
+engine = EphemeralSandboxEngine()
+
+# Task 1: TemporaryDirectory execution
+manifest = {
+    "config.json": '{"env": "test", "threads": 4}',
+    "src/worker.py": "print('Task complete')"
+}
+def sample_build(sandbox_path: Path) -> dict:
+    config_file = sandbox_path / "config.json"
+    return {"files_found": len(list(sandbox_path.rglob("*.*"))), "config_size": config_file.stat().st_size}
+
+build_result = engine.execute_isolated_task(manifest, sample_build)
+
+# Task 2: Spooled file (small payload < 2048 bytes remains in RAM):
+small_payload = [b"Chunk 1 ", b"Chunk 2 ", b"Chunk 3"]
+spool_ram = engine.buffer_incoming_stream(small_payload, rollover_threshold_bytes=2048)
+
+# Task 3: Spooled file (large payload > 2048 bytes overflows to disk):
+large_payload = [b"X" * 1024 for _ in range(5)]  # 5120 bytes
+spool_disk = engine.buffer_incoming_stream(large_payload, rollover_threshold_bytes=2048)
+
+Expected Output:
+Sandbox Task Result: {'files_found': 2, 'config_size': 31}
+Post-Task Sandbox Cleaned: True (Directory successfully purged)
+
+Small Stream (24 bytes):
+- Rolled to Disk: False (Resides in Memory Buffer)
+- Total Bytes: 24
+
+Large Stream (5120 bytes):
+- Rolled to Disk: True (Rolled over to OS Temporary File)
+- Total Bytes: 5120
+
+Constraints & Edge Cases:
+- On Windows systems, `NamedTemporaryFile(delete=False)` must be closed before another process or reader attempts to open it to prevent file-locking `PermissionError`.
+- Post-execution cleanup must run even if `task_callback` raises an unhandled exception.
+================================================================================
