@@ -1,0 +1,41 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 05 - OBJECT-ORIENTED PROGRAMMING (OOP)
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a `BankAccount` class to model basic financial
+account lifecycle and transaction operations:
+1. Class Definition & Initialization:
+   - Implement `__init__(self, account_holder: str, initial_balance: float = 0.0)`:
+   - Store instance attributes: `account_holder`, `balance`, and a unique generated
+     `account_number` string (e.g. "ACC-1001").
+   - Reject negative initial balances by raising a `ValueError`.
+2. Account Transactions:
+   - `deposit(amount: float) -> float`: Deposit funds; amount must be positive.
+     Return the updated balance.
+   - `withdraw(amount: float) -> float`: Withdraw funds; amount must be positive and
+     cannot exceed current balance. If insufficient funds, raise a `ValueError("Insufficient funds")`.
+3. String Representation:
+   - Implement `__str__(self) -> str` returning a user-friendly summary:
+     `"BankAccount(Holder: <name>, Account#: <num>, Balance: $<bal>)"`.
+
+Sample Input:
+account = BankAccount("Alice Smith", 500.0)
+account.deposit(250.0)
+account.withdraw(120.0)
+account.withdraw(700.0)  # Attempt overdraft
+
+Expected Output:
+Account Created: BankAccount(Holder: Alice Smith, Account#: ACC-1001, Balance: $500.00)
+After Deposit ($250.00): Balance = $750.00
+After Withdrawal ($120.00): Balance = $630.00
+Overdraft Attempt ($700.00):
+Caught Expected Error: ValueError("Insufficient funds")
+
+Constraints & Edge Cases:
+- Deposit and withdrawal amounts must be strictly positive floats (> 0).
+- Initial balance must be >= 0.0.
+- All monetary amounts should format with 2 decimal places.
+================================================================================
