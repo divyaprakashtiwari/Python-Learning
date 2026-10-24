@@ -502,3 +502,68 @@ Constraints & Edge Cases:
 - On Windows systems, `NamedTemporaryFile(delete=False)` must be closed before another process or reader attempts to open it to prevent file-locking `PermissionError`.
 - Post-execution cleanup must run even if `task_callback` raises an unhandled exception.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise directory replication and differential
+synchronization engine `DirectoryMirrorSync` using `os.walk`, `os.stat`, and metadata-preserving operations:
+1. Filesystem Tree Metadata Extraction:
+   - `scan_directory(root_dir: str) -> dict[str, dict]`:
+     * Traverses the directory tree rooted at `root_dir` recursively using `os.walk()`.
+     * For each file encountered, extracts normalized relative path (with forward slashes).
+     * Retrieves file metadata using `os.stat()`:
+       - `size_bytes = stat_res.st_size`
+       - `modified_time = stat_res.st_mtime`
+     * Computes an MD5 checksum of the file content for tamper-proof change detection.
+     * Returns dictionary mapping `relative_path -> {"size": int, "mtime": float, "checksum": str}`.
+2. Differential Reconciliation Plan:
+   - `build_sync_plan(source_dir: str, replica_dir: str) -> dict`:
+     * Scans both source and replica directories.
+     * Compares the metadata maps and categorizes planned operations:
+       - `CREATE`: Relative paths existing in `source` but missing from `replica`.
+       - `UPDATE`: Paths existing in both, but where `size` or `checksum` differs and source `mtime > replica_mtime`.
+       - `DELETE`: Relative paths existing in `replica` but no longer present in `source`.
+       - `UNCHANGED`: Paths with identical byte size and matching checksums.
+3. Plan Execution & Metadata Preservation:
+   - `apply_sync(plan: dict, source_dir: str, replica_dir: str, dry_run: bool = True) -> dict`:
+     * If `dry_run is True`, returns a ledger of planned actions without modifying disk.
+     * If `dry_run is False`:
+       - Creates missing parent subdirectories in `replica` as needed (`os.makedirs`).
+       - Copies new and updated files using `shutil.copy2()` to preserve modification timestamps and file mode flags.
+       - Deletes orphaned files from `replica` (`os.remove()`) and cleans up newly empty directories.
+       - Returns executed action summary: `{"created": int, "updated": int, "deleted": int, "unchanged": int}`.
+
+Sample Input:
+sync_engine = DirectoryMirrorSync()
+# Directory state:
+# source/ has: app.py (v2), config.json, assets/logo.png
+# replica/ has: app.py (v1, older mtime), old_script.py (deleted in source)
+
+plan = sync_engine.build_sync_plan("source", "replica")
+dry_run_report = sync_engine.apply_sync(plan, "source", "replica", dry_run=True)
+live_result = sync_engine.apply_sync(plan, "source", "replica", dry_run=False)
+
+Expected Output:
+Reconciliation Plan Computed:
+- CREATE:    ['assets/logo.png', 'config.json']
+- UPDATE:    ['app.py'] (Checksum mismatch; source mtime newer)
+- DELETE:    ['old_script.py'] (Orphaned in replica)
+- UNCHANGED: []
+
+Dry Run Execution: 0 disk modifications made.
+Live Sync Applied:
+- Files Created: 2
+- Files Updated: 1
+- Files Deleted: 1
+- Replica now exactly mirrors source with preserved timestamps.
+
+Validation Tests:
+- Source path does not exist: FileNotFoundError("Source directory not found")
+- Dry-run mode flag must strictly forbid calling `shutil.copy2` or `os.remove`.
+
+Constraints & Edge Cases:
+- Paths must be normalized to handle Windows (`\`) and POSIX (`/`) separators uniformly.
+- When deleting orphaned files, empty directories left behind must be pruned in bottom-up order (`os.rmdir`).
+- File timestamps must be preserved using `shutil.copy2` rather than `shutil.copy`.
+================================================================================
