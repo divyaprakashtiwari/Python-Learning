@@ -404,3 +404,68 @@ Constraints & Edge Cases:
 - Invalid or corrupted log lines that fail to match the strict regex must be ignored or logged as malformed.
 - IP addresses with octets > 255 (e.g. `999.999.999.999`) should be validated either in regex or post-validation.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a statically-typed event message bus and schema validator
+`TypedEventDispatcher` leveraging Python's `typing` module (`TypeVar`, `Generic`, `Protocol`, `runtime_checkable`, and `get_type_hints`):
+1. Structural Subtyping with `@runtime_checkable Protocol`:
+   - Define protocol `Serializable(Protocol)`:
+     * Declares method `to_payload(self) -> dict[str, object]`.
+     * Uses `@runtime_checkable` decorator to allow runtime structural duck-typing checks via `isinstance(obj, Serializable)`.
+2. Generic Container with `TypeVar` and `Generic`:
+   - `T = TypeVar("T")`
+   - Class `EventEnvelope(Generic[T])`:
+     * `__init__(self, event_id: str, payload: T, metadata: dict[str, str] = None)`:
+       Stores generic payload of type `T`.
+     * `extract_payload(self) -> T`: Returns payload preserving type annotations.
+3. Runtime Type Annotation Validator:
+   - `validate_annotated_arguments(func: Callable, kwargs: dict) -> bool`:
+     * Uses `typing.get_type_hints(func)` to extract resolved type annotations.
+     * Iterates through `kwargs` and verifies that each passed argument conforms to its declared type.
+     * Supports basic types (`int`, `str`, `float`, `bool`) and `typing.Union` / `Optional`.
+     * If an argument type mismatches, raises `TypeError(f"Argument '{key}' expected {expected_type}, received {type(val)}")`.
+4. Event Registration & Delivery:
+   - Registers typed subscribers (`Callable[[EventEnvelope[T]], None]`).
+   - Before dispatching, enforces that payloads implement `Serializable` via `isinstance(payload, Serializable)`.
+
+Sample Input:
+class UserLoginEvent:
+    def __init__(self, username: str, user_id: int):
+        self.username = username
+        self.user_id = user_id
+    def to_payload(self) -> dict:
+        return {"user": self.username, "id": self.user_id}
+
+class NonSerializableEvent:
+    def __init__(self, msg: str):
+        self.msg = msg
+
+event = UserLoginEvent("dtiwari", 1001)
+envelope = EventEnvelope(event_id="EVT-9001", payload=event)
+
+# Protocol check:
+is_event_serializable = isinstance(event, Serializable)
+is_bad_serializable = isinstance(NonSerializableEvent("test"), Serializable)
+
+# Signature validation test:
+def send_notification(recipient: str, retry_count: int, is_urgent: bool = False) -> bool:
+    return True
+
+val_success = validate_annotated_arguments(send_notification, {"recipient": "admin@corp.io", "retry_count": 3})
+
+Expected Output:
+UserLoginEvent implements Serializable Protocol: True
+NonSerializableEvent implements Serializable Protocol: False
+Generic Envelope Payload Type: UserLoginEvent
+Argument Validation: Valid (All parameters matched annotations)
+
+Signature Mismatch Test:
+validate_annotated_arguments(send_notification, {"recipient": 12345, "retry_count": "three"})
+Caught Expected: TypeError("Argument 'recipient' expected <class 'str'>, received <class 'int'>")
+
+Constraints & Edge Cases:
+- Runtime checkable protocols only verify method existence, not signature parameters; the engine must verify both method presence and callable status.
+- Generic type variables (`TypeVar`) must preserve IDE auto-completion and static analysis inference.
+================================================================================
