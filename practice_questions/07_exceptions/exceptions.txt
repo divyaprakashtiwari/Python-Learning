@@ -456,3 +456,61 @@ Constraints & Edge Cases:
 - Floating-point calculations must use `math.isclose()` with appropriate relative/absolute tolerances rather than strict `==` equality.
 - Zero-sum weights must be trapped with `ValueError` during input validation before division occurs.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise exception telemetry and incident diagnostic reporter
+`IncidentTelemetryReporter` utilizing Python's `logging` and `traceback` standard modules:
+1. Production Exception Logging:
+   - Configure a dedicated telemetry logger with an in-memory stream handler (`io.StringIO`).
+   - Implement method `record_exception(context_name: str, severity: str = "ERROR") -> dict`:
+     * Must demonstrate both logging techniques:
+       - Using `logger.exception("...")` inside an active `except` block (which automatically captures stack traces).
+       - Using `logger.error("...", exc_info=True)` for custom severity levels.
+2. Structured Traceback Extraction (`traceback` module):
+   - Inside an active `except` handler, extract diagnostic details using `traceback.extract_tb(sys.exc_info()[2])`:
+     * Target the last frame where the crash occurred:
+       - `file_name`: Basename of the file.
+       - `line_number`: Integer line number.
+       - `function_name`: Name of the enclosing function.
+       - `code_line`: Exact code snippet line that raised the error.
+     * Extract the complete formatted string representation using `traceback.format_exc()`.
+3. Dispatch Incident Envelope:
+   - Construct a structured incident payload ready for an observability pipeline:
+     `{"incident_id": f"INC-{uuid4().hex[:8].upper()}", "timestamp": "<ISO-8601>", "error_type": exc.__class__.__name__, "message": str(exc), "crash_location": f"{file_name}:{line_number} in {function_name}()", "failing_line": code_line, "traceback_length": len(full_traceback)}`.
+
+Sample Input:
+reporter = IncidentTelemetryReporter()
+
+def risky_data_pipeline(data_records: list):
+    for i, record in enumerate(data_records):
+        # Deliberate ZeroDivisionError on 3rd item
+        metric = record["score"] / record["weight"]
+
+try:
+    bad_data = [{"score": 10, "weight": 2}, {"score": 20, "weight": 4}, {"score": 30, "weight": 0}]
+    risky_data_pipeline(bad_data)
+except Exception:
+    incident = reporter.record_incident(context="RiskDataPipeline")
+
+Expected Output:
+Telemetry Logger Output:
+ERROR:TelemetryLogger:Exception in context 'RiskDataPipeline': division by zero
+Traceback (most recent call last):
+  File "pipeline.py", line 4, in risky_data_pipeline
+    metric = record["score"] / record["weight"]
+ZeroDivisionError: division by zero
+
+Structured Incident Report:
+- Incident ID: INC-A1B2C3D4
+- Error Type: ZeroDivisionError
+- Message: division by zero
+- Crash Location: pipeline.py:4 in risky_data_pipeline()
+- Failing Line: metric = record["score"] / record["weight"]
+- Stack Trace Captured: True
+
+Constraints & Edge Cases:
+- Calling `traceback.format_exc()` or `sys.exc_info()` outside an active exception handler returns `None` or `'NoneType: None'`; the reporter must gracefully detect and reject out-of-context invocations.
+- Logger handlers must be properly flushed to ensure telemetry streams receive complete stack trace data.
+================================================================================
