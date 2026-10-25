@@ -337,3 +337,53 @@ Constraints & Edge Cases:
 - `Counter.subtract()` allows values to become negative; functions must handle or report negative balances appropriately.
 - `deque` operations (`append`, `appendleft`, `popleft`) must maintain O(1) time complexity.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an analytical stream processing and combinatorial grid search suite
+`ItertoolsDataEngine` orchestrating high-performance generator tools from Python's standard `itertools` module:
+1. Infinite Stream Slicing (`count`, `cycle`, `islice`):
+   - `generate_interleaved_events(batch_count: int, initial_seq: int = 1000) -> list[dict]`:
+     * Pairs an infinite monotonically increasing integer generator `itertools.count(start=initial_seq)`
+       with an infinite round-robin worker cycler `itertools.cycle(["NODE_ALPHA", "NODE_BETA", "NODE_GAMMA"])`.
+     * Uses `itertools.islice()` to cleanly harvest exactly `batch_count` records without evaluating infinite items.
+2. Stream Chaining & Running Prefix Aggregations (`chain`, `accumulate`):
+   - `merge_and_track_running_total(stream_east: list[float], stream_west: list[float]) -> list[float]`:
+     * Chains two input streams into a single contiguous iterable via `itertools.chain(stream_east, stream_west)`.
+     * Calculates the cumulative running sum using `itertools.accumulate()`.
+3. Parallel Boolean Filtering (`compress`):
+   - `filter_by_health_mask(servers: list[str], health_mask: list[bool]) -> list[str]`:
+     * Filters elements using `itertools.compress(servers, health_mask)`.
+4. Combinatorial Grid Optimization (`product`, `combinations`):
+   - `build_hyperparameter_grid(learning_rates: list, batch_sizes: list, optimizers: list) -> list[dict]`:
+     * Computes full Cartesian product using `itertools.product(learning_rates, batch_sizes, optimizers)`.
+     * Returns list of config dictionaries: `{"lr": lr, "batch": b, "opt": opt}`.
+   - `generate_tournament_pairs(teams: list[str]) -> list[tuple[str, str]]`:
+     * Generates all unique unordered pair matchups (no self-matches, order invariant) using `itertools.combinations(teams, 2)`.
+
+Sample Input:
+engine = ItertoolsDataEngine()
+stream_events = engine.generate_interleaved_events(batch_count=4, initial_seq=5001)
+running_totals = engine.merge_and_track_running_total([100.0, 50.0], [25.0, 75.0])
+healthy_nodes = engine.filter_by_health_mask(["srv-1", "srv-2", "srv-3", "srv-4"], [True, False, True, False])
+grid = engine.build_hyperparameter_grid([0.01, 0.1], [32, 64], ["adam"])
+pairings = engine.generate_tournament_pairs(["Red", "Blue", "Green"])
+
+Expected Output:
+Interleaved Events (4 items):
+1. Seq: 5001 | Worker: NODE_ALPHA
+2. Seq: 5002 | Worker: NODE_BETA
+3. Seq: 5003 | Worker: NODE_GAMMA
+4. Seq: 5004 | Worker: NODE_ALPHA
+
+Merged Running Totals: [100.0, 150.0, 175.0, 250.0]
+Filtered Healthy Nodes: ['srv-1', 'srv-3']
+Hyperparameter Grid (4 combinations):
+[{'lr': 0.01, 'batch': 32, 'opt': 'adam'}, {'lr': 0.01, 'batch': 64, 'opt': 'adam'}, ...]
+Tournament Pairings (3 unique matches): [('Red', 'Blue'), ('Red', 'Green'), ('Blue', 'Green')]
+
+Constraints & Edge Cases:
+- Infinite generators (`count()`, `cycle()`) must never be cast to a `list()` directly without an intermediate `islice()` boundary to prevent process memory exhaustion.
+- Length mismatch in `compress(data, selectors)` terminates cleanly at the shorter sequence length per standard `itertools` behavior.
+================================================================================
