@@ -53,3 +53,53 @@ Constraints & Edge Cases:
 - Attempting to dynamically import a non-existent module name must raise `ModuleNotFoundError`.
 - `add_lookup_path` must reject non-existent directories by raising `NotADirectoryError`.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a custom mathematical statistics module `custom_stats`
+(or constructs a dynamic module instance via `types.ModuleType`) demonstrating module creation,
+`__all__` export whitelisting, private internal encapsulation, and wildcard import mechanics:
+1. Module Namespace Architecture:
+   - Public Functions:
+     * `calculate_mean(dataset: list[float]) -> float`: Computes arithmetic mean.
+     * `calculate_median(dataset: list[float]) -> float`: Computes median of sorted elements.
+     * `calculate_variance(dataset: list[float]) -> float`: Computes sample variance.
+   - Private Helpers (Leading Underscore `_`):
+     * `_validate_numeric_series(dataset: list) -> list[float]`: Validates non-empty numeric input.
+     * `_sum_of_squared_deviations(dataset: list[float], mean_val: float) -> float`: Internal computation helper.
+   - Module Constants:
+     * `VERSION: str = "2.1.0"` (Public metadata)
+     * `INTERNAL_PRECISION: int = 6` (Public unexported constant)
+     * `_CALCULATION_CACHE: dict = {}` (Private module state)
+2. Strict Export Control with `__all__`:
+   - Define: `__all__ = ["calculate_mean", "calculate_median", "calculate_variance", "VERSION"]`.
+   - Exclude `INTERNAL_PRECISION`, `_CALCULATION_CACHE`, and all `_` helper functions from `__all__`.
+3. Wildcard Import (`from module import *`) Inspector:
+   - Implement `simulate_wildcard_import(mod) -> list[str]`:
+     * If `hasattr(mod, "__all__")`, returns a copy of `mod.__all__`.
+     * If `__all__` is absent, returns all module attributes that do not start with `_`.
+     * Verifies that `INTERNAL_PRECISION` is omitted from `import *`, yet remains accessible via
+       direct qualified attribute access (`mod.INTERNAL_PRECISION`).
+
+Sample Input:
+mod = create_custom_stats_module()
+
+mean_val = mod.calculate_mean([10.0, 20.0, 30.0, 40.0, 50.0])
+exported_symbols = simulate_wildcard_import(mod)
+direct_access_precision = mod.INTERNAL_PRECISION
+
+Expected Output:
+Mean Calculation: 30.0
+Exported Symbols via `from custom_stats import *`:
+['calculate_mean', 'calculate_median', 'calculate_variance', 'VERSION']
+
+Encapsulation Verification:
+- Is 'INTERNAL_PRECISION' in `__all__`? False
+- Can 'INTERNAL_PRECISION' be accessed directly via module attribute? True (Value: 6)
+- Are private functions ('_validate_numeric_series') in `__all__`? False
+
+Constraints & Edge Cases:
+- Functions must raise `ValueError("Dataset must be non-empty")` when given empty sequences.
+- Modifying `__all__` at runtime must be respected by dynamic wildcard import simulators.
+================================================================================
