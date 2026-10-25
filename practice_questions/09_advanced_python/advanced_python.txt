@@ -349,3 +349,58 @@ Constraints & Edge Cases:
 - Irregular/ragged 2D matrices (varying row lengths) must raise `ValueError("Matrix must have rectangular dimensions")`.
 - Implementations must be pure single-statement comprehensions without imperative `for` loops or manual list appends.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise log parsing and PII redaction engine
+`SecurityLogAnalyzer` leveraging Python's `re` module with named capture groups and `re.VERBOSE`:
+1. Structured Log Parser with Verbose Regex (`re.VERBOSE`):
+   - Compile a comprehensive regex pattern with named groups to parse server log entries:
+     ```python
+     LOG_PATTERN = re.compile(r"""
+         ^\[(?P<timestamp>\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2})\]\s+
+         \[(?P<level>INFO|WARNING|ERROR|CRITICAL)\]\s+
+         \[(?P<client_ip>(?:\d{1,3}\.){3}\d{1,3})\]\s+
+         User<(?P<username>[\w\-]+)>:\s+
+         (?P<message>.*)$
+     """, re.VERBOSE | re.MULTILINE)
+     ```
+   - `parse_log_dump(raw_text: str) -> list[dict]`:
+     * Uses `LOG_PATTERN.finditer(raw_text)` to extract a list of matched records via `match.groupdict()`.
+2. PII Redaction & Data Sanitization via `re.sub`:
+   - `redact_sensitive_data(message_text: str) -> str`:
+     * Credit Card Masking: Matches 16-digit cards formatted `\b(?P<c1>\d{4})[- ]?\d{4}[- ]?\d{4}[- ]?(?P<c4>\d{4})\b`.
+       Replaces with `\g<c1>-XXXX-XXXX-\g<c4>`.
+     * Social Security / ID Redaction: Matches `\b\d{3}-\d{2}-\d{4}\b` and replaces with `***-**-****`.
+     * Email Obfuscation: Uses a substitution callback function (`def mask_email(m): ...`)
+       turning `"john.doe@company.org"` into `"j***e@company.org"`.
+3. URL Query Parameter Token Extractor:
+   - `extract_query_parameters(url: str) -> dict[str, str]`:
+     * Uses regex matching `[?&](?P<key>[^=&#]+)=(?P<val>[^&#]+)` to parse URL parameters into a dictionary.
+
+Sample Input:
+analyzer = SecurityLogAnalyzer()
+
+sample_logs = """[2026-10-25 14:30:15] [INFO] [192.168.1.100] User<dev_lead>: Query user profile with email admin@corp.io
+[2026-10-25 14:32:00] [ERROR] [10.0.0.5] User<billing_agent>: Failed payment for card 4111-2222-3333-4444 with SSN 123-45-6789"""
+
+parsed_records = analyzer.parse_log_dump(sample_logs)
+sanitized_msg = analyzer.redact_sensitive_data(parsed_records[1]["message"])
+query_params = analyzer.extract_query_parameters("https://api.corp.net/v1/search?tenant=acme&filter=active&page=2")
+
+Expected Output:
+Parsed 2 Log Records:
+Record 1: {'timestamp': '2026-10-25 14:30:15', 'level': 'INFO', 'client_ip': '192.168.1.100', 'username': 'dev_lead', ...}
+Record 2: {'timestamp': '2026-10-25 14:32:00', 'level': 'ERROR', 'client_ip': '10.0.0.5', 'username': 'billing_agent', ...}
+
+Sanitized Message:
+"Failed payment for card 4111-XXXX-XXXX-4444 with SSN ***-**-****"
+
+Extracted Query Parameters:
+{'tenant': 'acme', 'filter': 'active', 'page': '2'}
+
+Constraints & Edge Cases:
+- Invalid or corrupted log lines that fail to match the strict regex must be ignored or logged as malformed.
+- IP addresses with octets > 255 (e.g. `999.999.999.999`) should be validated either in regex or post-validation.
+================================================================================
