@@ -517,3 +517,97 @@ Constraints & Edge Cases:
 - Relative imports must only be used within packages; attempting them at the top-level root script raises `ImportError`.
 - Packages without `__init__.py` operate as Implicit Namespace Packages (PEP 420); regular packages must declare `__init__.py`.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise Python environment auditor and package manifest generator
+`PythonEnvPackagingAuditor` analyzing virtual environments (`venv`), dependency specifications
+(`requirements.txt`), and modern PEP 517 / PEP 621 packaging standards (`pyproject.toml`):
+1. Virtual Environment Introspection:
+   - `inspect_virtual_environment() -> dict`:
+     * Programmatically detects whether the runtime is executing inside an isolated virtual environment:
+       `is_venv = (sys.prefix != getattr(sys, "base_prefix", sys.prefix))`
+     * Inspects:
+       - `is_virtualenv`: Boolean flag.
+       - `prefix_path`: Active environment root (`sys.prefix`).
+       - `base_prefix_path`: Underlying system Python installation root (`sys.base_prefix`).
+       - `python_executable`: Full path to current interpreter (`sys.executable`).
+       - `virtual_env_variable`: Reads `os.environ.get("VIRTUAL_ENV")`.
+2. Strict `requirements.txt` Dependency Parser:
+   - `parse_requirements(raw_text: str) -> list[dict]`:
+     * Strips inline comments (`# ...`) and whitespace.
+     * Extracts:
+       - `package_name`: Normalized lowercase package name.
+       - `operator`: Version constraint operator (e.g. `==`, `>=`, `<=`, `~=`, or `None` if unpinned).
+       - `version_spec`: Version number string.
+       - `is_pinned`: Boolean indicating if strict pinned equality (`==`) is specified.
+     * Flags any unpinned dependency as a reproducibility warning.
+3. Modern PEP 621 `pyproject.toml` Generator:
+   - `build_pyproject_toml(project_name: str, version: str, dependencies: list[str], build_backend: str = "setuptools.build_meta") -> str`:
+     * Validates project name: must contain only lowercase alphanumeric characters, dots, and hyphens (PEP 508).
+     * Generates standard TOML formatting:
+       ```toml
+       [build-system]
+       requires = ["setuptools>=61.0"]
+       build-backend = "setuptools.build_meta"
+
+       [project]
+       name = "my-project"
+       version = "1.0.0"
+       dependencies = [
+           "requests>=2.28.0",
+       ]
+       ```
+4. Dependency Compatibility Verifier:
+   - `audit_installed_versions(installed_map: dict[str, str], required_specs: list[dict]) -> dict`:
+     * Validates installed package versions against requirements.
+     * Categorizes results into `{"satisfied": list, "mismatched": list, "missing": list}`.
+
+Sample Input:
+auditor = PythonEnvPackagingAuditor()
+env_status = auditor.inspect_virtual_environment()
+
+sample_reqs = """
+# Core Production Dependencies
+fastapi==0.110.0
+uvicorn>=0.28.0
+pydantic  # Warning: unpinned!
+"""
+parsed_reqs = auditor.parse_requirements(sample_reqs)
+
+toml_manifest = auditor.build_pyproject_toml(
+    project_name="cloud-telemetry-service",
+    version="0.1.0",
+    dependencies=["fastapi>=0.110.0", "pydantic>=2.5.0"]
+)
+
+Expected Output:
+Virtual Environment Status:
+- Is Virtualenv: True
+- Active Interpreter: /path/to/venv/bin/python
+- Virtual Env Root: /path/to/venv
+- Base System Root: /usr/local (or C:\Python312)
+
+Parsed Requirements:
+1. Package: 'fastapi' | Op: '==' | Version: '0.110.0' | Pinned: True
+2. Package: 'uvicorn' | Op: '>=' | Version: '0.28.0'  | Pinned: False
+3. Package: 'pydantic'| Op: None | Version: None      | Pinned: False (Warning: Unpinned!)
+
+Generated pyproject.toml:
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloud-telemetry-service"
+version = "0.1.0"
+dependencies = [
+    "fastapi>=0.110.0",
+    "pydantic>=2.5.0",
+]
+
+Constraints & Edge Cases:
+- Invalid project names (e.g. containing spaces or uppercase characters) must raise `ValueError("Invalid PEP 508 package name")`.
+- Dependency parser must gracefully ignore empty lines and comment lines without failing.
+================================================================================
