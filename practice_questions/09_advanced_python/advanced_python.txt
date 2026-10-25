@@ -1,0 +1,54 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 09 - ADVANCED PYTHON
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a custom cyclical stream iterator `RingBufferIterator`
+demonstrating Python's iterator protocol (`__iter__`, `__next__`, `StopIteration`)
+alongside the two-argument sentinel invocation of `iter(callable, sentinel)`:
+1. Custom Iterator Class Protocol:
+   - `__init__(self, items: list[object], max_cycles: int = 1)`:
+     * Stores a copy of `items` and tracks total repeat cycles.
+     * Rejects empty `items` with `ValueError("Ring buffer items cannot be empty")`.
+     * Tracks current element index and completed cycles.
+   - `__iter__(self) -> "RingBufferIterator"`:
+     * Returns `self` so instances can be passed directly into `for` loops and iterator tools.
+   - `__next__(self) -> object`:
+     * Returns the current item and advances the cursor.
+     * When reaching the end of `items`, wraps back to index 0 and advances completed cycle count.
+     * When completed cycles reach `max_cycles`, immediately raises `StopIteration`.
+2. Two-Argument Sentinel `iter()` Utility:
+   - `read_stream_until_sentinel(source_callable: Callable, sentinel_value: object) -> list`:
+     * Uses Python's built-in `iter(source_callable, sentinel_value)` to consume items from a callable
+       until it produces `sentinel_value`.
+     * Collects and returns the sequence of yielded values prior to the sentinel.
+
+Sample Input:
+# Test A: Custom Ring Buffer Iterator
+buffer = RingBufferIterator(["TASK_A", "TASK_B", "TASK_C"], max_cycles=2)
+collected = list(buffer)
+
+# Test B: Sentinel Iteration
+numbers = [10, 20, 30, -1, 40, 50]
+iterator_src = iter(numbers)
+def read_next():
+    return next(iterator_src, -1)
+
+stream_result = read_stream_until_sentinel(read_next, sentinel_value=-1)
+
+Expected Output:
+Ring Buffer Iteration (2 complete cycles):
+['TASK_A', 'TASK_B', 'TASK_C', 'TASK_A', 'TASK_B', 'TASK_C']
+
+Sentinel Stream Output (stopped at sentinel -1):
+[10, 20, 30]
+
+Post-Exhaustion Check:
+Invoking next(buffer) after completion raises StopIteration.
+
+Constraints & Edge Cases:
+- An iterator must return `self` from `__iter__()`.
+- When `max_cycles <= 0`, `__next__()` must immediately raise `StopIteration`.
+================================================================================
