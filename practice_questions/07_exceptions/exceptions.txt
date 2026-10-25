@@ -220,3 +220,65 @@ Constraints & Edge Cases:
 - Never use `raise Exception(...)`; always raise the most semantically appropriate built-in type (`KeyError`, `ValueError`, `TypeError`).
 - Re-raising must use the bare `raise` syntax to avoid altering the exception's original frame traceback.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a domain-specific custom exception hierarchy for a fintech
+transaction processor `PaymentProcessor` to provide rich error metadata, status codes, and user-friendly diagnostics:
+1. Base Domain Exception `PaymentGatewayError(Exception)`:
+   - `__init__(self, message: str, error_code: str, transaction_id: str)`:
+     * Stores attributes `message`, `error_code`, `transaction_id`.
+     * Overrides `__str__(self) -> str`: returns `f"[{self.error_code}] Tx '{self.transaction_id}': {self.message}"`.
+2. Specialized Subclasses:
+   - `InsufficientFundsError(PaymentGatewayError)`:
+     * `__init__(self, transaction_id: str, available_balance: float, attempted_amount: float)`:
+       Stores `available_balance`, `attempted_amount`.
+       Computes `shortfall = attempted_amount - available_balance`.
+       Calls `super().__init__(message=f"Insufficient funds: Shortfall of ${shortfall:.2f}", error_code="ERR_INSUFFICIENT_FUNDS", transaction_id=transaction_id)`.
+   - `CardExpiredError(PaymentGatewayError)`:
+     * `__init__(self, transaction_id: str, card_last4: str, expiry_date: str)`:
+       Stores `card_last4`, `expiry_date`.
+       Calls `super().__init__(message=f"Card ending in {card_last4} expired on {expiry_date}", error_code="ERR_CARD_EXPIRED", transaction_id=transaction_id)`.
+   - `FraudRiskBlockError(PaymentGatewayError)`:
+     * `__init__(self, transaction_id: str, risk_score: float)`:
+       Stores `risk_score`.
+       Calls `super().__init__(message=f"Transaction blocked due to elevated fraud score ({risk_score:.2f} > 0.85)", error_code="ERR_FRAUD_TRIGGERED", transaction_id=transaction_id)`.
+3. Settlement Engine:
+   - `process_charge(tx_id: str, card: dict, balance: float, charge_amount: float) -> dict`:
+     * If `card.get("risk_score", 0.0) > 0.85`: `raise FraudRiskBlockError(tx_id, card["risk_score"])`.
+     * If `card.get("is_expired", False)`: `raise CardExpiredError(tx_id, card["last4"], card["expiry"])`.
+     * If `balance < charge_amount`: `raise InsufficientFundsError(tx_id, balance, charge_amount)`.
+     * If all checks pass: returns `{"tx_id": tx_id, "status": "APPROVED", "new_balance": balance - charge_amount}`.
+4. Polymorphic Exception Catching:
+   - Show that a generic client can catch `PaymentGatewayError` and extract `.error_code`, `.transaction_id`
+     without knowing the specific child class, while an advanced caller can catch `InsufficientFundsError`
+     to access `.shortfall`.
+
+Sample Input:
+card_ok = {"last4": "4242", "expiry": "12/28", "is_expired": False, "risk_score": 0.12}
+card_exp = {"last4": "1111", "expiry": "01/22", "is_expired": True, "risk_score": 0.05}
+card_fraud = {"last4": "9999", "expiry": "05/27", "is_expired": False, "risk_score": 0.94}
+
+# Test 1: Low balance
+try:
+    process_charge("TX-1001", card_ok, balance=50.0, charge_amount=120.0)
+except InsufficientFundsError as err:
+    print("Caught Specific:", err)
+    print("Actionable Metadata: Shortfall =", err.shortfall)
+
+# Test 2: Expired card caught via generic base exception
+try:
+    process_charge("TX-1002", card_exp, balance=500.0, charge_amount=20.0)
+except PaymentGatewayError as err:
+    print("Caught via Base:", err.error_code, "|", err)
+
+Expected Output:
+Caught Specific: [ERR_INSUFFICIENT_FUNDS] Tx 'TX-1001': Insufficient funds: Shortfall of $70.00
+Actionable Metadata: Shortfall = 70.0
+Caught via Base: ERR_CARD_EXPIRED | [ERR_CARD_EXPIRED] Tx 'TX-1002': Card ending in 1111 expired on 01/22
+
+Constraints & Edge Cases:
+- All custom exception classes must inherit from `PaymentGatewayError` which itself inherits from built-in `Exception` (never `BaseException`).
+- All numeric currency fields must format cleanly with 2 decimal places.
+================================================================================
