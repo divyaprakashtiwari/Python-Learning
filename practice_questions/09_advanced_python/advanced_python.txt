@@ -108,3 +108,56 @@ Constraints & Edge Cases:
 - A newly created generator must be primed with `next(coro)` or `coro.send(None)` before sending non-None values (otherwise raises `TypeError: can't send non-None value to a just-started generator`).
 - `flatten_sensor_batches` must yield values lazily one-by-one without pre-allocating an intermediate merged list in memory.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise endpoint security and observability decorator suite
+demonstrating closures, metadata preservation via `@functools.wraps`, and decorator chaining evaluation order:
+1. Performance Metrics Decorator `@track_latency`:
+   - Maintains an internal metrics dictionary: `{"call_count": int, "total_time": float}`.
+   - Measures execution duration using `time.perf_counter()`.
+   - Uses `@functools.wraps(func)` to ensure the wrapped function retains its original `__name__` and `__doc__`.
+   - Invokes target function, increments count, accumulates time, and returns the original function's result.
+2. Parameterized RBAC Security Decorator `@require_role(allowed_roles: set[str])`:
+   - Accepts a set of permitted role strings.
+   - Wraps the target function: inspects incoming keyword argument `caller_role`.
+   - If `caller_role` not in `allowed_roles`, raises `PermissionError(f"Access forbidden: Role '{caller_role}' is not in {allowed_roles}")`.
+3. Chained Decorator Execution Order Demonstration:
+   - Decorate an administrative function:
+     ```python
+     @track_latency
+     @require_role({"ADMIN", "SUPERUSER"})
+     def purge_expired_sessions(caller_role: str, max_age_days: int) -> int:
+         """Purges expired user sessions from system storage."""
+         return 42
+     ```
+   - Demonstrate decorator chaining semantics:
+     * Decoration occurs bottom-up: `@require_role` wraps `purge_expired_sessions`, then `@track_latency` wraps that result.
+     * Execution occurs top-down: `@track_latency` timer starts first, then `@require_role` validates permissions.
+   - Demonstrate metadata preservation:
+     * `purge_expired_sessions.__name__ == "purge_expired_sessions"`
+     * `purge_expired_sessions.__doc__ == "Purges expired user sessions from system storage."`
+
+Sample Input:
+# Test 1: Authorized invocation
+purged = purge_expired_sessions(caller_role="ADMIN", max_age_days=30)
+metrics = purge_expired_sessions.metrics
+
+# Test 2: Unauthorized invocation
+try:
+    purge_expired_sessions(caller_role="GUEST", max_age_days=30)
+except PermissionError as err:
+    print("Caught Security Violation:", err)
+
+Expected Output:
+Purged Sessions Count: 42
+Latency Metrics: {'call_count': 1, 'total_time': 0.000...}
+Function Name Verified: 'purge_expired_sessions'
+Function Docstring Verified: 'Purges expired user sessions from system storage.'
+Caught Security Violation: Access forbidden: Role 'GUEST' is not in {'ADMIN', 'SUPERUSER'}
+
+Constraints & Edge Cases:
+- Parameterized decorators must use a 3-tier function closure (`def decorator(args): def wrapper_outer(func): def inner(*a, **kw): ...`).
+- When an unauthorized access exception is raised, the inner wrapped business logic must never execute.
+================================================================================
