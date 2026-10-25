@@ -219,3 +219,55 @@ Constraints & Edge Cases:
 - `sample_size <= 0` must raise `ValueError("Sample size must be strictly positive")`.
 - Temporary staging directories and zip artifacts should be cleaned up appropriately during test teardown.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a global server uptime and event scheduling coordinator
+`GlobalEventScheduler` leveraging Python's `datetime` module (`datetime`, `date`, `time`, `timedelta`, `timezone`):
+1. Timestamp Parsing & Formatting:
+   - `parse_server_timestamp(iso_str: str) -> datetime`:
+     * Parses string in format `"%Y-%m-%d %H:%M:%S"` using `datetime.strptime`.
+     * Attaches UTC timezone awareness explicitly: `dt.replace(tzinfo=timezone.utc)`.
+     * Rejects invalid date strings with `ValueError("Malformed timestamp format; expected YYYY-MM-DD HH:MM:SS")`.
+   - `format_regional_display(dt: datetime, fmt_string: str = "%A, %d %B %Y at %I:%M %p (%Z)") -> str`:
+     * Formats datetime using `dt.strftime(fmt_string)`.
+2. Timezone Offsets & Multi-Region Synchronization:
+   - `convert_utc_to_timezones(utc_dt: datetime, regions: dict[str, float]) -> dict[str, str]`:
+     * Accepts dictionary of regions mapping timezone code -> UTC hour offset (e.g., `{"EST": -5.0, "IST": 5.5, "JST": 9.0}`).
+     * For each region, constructs a custom timezone via `timezone(timedelta(hours=offset))` and converts `utc_dt.astimezone(target_tz)`.
+     * Returns dictionary mapping region code -> formatted timestamp string.
+3. Interval Countdown Arithmetic (`timedelta`):
+   - `generate_maintenance_checkpoints(start_dt: datetime, maintenance_dt: datetime, step_hours: int = 12) -> list[dict]`:
+     * Verifies `maintenance_dt > start_dt` (otherwise raises `ValueError("Maintenance time must be in the future")`).
+     * Iterates by `step_delta = timedelta(hours=step_hours)` from `start_dt` up to `maintenance_dt`.
+     * For each checkpoint, computes remaining `time_left = maintenance_dt - current_dt` and records:
+       `{"checkpoint": formatted_dt, "days_remaining": time_left.days, "total_hours_remaining": round(time_left.total_seconds() / 3600.0, 1)}`.
+
+Sample Input:
+scheduler = GlobalEventScheduler()
+event_utc = scheduler.parse_server_timestamp("2026-10-31 18:30:00")
+display_utc = scheduler.format_regional_display(event_utc)
+
+regions = {"US_EAST": -5.0, "INDIA_IST": 5.5, "JAPAN_JST": 9.0}
+regional_times = scheduler.convert_utc_to_timezones(event_utc, regions)
+
+now_utc = scheduler.parse_server_timestamp("2026-10-30 06:30:00")
+checkpoints = scheduler.generate_maintenance_checkpoints(now_utc, event_utc, step_hours=12)
+
+Expected Output:
+UTC Scheduled Time: Saturday, 31 October 2026 at 06:30 PM (UTC)
+Regional Broadcasts:
+- US_EAST (UTC-5.0): Saturday, 31 October 2026 at 01:30 PM (UTC-05:00)
+- INDIA_IST (UTC+5.5): Sunday, 01 November 2026 at 12:00 AM (UTC+05:30)
+- JAPAN_JST (UTC+9.0): Sunday, 01 November 2026 at 03:30 AM (UTC+09:00)
+
+Maintenance Checkpoints (Step = 12h):
+1. 2026-10-30 06:30:00 UTC | Total Hours Left: 36.0 | Days: 1
+2. 2026-10-30 18:30:00 UTC | Total Hours Left: 24.0 | Days: 1
+3. 2026-10-31 06:30:00 UTC | Total Hours Left: 12.0 | Days: 0
+
+Constraints & Edge Cases:
+- Never perform arithmetic combining naive (timezone-unaware) and aware datetime objects (raises `TypeError`).
+- Non-integer timezone offsets like India (+5.5h) must be computed using `timedelta(minutes=330)` or float hours accurately.
+================================================================================
