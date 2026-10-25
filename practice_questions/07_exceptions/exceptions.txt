@@ -45,3 +45,63 @@ Constraints & Edge Cases:
 - Do not use a bare `except:` or catch universal `Exception` here; handlers must target `ValueError` and `ZeroDivisionError` specifically.
 - Leading or trailing whitespace in numeric strings (e.g., `" 42 "`) should parse successfully as standard Python `float()` permits.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a safe nested data extractor `safe_nested_lookup(data_structure: object, query_path: list, fallback: object = None) -> dict`
+demonstrating multiple exception handlers, exception grouping via tuples, and inheritance hierarchy ordering:
+1. Traversal Flow:
+   - Successively traverses nested dictionaries, lists, and tuples following the elements in `query_path`.
+   - Returns the targeted deep value if all keys/indices exist.
+2. Multiple Distinct Exception Handlers:
+   - Specific Handler for `KeyError`:
+     * Triggered when a key is absent from a dictionary.
+     * Records failure diagnostic: `"Key '<key>' not found in mapping"`.
+   - Specific Handler for `IndexError`:
+     * Triggered when an integer index is out of bounds for a sequence.
+     * Records failure diagnostic: `"Index <idx> out of range for sequence"`.
+   - Combined Group Handler for `(TypeError, AttributeError)`:
+     * Triggered when attempting to index a non-subscriptable object (e.g., int, float, None)
+       or passing a string index to a list.
+     * Records failure diagnostic: `"Invalid subscript access on non-container or wrong key type"`.
+3. Hierarchy Ordering Rule:
+   - Note that both `KeyError` and `IndexError` inherit from `LookupError`. Demonstrate that
+     specific subclass handlers must precede any broader `LookupError` handler to prevent shadowing.
+4. Output Schema:
+   - On success: returns `{"status": "SUCCESS", "value": val, "depth": len(query_path)}`.
+   - On failure: returns `{"status": "FALLBACK", "value": fallback, "error_type": exc.__class__.__name__, "failing_token": key, "diagnostic": msg}`.
+
+Sample Input:
+payload = {
+    "users": [
+        {"id": 101, "profile": {"name": "Alice", "tags": ["admin", "dev"]}},
+        {"id": 102, "profile": {"name": "Bob", "tags": []}}
+    ]
+}
+
+res1 = safe_nested_lookup(payload, ["users", 0, "profile", "name"])
+res2 = safe_nested_lookup(payload, ["users", 0, "profile", "email"], fallback="no-email")
+res3 = safe_nested_lookup(payload, ["users", 5, "profile"])
+res4 = safe_nested_lookup(payload, ["users", 0, "profile", "name", 100])
+
+Expected Output:
+Lookup 1 (Valid Path):
+{'status': 'SUCCESS', 'value': 'Alice', 'depth': 4}
+
+Lookup 2 (Missing Dict Key 'email'):
+{'status': 'FALLBACK', 'value': 'no-email', 'error_type': 'KeyError', 'failing_token': 'email', 'diagnostic': "Key 'email' not found in mapping"}
+
+Lookup 3 (Out of Bounds Index 5):
+{'status': 'FALLBACK', 'value': None, 'error_type': 'IndexError', 'failing_token': 5, 'diagnostic': 'Index 5 out of range for sequence'}
+
+Lookup 4 (String Indexing Out of Range):
+{'status': 'FALLBACK', 'value': None, 'error_type': 'IndexError', 'failing_token': 100, 'diagnostic': 'Index 100 out of range for sequence'}
+
+Lookup 5 (Indexing into Non-Container None):
+safe_nested_lookup(None, ["users"]) -> 'TypeError' caught by (TypeError, AttributeError) group.
+
+Constraints & Edge Cases:
+- Empty `query_path` should return `{"status": "SUCCESS", "value": data_structure, "depth": 0}`.
+- Specific exception handlers must strictly appear before any general superclass handlers in the code structure.
+================================================================================
