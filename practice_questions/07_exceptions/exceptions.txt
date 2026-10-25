@@ -282,3 +282,65 @@ Constraints & Edge Cases:
 - All custom exception classes must inherit from `PaymentGatewayError` which itself inherits from built-in `Exception` (never `BaseException`).
 - All numeric currency fields must format cleanly with 2 decimal places.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a microservice secret and configuration manager
+`ServiceConfigLoader` demonstrating explicit exception chaining (`raise ... from orig`),
+traceback context suppression (`raise ... from None`), and introspection of `__cause__` and `__context__`:
+1. Custom Domain Exceptions:
+   - `ConfigurationLoadError(Exception)`: General configuration parsing failure.
+   - `InvalidSecurityTokenError(Exception)`: Security credential token failure.
+2. Explicit Chaining with `raise ... from orig_err`:
+   - `load_cluster_settings(filepath: str) -> dict`:
+     * Attempts to open and read `filepath`.
+     * Catches `FileNotFoundError` as `err`:
+       `raise ConfigurationLoadError(f"Cluster config file '{filepath}' is missing") from err`.
+     * Explicitly preserves the root cause, causing Python to link `new_exc.__cause__ = err`
+       and display `"The above exception was the direct cause of the following exception:"`.
+3. Context Suppression with `raise ... from None`:
+   - `decode_api_bearer_token(raw_token: str) -> dict`:
+     * Attempts to base64-decode and parse `raw_token`.
+     * If `binascii.Error` or `UnicodeDecodeError` or `ValueError` occurs:
+       `raise InvalidSecurityTokenError("Bearer token is malformed or signature corrupted") from None`.
+     * Setting `from None` sets `new_exc.__cause__ = None` and `new_exc.__suppress_context__ = True`,
+       intentionally suppressing internal low-level implementation details and cryptographic libraries
+       from leaking in client tracebacks.
+4. Introspection Utility:
+   - `inspect_chaining(exc: BaseException) -> dict`:
+     * Returns metadata:
+       `{"exception": type(exc).__name__, "message": str(exc), "cause": type(exc.__cause__).__name__ if exc.__cause__ else None, "context": type(exc.__context__).__name__ if exc.__context__ else None, "suppress_context": exc.__suppress_context__}`.
+
+Sample Input:
+loader = ServiceConfigLoader()
+
+# Test Case 1: Explicit Chaining
+try:
+    loader.load_cluster_settings("missing_cluster.json")
+except ConfigurationLoadError as err:
+    chain_info1 = loader.inspect_chaining(err)
+
+# Test Case 2: Suppressed Chaining
+try:
+    loader.decode_api_bearer_token("!!!invalid-base64-secret!!!")
+except InvalidSecurityTokenError as err:
+    chain_info2 = loader.inspect_chaining(err)
+
+Expected Output:
+Chaining Info (Test 1 - Explicit Chaining):
+- Exception: ConfigurationLoadError
+- Message: Cluster config file 'missing_cluster.json' is missing
+- Cause: FileNotFoundError
+- Suppress Context: False
+
+Chaining Info (Test 2 - Suppressed Context):
+- Exception: InvalidSecurityTokenError
+- Message: Bearer token is malformed or signature corrupted
+- Cause: None
+- Suppress Context: True
+
+Constraints & Edge Cases:
+- Never let low-level internal decoding traces leak to users when processing sensitive authentication tokens.
+- Explicit chaining must retain full access to `err.__cause__` for internal SRE logging and root cause analysis.
+================================================================================
