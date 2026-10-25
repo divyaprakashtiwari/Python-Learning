@@ -52,3 +52,59 @@ Constraints & Edge Cases:
 - An iterator must return `self` from `__iter__()`.
 - When `max_cycles <= 0`, `__next__()` must immediately raise `StopIteration`.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a streaming telemetry processing pipeline and interactive
+coroutine accumulator `StreamAnalyticsSuite` demonstrating generator functions, subgenerator
+delegation via `yield from`, and bidirectional coroutine communication via `.send()` and `.close()`:
+1. Subgenerator Flattening Delegation (`yield from`):
+   - `flatten_sensor_batches(nested_data_blocks: list[list[float]]) -> Generator[float, None, None]`:
+     * Iterates through outer blocks.
+     * Delegates element emission directly to each sub-list using `yield from block`.
+2. Generator Expression Filtering Pipeline:
+   - `stream_transformed_telemetry(raw_stream: Iterable[float], calibration_offset: float = 1.5) -> Generator[float, None, None]`:
+     * Chains a lazy generator expression or generator function over `raw_stream`.
+     * Applies `val + calibration_offset` and filters out any values `< 0.0`.
+3. Bidirectional Coroutine Accumulator (`.send()`):
+   - `running_stats_coroutine() -> Generator[dict, float, None]`:
+     * Coroutine that tracks moving count, sum, min, max, and mean.
+     * Initial yield primes the coroutine (returns initial state `None` or zero dict).
+     * Inside an infinite `while True:` loop:
+       `incoming_val = (yield {"count": count, "mean": total / count, "min": min_v, "max": max_v})`.
+     * Supports graceful termination handling when `.close()` is called on the coroutine.
+
+Sample Input:
+suite = StreamAnalyticsSuite()
+
+# 1. Test Flattening with yield from
+batches = [[10.5, 12.0], [15.2, 18.9, 21.0], [8.4]]
+flat_data = list(suite.flatten_sensor_batches(batches))
+
+# 2. Test Coroutine moving average with .send()
+coro = suite.running_stats_coroutine()
+next(coro)  # Prime the coroutine to advance to the first yield
+
+stat1 = coro.send(10.0)
+stat2 = coro.send(20.0)
+stat3 = coro.send(30.0)
+coro.close()
+
+Expected Output:
+Flattened Batch Data:
+[10.5, 12.0, 15.2, 18.9, 21.0, 8.4]
+
+Coroutine Moving Statistics:
+- Send 10.0 -> {'count': 1, 'mean': 10.0, 'min': 10.0, 'max': 10.0}
+- Send 20.0 -> {'count': 2, 'mean': 15.0, 'min': 10.0, 'max': 20.0}
+- Send 30.0 -> {'count': 3, 'mean': 20.0, 'min': 10.0, 'max': 30.0}
+Coroutine closed cleanly.
+
+Sending to closed coroutine:
+Raises StopIteration.
+
+Constraints & Edge Cases:
+- A newly created generator must be primed with `next(coro)` or `coro.send(None)` before sending non-None values (otherwise raises `TypeError: can't send non-None value to a just-started generator`).
+- `flatten_sensor_batches` must yield values lazily one-by-one without pre-allocating an intermediate merged list in memory.
+================================================================================
