@@ -527,3 +527,77 @@ Constraints & Edge Cases:
 - Never assign mutable defaults directly (`tags: list = []`); always use `field(default_factory=list)` to avoid class-level leakage.
 - Attribute assignments inside frozen `__post_init__` must strictly bypass descriptor guards via `object.__setattr__`.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a modern command processing and message routing engine
+`ModernCommandRouter` demonstrating Python's latest modern language features:
+1. Positional-Only (`/`) and Keyword-Only (`*`) Parameter Enforcement:
+   - `dispatch_task(task_code: str, /, cluster_zone: str, *, priority: int = 1, dry_run: bool = False) -> dict`:
+     * `task_code` is positional-only: passing `task_code="REBOOT"` must raise a `TypeError`.
+     * `priority` and `dry_run` are keyword-only: passing them positionally must raise a `TypeError`.
+2. Walrus Operator (`:=`) Assignment Expressions:
+   - `process_stream_chunks(raw_buffer: list[str], max_chunk_len: int = 4) -> list[dict]`:
+     * Iterates over `raw_buffer`:
+       Uses assignment expressions in a `while` or list comprehension:
+       `[{"token": tok, "length": l} for item in raw_buffer if (l := len(tok := item.strip())) > max_chunk_len]`.
+     * Avoids duplicate string stripping and length re-calculations.
+3. Structural Pattern Matching (`match...case`):
+   - `route_event(event_payload: object) -> dict`:
+     * Uses `match event_payload:` to destructure payloads with pattern guards:
+       - `case {"type": "AUTH", "user": {"id": uid, "role": "SUPERUSER"}}:`
+         Returns `{"status": "ROUTE_ROOT", "target_uid": uid}`.
+       - `case {"type": "PAYMENT", "amount": amt, "currency": curr} if amt >= 10000.0:`
+         Returns `{"status": "ROUTE_COMPLIANCE_HOLD", "amount": amt, "currency": curr}`.
+       - `case {"type": "PAYMENT", "amount": amt, "currency": curr}:`
+         Returns `{"status": "ROUTE_AUTO_SETTLE", "amount": amt, "currency": curr}`.
+       - `case [str(cmd), *args] if cmd in {"PING", "STATUS"}:`
+         Returns `{"status": "ROUTE_SYSTEM_CLI", "command": cmd, "args": args}`.
+       - `case _:`
+         Returns `{"status": "ROUTE_UNRECOGNIZED", "raw": event_payload}`.
+
+Sample Input:
+router = ModernCommandRouter()
+
+# 1. Positional-only & keyword-only execution
+task_res = router.dispatch_task("DEPLOY", "us-central-1", priority=2, dry_run=True)
+
+# 2. Walrus filter
+buffer = ["  ok  ", "   superlongtoken   ", " tiny "]
+chunks = router.process_stream_chunks(buffer, max_chunk_len=5)
+
+# 3. Structural Pattern Matching tests
+evt1 = {"type": "AUTH", "user": {"id": "U-99", "role": "SUPERUSER"}}
+evt2 = {"type": "PAYMENT", "amount": 25000.0, "currency": "USD"}
+evt3 = ["PING", "--verbose", "--all"]
+evt4 = "Invalid String Message"
+
+r1 = router.route_event(evt1)
+r2 = router.route_event(evt2)
+r3 = router.route_event(evt3)
+r4 = router.route_event(evt4)
+
+Expected Output:
+Task Dispatch Result:
+{'task': 'DEPLOY', 'zone': 'us-central-1', 'priority': 2, 'dry_run': True}
+
+Stream Chunks Filtered via Walrus:
+[{'token': 'superlongtoken', 'length': 14}]
+
+Pattern Matching Route Results:
+- Evt1: {'status': 'ROUTE_ROOT', 'target_uid': 'U-99'}
+- Evt2: {'status': 'ROUTE_COMPLIANCE_HOLD', 'amount': 25000.0, 'currency': 'USD'}
+- Evt3: {'status': 'ROUTE_SYSTEM_CLI', 'command': 'PING', 'args': ['--verbose', '--all']}
+- Evt4: {'status': 'ROUTE_UNRECOGNIZED', 'raw': 'Invalid String Message'}
+
+Syntax Enforcement Violations:
+- Passing positional-only as keyword (`dispatch_task(task_code="RUN", ...)`):
+  TypeError: dispatch_task() got some positional-only arguments passed as keyword arguments: 'task_code'
+- Passing keyword-only positionally (`dispatch_task("RUN", "zone", 5)`):
+  TypeError: dispatch_task() takes 2 positional arguments but 3 were given
+
+Constraints & Edge Cases:
+- Pattern matching guards (`if amt >= 10000.0`) must be evaluated after pattern binding matches.
+- Wildcard pattern (`case _:`) must always appear as the final fallback branch.
+================================================================================
