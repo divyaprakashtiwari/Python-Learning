@@ -161,3 +161,62 @@ Constraints & Edge Cases:
 - The connection must be returned to `"IDLE"` in `finally` even if `queries` contains invalid data types.
 - The `else` block must never execute if an exception was raised and caught in `try`.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an identity registration gatekeeper `register_account(profile: dict) -> dict`
+and an auditing middleware `audit_registration_wrapper(profile: dict, audit_log: list) -> dict`
+demonstrating explicit exception raising, condition-based validation, and bare `raise` re-raising:
+1. Defensive Validation & Explicit `raise`:
+   - `register_account(profile: dict) -> dict`:
+     * Required Keys: Check presence of `"username"`, `"email"`, `"age"`, and `"role"`.
+       If any key is missing, explicitly `raise KeyError(f"Missing mandatory registration field: '{key}'")`.
+     * Type Validation: If `profile["age"]` is not an integer, `raise TypeError("Age must be an integer")`.
+     * Value Boundaries:
+       - If `age < 18` or `age > 120`: `raise ValueError(f"Age {age} is outside permitted registration bounds (18-120)")`.
+       - If `"@" not in profile["email"]` or `"." not in profile["email"]`: `raise ValueError("Invalid email format")`.
+       - If `profile["role"]` not in `{"STANDARD", "OPERATOR", "ADMIN"}`: `raise ValueError(f"Unauthorized role: '{profile['role']}'")`.
+     * On successful validation: returns `{"account_id": f"ACC-{hash(profile['username']) % 10000:04d}", "status": "REGISTERED"}`.
+2. Interception and Bare Re-Raise (`raise` without expression):
+   - `audit_registration_wrapper(profile: dict, audit_log: list) -> dict`:
+     * In the `try` block, invoke `register_account(profile)`.
+     * In an `except Exception as err:` block:
+       - Append diagnostic failure event to `audit_log`: `{"event": "REGISTRATION_FAILED", "error": type(err).__name__, "message": str(err)}`.
+       - Use a bare `raise` statement to re-raise the exact active exception, preserving the original
+         stack trace and exception type for upstream callers.
+
+Sample Input:
+audit_trail = []
+
+# Test A: Valid User
+valid_user = {"username": "jdoe", "email": "jdoe@company.org", "age": 28, "role": "STANDARD"}
+acc = audit_registration_wrapper(valid_user, audit_trail)
+
+# Test B: Underage User (raises ValueError)
+underage_user = {"username": "kid99", "email": "kid@fun.org", "age": 16, "role": "STANDARD"}
+try:
+    audit_registration_wrapper(underage_user, audit_trail)
+except ValueError as exc:
+    print("Caught Upstream Error:", exc)
+
+# Test C: Missing Key (raises KeyError)
+missing_key_user = {"username": "anon", "email": "anon@test.io", "age": 30}
+try:
+    audit_registration_wrapper(missing_key_user, audit_trail)
+except KeyError as exc:
+    print("Caught Upstream Error:", exc)
+
+Expected Output:
+Registration Success: Account Created ACC-1234
+Caught Upstream Error: Age 16 is outside permitted registration bounds (18-120)
+Caught Upstream Error: 'Missing mandatory registration field: \'role\''
+
+Audit Trail Entries (2 logged failures):
+1. Event: REGISTRATION_FAILED | Error: ValueError | Message: Age 16 is outside permitted registration bounds (18-120)
+2. Event: REGISTRATION_FAILED | Error: KeyError | Message: 'Missing mandatory registration field: \'role\''
+
+Constraints & Edge Cases:
+- Never use `raise Exception(...)`; always raise the most semantically appropriate built-in type (`KeyError`, `ValueError`, `TypeError`).
+- Re-raising must use the bare `raise` syntax to avoid altering the exception's original frame traceback.
+================================================================================
