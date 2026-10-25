@@ -450,3 +450,70 @@ Constraints & Edge Cases:
 - Functions memoized with `@lru_cache` require all arguments to be hashable (e.g. passing unhashable lists raises `TypeError`).
 - `@singledispatch` dispatches solely based on the type of the first argument.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise analytics package architecture `analytics_core`
+demonstrating multi-tiered subpackage organization, package initialization via `__init__.py`,
+and explicit relative import mechanics (`.` and `..` syntax):
+1. Simulated Directory Tree Layout:
+   ```text
+   analytics_core/
+   ├── __init__.py           (Exposes public facade API and defines package __all__)
+   ├── ingestion/
+   │   ├── __init__.py       (from .reader import fetch_records)
+   │   └── reader.py         (Implements fetch_records(source: str))
+   ├── transform/
+   │   ├── __init__.py       (from .cleaner import sanitize_dataset)
+   │   └── cleaner.py        (Implements sanitize_dataset(records: list))
+   └── reporting/
+       ├── __init__.py       (from .dashboard import generate_report)
+       └── dashboard.py      (Uses inter-subpackage relative imports)
+   ```
+2. Facade Design Pattern in `__init__.py`:
+   - Top-level `analytics_core/__init__.py`:
+     * Imports key subpackage utilities:
+       `from .ingestion.reader import fetch_records`
+       `from .transform.cleaner import sanitize_dataset`
+       `from .reporting.dashboard import generate_report`
+     * Exposes an end-to-end orchestration pipeline function `run_full_pipeline(source: str) -> dict`.
+     * Restricts top-level wildcard exports: `__all__ = ["run_full_pipeline", "fetch_records", "generate_report"]`.
+3. Inter-Subpackage Relative Import Rules:
+   - Inside `dashboard.py`:
+     * Must demonstrate relative imports from sibling subpackages:
+       `from ..transform.cleaner import sanitize_dataset` (goes up one level to parent, then into `transform`)
+       `from ..ingestion.reader import fetch_records` (goes up one level to parent, then into `ingestion`)
+4. Package Introspection Engine:
+   - `audit_package_architecture(pkg_object) -> dict`:
+     * Inspects package attributes:
+       - `is_package`: verifies `hasattr(pkg, "__path__")` (True for packages, False for standalone modules).
+       - `package_path`: path string of package folder.
+       - `facade_symbols`: list of attributes exposed in `__all__`.
+
+Sample Input:
+pkg = load_simulated_analytics_package()
+pipeline_res = pkg.run_full_pipeline(source="s3://metrics/2026.csv")
+pkg_audit = audit_package_architecture(pkg)
+
+Expected Output:
+Pipeline Execution Success:
+- Extracted: 100 raw records via ingestion.reader
+- Sanitized: 98 valid records via transform.cleaner
+- Generated: Summary report via reporting.dashboard
+
+Package Architecture Audit:
+- Package Name: analytics_core
+- Is Package (has __path__): True
+- Package Root: /path/to/analytics_core
+- Exposed Facade Symbols: ['fetch_records', 'generate_report', 'run_full_pipeline']
+
+Relative Import Caveat Verification:
+Relative imports (e.g. `from ..transform import cleaner`) depend on the module's `__name__` containing package hierarchy.
+Running a sub-module directly as a standalone script (`python dashboard.py`) sets `__name__ = "__main__"`, causing:
+`ImportError: attempted relative import with no known parent package`.
+
+Constraints & Edge Cases:
+- Relative imports must only be used within packages; attempting them at the top-level root script raises `ImportError`.
+- Packages without `__init__.py` operate as Implicit Namespace Packages (PEP 420); regular packages must declare `__init__.py`.
+================================================================================
