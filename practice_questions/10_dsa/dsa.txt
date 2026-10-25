@@ -1,0 +1,56 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 10 - DATA STRUCTURES & ALGORITHMS (DSA)
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an array manipulation utility `TwoPointerAlgorithms`
+demonstrating classical two-pointer patterns with optimal O(N) time and O(1) auxiliary space:
+1. Converging Two-Pointer Target Search:
+   - `two_sum_sorted(nums: list[int], target: int) -> tuple[int, int] | None`:
+     * Accepts a pre-sorted list of integers and a target sum.
+     * Initializes pointer `left = 0` and pointer `right = len(nums) - 1`.
+     * Evaluates `current_sum = nums[left] + nums[right]`:
+       - If `current_sum == target`: returns 0-indexed indices `(left, right)`.
+       - If `current_sum < target`: advances `left += 1` to increase sum.
+       - If `current_sum > target`: retreats `right -= 1` to decrease sum.
+     * Returns `None` if no pair exists.
+2. Fast/Slow Two-Pointer In-Place Deduplication:
+   - `remove_duplicates_sorted(nums: list[int]) -> int`:
+     * Given a sorted list, removes duplicate entries in-place without allocating a new list.
+     * Uses slow pointer `write_idx = 1` and fast pointer `read_idx = 1` to shift unique elements forward.
+     * Returns `k`, the count of unique elements, such that `nums[:k]` contains all unique elements in sorted order.
+3. In-Place Subarray Reversal:
+   - `reverse_subarray(nums: list[int], start_idx: int, end_idx: int) -> None`:
+     * Reverses elements between `start_idx` and `end_idx` in-place using simultaneous tuple assignment swapping.
+
+Sample Input:
+algo = TwoPointerAlgorithms()
+
+# 1. Two-Sum Sorted Search
+sorted_arr = [2, 7, 11, 15, 18, 22]
+pair = algo.two_sum_sorted(sorted_arr, target=26)
+
+# 2. In-place Deduplication
+dups_arr = [1, 1, 2, 2, 3, 4, 4, 4, 5]
+k = algo.remove_duplicates_sorted(dups_arr)
+unique_slice = dups_arr[:k]
+
+# 3. Subarray In-place Reversal
+arr_to_rev = [10, 20, 30, 40, 50, 60]
+algo.reverse_subarray(arr_to_rev, 1, 4)
+
+Expected Output:
+Two-Sum Target 26 Found: indices (2, 3) -> values (11 + 15 = 26)
+Deduplication Result:
+- Unique Count k = 5
+- Deduplicated Prefix: [1, 2, 3, 4, 5]
+Subarray Reversed (indices 1 to 4):
+[10, 50, 40, 30, 20, 60]
+
+Constraints & Edge Cases:
+- `two_sum_sorted` must strictly operate in O(1) auxiliary memory (no hash set or dictionary lookups).
+- For an empty list or single element, `remove_duplicates_sorted` must return `len(nums)` without modification.
+- Subarray bounds must satisfy `0 <= start_idx <= end_idx < len(nums)`.
+================================================================================
