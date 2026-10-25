@@ -399,3 +399,60 @@ Constraints & Edge Cases:
 - Never suppress `KeyboardInterrupt` or `SystemExit` even if the user passes broad base exceptions.
 - The `__exit__` method must explicitly return a boolean (`True` to suppress, `False` to propagate).
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a quantitative portfolio allocator `PortfolioEngine`
+demonstrating the strict architectural distinction between production runtime validation
+(using explicit `raise`) and internal consistency assertions (using `assert`):
+1. Runtime Input Validation (Must Never Use `assert`):
+   - `distribute_capital(asset_weights: list[float], total_capital: float) -> list[float]`:
+     * Validate user/external inputs using conditional checks:
+       - If `not isinstance(total_capital, (int, float))` or `total_capital <= 0`:
+         `raise ValueError("Capital must be a strictly positive number")`.
+       - If `not asset_weights` or any weight `< 0`:
+         `raise ValueError("Asset weights must be a non-empty list of non-negative floats")`.
+       - If `sum(asset_weights) == 0`:
+         `raise ValueError("Sum of asset weights cannot be zero")`.
+2. Internal State Invariant Verification (Legitimate Use of `assert`):
+   - Normalize weights: `norm_weights = [w / sum(asset_weights) for w in asset_weights]`.
+   - Post-Normalization Invariant:
+     * `assert math.isclose(sum(norm_weights), 1.0, rel_tol=1e-7), "Algorithm Error: Normalized weights do not sum to 1.0"`
+   - Compute allocation amounts: `allocations = [round(w * total_capital, 2) for w in norm_weights]`.
+   - Internal Post-Condition Invariant:
+     * Adjust rounding discrepancy on final allocation.
+     * `assert math.isclose(sum(allocations), total_capital, abs_tol=0.05), "Invariant Breach: Allocations sum does not match total capital"`
+   - Returns `allocations`.
+3. The Python Optimization Flag (`-O`) Security Demonstration:
+   - Implement an explanatory test / function `explain_assertion_flag_security()`:
+     * Explains why relying on `assert user.is_authenticated` or `assert is_admin` for access control
+       creates a critical vulnerability because running Python with `-O` or `-OO` compiles out and strips
+       all `assert` statements from bytecode entirely.
+
+Sample Input:
+engine = PortfolioEngine()
+weights = [0.4, 0.4, 0.2]
+capital = 10000.0
+
+allocations = engine.distribute_capital(weights, capital)
+
+# Validation input checks:
+try:
+    engine.distribute_capital([-0.5, 0.5], 1000.0)
+except ValueError as err:
+    print("Caught Input Error (Valid raise):", err)
+
+Expected Output:
+Allocated Capital: [4000.0, 4000.0, 2000.0]
+Total Sum Verified: 10000.0
+Caught Input Error (Valid raise): Asset weights must be a non-empty list of non-negative floats
+
+Security Audit on Assertions:
+Rule: `assert` is exclusively for verifying developer assumptions and impossible internal state invariants.
+Security warning: Running `python -O script.py` strips all assertions; runtime data validation and security access guards must always use explicit `if ...: raise`.
+
+Constraints & Edge Cases:
+- Floating-point calculations must use `math.isclose()` with appropriate relative/absolute tolerances rather than strict `==` equality.
+- Zero-sum weights must be trapped with `ValueError` during input validation before division occurs.
+================================================================================
