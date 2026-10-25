@@ -161,3 +161,64 @@ Constraints & Edge Cases:
 - Parameterized decorators must use a 3-tier function closure (`def decorator(args): def wrapper_outer(func): def inner(*a, **kw): ...`).
 - When an unauthorized access exception is raised, the inner wrapped business logic must never execute.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a class-based rate-limiting and retry decorator
+`RateLimitedRetry` using `__init__`, `__call__`, and instance-level state tracking:
+1. Class Decorator Architecture:
+   - `__init__(self, max_retries: int = 3, max_calls_per_second: int = 5, backoff_base: float = 0.05)`:
+     * Stores configuration parameters.
+     * Initializes state attributes:
+       - `self.call_timestamps = collections.deque()` (sliding window of epoch timestamps)
+       - `self.total_calls: int = 0`
+       - `self.total_retries: int = 0`
+   - `__call__(self, func: Callable) -> Callable`:
+     * Accepts the target function and returns an inner wrapper function decorated with `@functools.wraps(func)`.
+     * Attaches `wrapper.decorator_instance = self` so external callers can inspect instance metrics.
+2. Sliding Window Rate Limiting:
+   - Inside wrapper, records `now = time.time()`.
+   - Evicts timestamps from `self.call_timestamps` that are older than 1.0 second (`now - t > 1.0`).
+   - If `len(self.call_timestamps) >= self.max_calls_per_second`, raises
+     `RuntimeError(f"Rate limit exceeded: Maximum {self.max_calls_per_second} calls/sec allowed")`.
+   - Records current timestamp and increments `self.total_calls`.
+3. Retry Mechanism with Exponential Backoff:
+   - Executes target function.
+   - If a transient exception occurs, increments `self.total_retries` and retries up to `max_retries`
+     with delay `backoff_base * (2 ** attempt)`.
+   - If all retries fail, propagates the final exception.
+
+Sample Input:
+@RateLimitedRetry(max_retries=2, max_calls_per_second=3, backoff_base=0.01)
+def fetch_api_data(query_id: int, simulate_failure: bool = False):
+    """Fetches remote data payload."""
+    if simulate_failure:
+        raise ConnectionResetError("Remote server closed socket prematurely")
+    return {"id": query_id, "data": "OK"}
+
+# Test 1: Successful Call
+res1 = fetch_api_data(101)
+
+# Test 2: Rate Limit Violation (4 calls rapidly when limit is 3/sec)
+try:
+    for i in range(5):
+        fetch_api_data(200 + i)
+except RuntimeError as err:
+    print("Caught Limit Breach:", err)
+
+# Test 3: Inspect Decorator Instance State
+stats = fetch_api_data.decorator_instance
+
+Expected Output:
+Successful Fetch: {'id': 101, 'data': 'OK'}
+Caught Limit Breach: Rate limit exceeded: Maximum 3 calls/sec allowed
+Decorator State:
+- Total Calls Tracked: 4
+- Total Retries Tracked: 0
+- Function Name Preserved: 'fetch_api_data'
+
+Constraints & Edge Cases:
+- Using a class as a decorator with arguments requires `__init__` to accept the arguments, and `__call__` to accept the function.
+- Time window pruning must happen before checking capacity to allow burst resets after 1 second of inactivity.
+================================================================================
