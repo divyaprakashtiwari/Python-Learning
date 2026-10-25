@@ -344,3 +344,58 @@ Constraints & Edge Cases:
 - Never let low-level internal decoding traces leak to users when processing sensitive authentication tokens.
 - Explicit chaining must retain full access to `err.__cause__` for internal SRE logging and root cause analysis.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a configurable, resilient execution context manager
+`FaultTolerantScope` that inspects exception details in `__exit__` and selectively suppresses
+or propagates errors based on configured rules:
+1. Context Manager Protocol:
+   - `__init__(self, suppress_types: tuple[type[BaseException], ...], on_suppress_hook: Callable = None)`:
+     * Stores allowed suppressible exception classes.
+     * Stores optional callback invoked whenever an exception is caught and suppressed.
+     * Sets internal state: `self.suppressed_exception = None`, `self.was_suppressed = False`.
+   - `__enter__(self) -> "FaultTolerantScope"`:
+     * Returns `self`.
+   - `__exit__(self, exc_type, exc_val, exc_tb) -> bool`:
+     * If `exc_type is None`: no exception occurred; returns `False`.
+     * Check type membership: if `issubclass(exc_type, self.suppress_types)`:
+       - Records `self.suppressed_exception = exc_val` and `self.was_suppressed = True`.
+       - If `on_suppress_hook` is callable, calls `on_suppress_hook(exc_val)`.
+       - Returns `True` (instructing the Python runtime to swallow the exception and resume normal execution after the `with` block).
+     * If `exc_type` is NOT a subclass of `suppress_types`:
+       - Returns `False` (allowing the exception to propagate naturally up the call stack).
+2. Diagnostic Execution Testing:
+   - Test Case A: Suppressed `KeyError` within scope. Execution continues past the block.
+   - Test Case B: Suppressed `ZeroDivisionError` with a custom telemetry callback.
+   - Test Case C: Non-suppressed `TypeError` correctly escapes the scope and triggers an outer `try...except`.
+
+Sample Input:
+suppressed_events = []
+def record_event(err):
+    suppressed_events.append(f"Handled {type(err).__name__}: {err}")
+
+# Test 1: Suppressing KeyError
+with FaultTolerantScope(suppress_types=(KeyError,), on_suppress_hook=record_event) as scope1:
+    data = {"a": 1}
+    val = data["missing_key"]
+print("Continued after Scope 1. Suppressed?", scope1.was_suppressed)
+
+# Test 2: Unhandled TypeError escapes
+try:
+    with FaultTolerantScope(suppress_types=(ValueError,)):
+        num = int("123")
+        res = "abc" + 10  # Raises TypeError
+except TypeError as unhandled:
+    print("Caught unhandled escaping error:", unhandled)
+
+Expected Output:
+Continued after Scope 1. Suppressed? True
+Suppressed Events: ["Handled KeyError: 'missing_key'"]
+Caught unhandled escaping error: can only concatenate str (not "int") to str
+
+Constraints & Edge Cases:
+- Never suppress `KeyboardInterrupt` or `SystemExit` even if the user passes broad base exceptions.
+- The `__exit__` method must explicitly return a boolean (`True` to suppress, `False` to propagate).
+================================================================================
