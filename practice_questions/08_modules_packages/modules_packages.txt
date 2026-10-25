@@ -163,3 +163,59 @@ Constraints & Edge Cases:
 - Never invoke `sys.exit()` directly at the top level of module scope; `sys.exit()` must strictly live inside `main()` or under the `if __name__ == "__main__":` block.
 - Module-level constants and functions must remain clean and side-effect free during standard `import`.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an automated synthetic telemetry generator and bundle packager
+`TelemetryBundleOrchestrator` coordinating six core Python Standard Library modules
+(`math`, `random`, `os`, `sys`, `shutil`, and `json`):
+1. Synthetic Generation (`random` & `math`):
+   - `generate_sensor_readings(sample_size: int, seed: int = 101) -> list[dict]`:
+     * Seeds `random.seed(seed)` for reproducible test generation.
+     * Generates `sample_size` dictionaries containing:
+       - `sensor_id`: randomly chosen from `["TEMP-01", "TEMP-02", "PRESSURE-01", "VIBRATION-01"]` via `random.choice()`.
+       - `raw_reading`: generated via Gaussian distribution `random.gauss(mu=50.0, sigma=12.0)`.
+       - `normalized_score`: computes standard score transformed via sigmoid: `1.0 / (1.0 + math.exp(-raw_reading / 25.0))` rounded to 4 decimals.
+       - `is_alert`: boolean flag set to `True` if `raw_reading > 75.0` or `raw_reading < 25.0`.
+2. Structured Export (`os` & `json`):
+   - `export_dataset(records: list[dict], output_directory: str, filename: str = "telemetry.json") -> str`:
+     * Uses `os.makedirs(output_directory, exist_ok=True)` to create target paths.
+     * Serializes `records` to JSON using `json.dump(..., indent=2)`.
+     * Returns the absolute path of the written file (`os.path.abspath`).
+3. Compressed Archival Packaging (`shutil` & `os`):
+   - `compress_bundle(directory_to_zip: str, archive_base_name: str, format: str = "zip") -> dict`:
+     * Creates a compressed archive using `shutil.make_archive(archive_base_name, format, directory_to_zip)`.
+     * Inspects resulting archive file size in bytes using `os.path.getsize(archive_path)`.
+     * Returns `{"archive_path": archive_path, "size_bytes": size}`.
+4. Runtime Environment Telemetry (`sys` & `os`):
+   - `get_runtime_diagnostics() -> dict`:
+     * Returns:
+       `{"python_version": f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}", "platform": sys.platform, "process_id": os.getpid(), "working_dir": os.getcwd()}`.
+
+Sample Input:
+orchestrator = TelemetryBundleOrchestrator()
+readings = orchestrator.generate_sensor_readings(sample_size=5, seed=42)
+filepath = orchestrator.export_dataset(readings, "./telemetry_staging", "metrics.json")
+archive_meta = orchestrator.compress_bundle("./telemetry_staging", "./telemetry_backup", "zip")
+env_info = orchestrator.get_runtime_diagnostics()
+
+Expected Output:
+Generated 5 sensor readings. Sample item 1:
+{
+  "sensor_id": "TEMP-01",
+  "raw_reading": 53.07,
+  "normalized_score": 0.8931,
+  "is_alert": False
+}
+Exported file: /path/to/telemetry_staging/metrics.json
+Archive Created: /path/to/telemetry_backup.zip (Size: ~750 bytes)
+Environment Diagnostics:
+- Python Version: 3.12.x
+- Platform: win32 (or linux / darwin)
+- Process ID: 12345
+
+Constraints & Edge Cases:
+- `sample_size <= 0` must raise `ValueError("Sample size must be strictly positive")`.
+- Temporary staging directories and zip artifacts should be cleaned up appropriately during test teardown.
+================================================================================
