@@ -514,3 +514,68 @@ Constraints & Edge Cases:
 - Calling `traceback.format_exc()` or `sys.exc_info()` outside an active exception handler returns `None` or `'NoneType: None'`; the reporter must gracefully detect and reject out-of-context invocations.
 - Logger handlers must be properly flushed to ensure telemetry streams receive complete stack trace data.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise distributed service resilience engine
+`ResilientServiceClient` implementing the Circuit Breaker Pattern, Exponential Backoff Retries,
+and Graceful Degradation fallbacks:
+1. Custom Exception Types:
+   - `CircuitBreakerOpenError(Exception)`: Raised when calls are fast-rejected due to an open circuit.
+   - `ServiceUnavailableError(Exception)`: Simulated remote service outage error.
+2. Circuit Breaker State Machine:
+   - States: `"CLOSED"` (healthy), `"OPEN"` (tripped / fast-failing), `"HALF_OPEN"` (trial recovery).
+   - Behavior:
+     * In `"CLOSED"`: track consecutive failures. If failure count reaches `failure_threshold` (e.g. 3),
+       transition state to `"OPEN"` and record timestamp `tripped_at`.
+     * In `"OPEN"`: all incoming requests immediately raise `CircuitBreakerOpenError` without calling
+       the underlying service. If `time.time() - tripped_at >= cooldown_seconds` (e.g. 2.0s),
+       transition state to `"HALF_OPEN"`.
+     * In `"HALF_OPEN"`: permits exactly 1 canary request through.
+       - If canary succeeds: reset consecutive failures to 0, transition state back to `"CLOSED"`.
+       - If canary fails: immediately trip state back to `"OPEN"` and reset cooldown timer.
+3. Exponential Backoff Retry Loop:
+   - `execute_with_retry(self, operation_func: Callable, max_retries: int = 3, base_delay: float = 0.05)`:
+     * Retries transient `ServiceUnavailableError` up to `max_retries` times.
+     * Backoff sleep calculation: `base_delay * (2 ** attempt)` seconds.
+     * If all attempts fail, updates the circuit breaker failure counter and raises the final error.
+4. Graceful Degradation Wrapper:
+   - `safe_fetch_user_profile(self, user_id: str, cached_fallback: dict) -> dict`:
+     * Attempts call through `execute_with_retry` and circuit breaker.
+     * If `CircuitBreakerOpenError` or `ServiceUnavailableError` is caught:
+       - Logs warning: `"Remote service degraded; serving cached fallback payload."`
+       - Returns `{"data": cached_fallback, "status": "DEGRADED", "circuit_state": self.state}`.
+
+Sample Input:
+client = ResilientServiceClient(failure_threshold=3, cooldown_seconds=1.0)
+fallback_profile = {"id": "U-100", "name": "Cached User", "tier": "FREE"}
+
+def mock_flaky_remote(call_id: int):
+    # Fails for calls 1, 2, 3, 4
+    if call_id <= 4:
+        raise ServiceUnavailableError("503 Service Unavailable")
+    return {"id": "U-100", "name": "Live Alice", "tier": "PREMIUM"}
+
+# Simulate repeated failures tripping the circuit breaker:
+for i in range(1, 4):
+    res = client.safe_fetch_user_profile(f"U-{i}", fallback_profile)
+
+# Call 4: Fast-fails immediately due to OPEN state without retrying:
+res_fast_fail = client.safe_fetch_user_profile("U-4", fallback_profile)
+
+Expected Output:
+Call 1: Retried 3 times -> Failed -> Circuit failure count: 1
+Call 2: Retried 3 times -> Failed -> Circuit failure count: 2
+Call 3: Retried 3 times -> Failed -> Circuit failure count: 3 -> State tripped to OPEN!
+Call 4: Fast-failed immediately! Caught CircuitBreakerOpenError. Fallback returned.
+Result for Call 4: {'data': {'id': 'U-100', 'name': 'Cached User', 'tier': 'FREE'}, 'status': 'DEGRADED', 'circuit_state': 'OPEN'}
+
+Canary Probe Test (after 1.0s cooldown):
+State transitions to HALF_OPEN.
+Canary succeeds -> Circuit state resets to CLOSED.
+
+Constraints & Edge Cases:
+- When the circuit is OPEN, no network calls or retry loops may execute (must fast-fail in O(1) time).
+- Thread-safety or monotonic timestamps (`time.monotonic()`) must be preferred over wall-clock time to prevent clock skew anomalies.
+================================================================================
