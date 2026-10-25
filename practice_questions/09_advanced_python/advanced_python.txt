@@ -222,3 +222,65 @@ Constraints & Edge Cases:
 - Using a class as a decorator with arguments requires `__init__` to accept the arguments, and `__call__` to accept the function.
 - Time window pruning must happen before checking capacity to allow burst resets after 1 second of inactivity.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an environment variable and I/O stream sandbox context manager
+`ExecutionSandbox` using the `__enter__` and `__exit__` dunder protocols to safely isolate system state:
+1. Environment Sandboxing Protocol:
+   - `__init__(self, env_overrides: dict[str, str], capture_stdout: bool = False)`:
+     * Stores incoming key-value environment variable overrides.
+     * Initializes internal storage for previous environment state: `self._previous_env = {}`.
+     * Initializes an in-memory buffer `self.captured_output = io.StringIO()` if `capture_stdout` is True.
+   - `__enter__(self) -> "ExecutionSandbox"`:
+     * Backs up original values for all keys in `env_overrides`:
+       - If key exists in `os.environ`, stores `(key, os.environ[key])`.
+       - If key is new to `os.environ`, records `(key, None)`.
+     * Applies all `env_overrides` to `os.environ`.
+     * If `capture_stdout` is True, redirects `sys.stdout` to `self.captured_output`.
+     * Returns `self`.
+   - `__exit__(self, exc_type, exc_val, exc_tb) -> bool`:
+     * If `capture_stdout` was enabled, restores original `sys.stdout`.
+     * Reverts all environment variables back to their exact previous state:
+       - For previously present keys, restores original value.
+       - For newly created keys, deletes them via `os.environ.pop(key, None)`.
+     * Guarantees complete cleanup even if an exception is raised inside the block.
+2. Nested Scope Demonstration:
+   - Test nesting two sandbox instances where the inner sandbox temporarily overrides a variable
+     already modified by the outer sandbox, proving that each layer restores its predecessor state cleanly.
+
+Sample Input:
+os.environ["APP_ENV"] = "production"
+os.environ["API_KEY"] = "prod-secret-999"
+
+with ExecutionSandbox(env_overrides={"APP_ENV": "staging", "NEW_FLAG": "ENABLED"}, capture_stdout=True) as sandbox:
+    print("Executing staging dry run...")
+    current_env = os.environ.get("APP_ENV")
+    new_flag = os.environ.get("NEW_FLAG")
+
+    # Nested sub-scope:
+    with ExecutionSandbox(env_overrides={"APP_ENV": "testing"}):
+        nested_env = os.environ.get("APP_ENV")
+
+    post_nested_env = os.environ.get("APP_ENV")
+
+post_sandbox_env = os.environ.get("APP_ENV")
+is_new_flag_cleaned = "NEW_FLAG" not in os.environ
+stdout_result = sandbox.captured_output.getvalue().strip()
+
+Expected Output:
+Inside Sandbox: APP_ENV = 'staging', NEW_FLAG = 'ENABLED'
+Inside Nested:  APP_ENV = 'testing'
+After Nested:   APP_ENV = 'staging' (Cleanly restored to outer scope)
+Captured Stdout: 'Executing staging dry run...'
+
+Post-Sandbox Verification:
+- APP_ENV: 'production' (Fully restored)
+- NEW_FLAG in os.environ: False (Newly created key purged)
+- sys.stdout redirected back to system terminal: True
+
+Constraints & Edge Cases:
+- `__exit__` must ensure original `sys.stdout` is restored even if unhandled exceptions escape the `with` block.
+- Environment variables must be string types per OS requirements.
+================================================================================
