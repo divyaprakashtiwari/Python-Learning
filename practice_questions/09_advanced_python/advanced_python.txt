@@ -469,3 +469,61 @@ Constraints & Edge Cases:
 - Runtime checkable protocols only verify method existence, not signature parameters; the engine must verify both method presence and callable status.
 - Generic type variables (`TypeVar`) must preserve IDE auto-completion and static analysis inference.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an immutable, orderable equity trade order model `TradeOrder`
+leveraging Python's standard `dataclasses` module (`@dataclass`, `field`, `frozen=True`, `order=True`, `__post_init__`):
+1. Dataclass Specification:
+   - Decorate with `@dataclass(frozen=True, order=True)`:
+     * `sort_key: float = field(init=False, repr=False)`:
+       Used as the primary comparison field to enable native sorting by total trade value in descending order.
+     * `order_id: str`: Unique alphanumeric order ID.
+     * `ticker: str`: Stock ticker symbol (e.g. `"AAPL"`).
+     * `shares: int`: Positive integer count of shares.
+     * `price_per_share: float`: Positive price float.
+     * `execution_venue: str = "NASDAQ"`
+     * `metadata_tags: list[str] = field(default_factory=list, compare=False)`:
+       Mutable default factory list, excluded from equality and ordering comparisons.
+2. Invariant Validation & Frozen Mutation in `__post_init__`:
+   - Enforce constraints:
+     * `shares <= 0` raises `ValueError("Shares must be positive")`.
+     * `price_per_share <= 0.0` raises `ValueError("Price must be positive")`.
+   - Calculate `trade_value = shares * price_per_share`.
+   - Because `frozen=True`, normal assignment `self.sort_key = ...` raises `FrozenInstanceError`.
+     Use `object.__setattr__(self, "sort_key", -trade_value)` to populate `sort_key` during initialization
+     so that standard `sorted()` orders trades from largest to smallest value.
+3. Immutability & Serialization Utilities:
+   - Demonstrate that attempting to mutate attributes (e.g. `order.shares = 500`) raises `dataclasses.FrozenInstanceError`.
+   - Demonstrate converting instances to dictionaries using `dataclasses.asdict(order)`.
+
+Sample Input:
+order1 = TradeOrder(order_id="ORD-01", ticker="AAPL", shares=100, price_per_share=150.0) # $15,000
+order2 = TradeOrder(order_id="ORD-02", ticker="GOOG", shares=10, price_per_share=2800.0)  # $28,000
+order3 = TradeOrder(order_id="ORD-03", ticker="MSFT", shares=50, price_per_share=300.0)   # $15,000
+
+order_book = [order1, order2, order3]
+sorted_orders = sorted(order_book)
+order1_dict = asdict(order1)
+
+# Immutability mutation test:
+try:
+    order1.shares = 200
+except FrozenInstanceError as err:
+    print("Caught Mutation Breach:", err)
+
+Expected Output:
+Order 1 Summary: TradeOrder(order_id='ORD-01', ticker='AAPL', shares=100, price_per_share=150.0, execution_venue='NASDAQ', metadata_tags=[])
+Sorted Order Book (Descending Trade Value):
+1. ORD-02 (GOOG): Value = $28,000.00
+2. ORD-01 (AAPL): Value = $15,000.00
+3. ORD-03 (MSFT): Value = $15,000.00
+
+Serialized Dict Keys: ['order_id', 'ticker', 'shares', 'price_per_share', 'execution_venue', 'metadata_tags']
+Caught Mutation Breach: cannot assign to field 'shares'
+
+Constraints & Edge Cases:
+- Never assign mutable defaults directly (`tags: list = []`); always use `field(default_factory=list)` to avoid class-level leakage.
+- Attribute assignments inside frozen `__post_init__` must strictly bypass descriptor guards via `object.__setattr__`.
+================================================================================
