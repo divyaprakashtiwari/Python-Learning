@@ -284,3 +284,68 @@ Constraints & Edge Cases:
 - `__exit__` must ensure original `sys.stdout` is restored even if unhandled exceptions escape the `with` block.
 - Environment variables must be string types per OS requirements.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an analytical data transformation and search indexing pipeline
+`ComprehensionPipeline` exclusively utilizing single-expression nested list, dict, and set comprehensions:
+1. Matrix Transposition & Filtering (Nested List Comprehensions):
+   - `transpose_matrix(grid: list[list[float]]) -> list[list[float]]`:
+     * Transposes an N x M 2D grid into an M x N grid in a single nested list comprehension:
+       `[[row[col] for row in grid] for col in range(len(grid[0]))]`.
+   - `flatten_and_filter_divisible(grid: list[list[int]], divisor: int) -> list[int]`:
+     * Flattens a 2D matrix into 1D, keeping only numbers divisible by `divisor`:
+       `[num for row in grid for num in row if num % divisor == 0]`.
+2. Inverted Search Index (Dictionary & Set Comprehensions):
+   - `build_inverted_index(documents: dict[str, list[str]]) -> dict[str, set[str]]`:
+     * Given mapping `{"doc1": ["apple", "banana"], "doc2": ["banana", "cherry"]}`:
+     * Extracts all unique lowercase words using a set comprehension.
+     * Builds inverted index mapping `{word: {doc_id for doc_id, words in documents.items() if word in words}}`.
+3. Selective Key Mapping & Normalization:
+   - `normalize_user_scores(raw_data: dict[str, dict], pass_threshold: float = 70.0) -> dict[str, float]`:
+     * Given user profile dictionaries containing nested test scores:
+       `{user_id.upper(): round(data["score"] * 1.1, 2) for user_id, data in raw_data.items() if data.get("is_active") and data["score"] >= pass_threshold}`.
+4. Domain Deduplication (Set Comprehension):
+   - `extract_unique_email_domains(emails: list[str]) -> set[str]`:
+     * Extracts lowercase domain names (e.g. `"gmail.com"`) from valid email addresses using set comprehension.
+
+Sample Input:
+pipeline = ComprehensionPipeline()
+
+# 1. Matrix Transpose
+matrix = [
+    [1.0, 2.0, 3.0],
+    [4.0, 5.0, 6.0]
+]
+transposed = pipeline.transpose_matrix(matrix)
+
+# 2. Inverted Index
+corpus = {
+    "doc_1": ["python", "async", "fast"],
+    "doc_2": ["python", "threading", "gil"],
+    "doc_3": ["rust", "fast", "safe"]
+}
+index = pipeline.build_inverted_index(corpus)
+
+# 3. Domain extraction
+raw_emails = ["Alice@Corp.Net", "bob@gmail.com", "charlie@CORP.NET", "bad-email"]
+domains = pipeline.extract_unique_email_domains(raw_emails)
+
+Expected Output:
+Transposed 2x3 to 3x2 Matrix:
+[[1.0, 4.0], [2.0, 5.0], [3.0, 6.0]]
+
+Inverted Index Search:
+- 'python': {'doc_1', 'doc_2'}
+- 'fast': {'doc_1', 'doc_3'}
+- 'rust': {'doc_3'}
+
+Unique Domains Extracted:
+{'corp.net', 'gmail.com'}
+
+Constraints & Edge Cases:
+- Empty matrix `[]` must return `[]`.
+- Irregular/ragged 2D matrices (varying row lengths) must raise `ValueError("Matrix must have rectangular dimensions")`.
+- Implementations must be pure single-statement comprehensions without imperative `for` loops or manual list appends.
+================================================================================
