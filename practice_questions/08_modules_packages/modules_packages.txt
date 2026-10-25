@@ -103,3 +103,63 @@ Constraints & Edge Cases:
 - Functions must raise `ValueError("Dataset must be non-empty")` when given empty sequences.
 - Modifying `__all__` at runtime must be respected by dynamic wildcard import simulators.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a dual-mode cryptographic utility module `hasher_tool`
+demonstrating the `if __name__ == "__main__":` idiom, distinguishing library import from
+standalone CLI execution, and managing process exit codes via `sys.exit()`:
+1. Reusable Library API (When Imported):
+   - `hash_string(text: str, algorithm: str = "sha256") -> str`:
+     * Validates `algorithm` against allowed set: `{"sha256", "sha512", "md5"}`.
+       Raises `ValueError(f"Unsupported algorithm '{algorithm}'")` if not recognized.
+     * Computes and returns the hex digest string using `hashlib`.
+   - `hash_file_stream(filepath: str, algorithm: str = "sha256", chunk_size: int = 65536) -> str`:
+     * Streams file in binary chunks and computes the cumulative hex digest.
+2. CLI Dispatch Entry Point (`main(argv: list[str]) -> int`):
+   - Uses `argparse.ArgumentParser` or raw `argv` parsing:
+     * Accepts flags:
+       - `--algo` (optional, default: `"sha256"`)
+       - `--text` (string payload to hash)
+       - `--file` (path to file to hash)
+     * Enforces that either `--text` or `--file` must be specified, but not both.
+     * On successful hash: prints result to stdout and returns integer exit code `0`.
+     * On validation error or missing file: prints error to stderr and returns exit code `1` or `2`.
+3. Standalone Execution Guard:
+   - Implement the guard block:
+     ```python
+     if __name__ == "__main__":
+         import sys
+         sys.exit(main(sys.argv[1:]))
+     ```
+   - Prove that when this file is imported into another script (`import hasher_tool`),
+     `__name__` evaluates to `"hasher_tool"` and the CLI parser does not trigger or read `sys.argv`.
+
+Sample Input:
+# Scenario A: Library Import Usage
+import hasher_tool
+h_val = hasher_tool.hash_string("Hello World", algorithm="sha256")
+
+# Scenario B: CLI Execution (Simulated argv)
+cli_exit_code = hasher_tool.main(["--algo", "sha256", "--text", "Hello World"])
+
+# Scenario C: CLI Error Case (Missing Required Arguments)
+cli_error_code = hasher_tool.main([])
+
+Expected Output:
+Library Import Call Result:
+a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e
+
+CLI Execution Output:
+SHA256: a591a6d40bf420404a011733cfb7b190d62c65bf0bcda32b57b277d9ad9f146e
+CLI Exit Code: 0
+
+CLI Missing Arguments Error:
+Error: Exactly one of --text or --file must be specified.
+CLI Exit Code: 2
+
+Constraints & Edge Cases:
+- Never invoke `sys.exit()` directly at the top level of module scope; `sys.exit()` must strictly live inside `main()` or under the `if __name__ == "__main__":` block.
+- Module-level constants and functions must remain clean and side-effect free during standard `import`.
+================================================================================
