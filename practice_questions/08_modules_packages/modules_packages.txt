@@ -271,3 +271,69 @@ Constraints & Edge Cases:
 - Never perform arithmetic combining naive (timezone-unaware) and aware datetime objects (raises `TypeError`).
 - Non-integer timezone offsets like India (+5.5h) must be computed using `timedelta(minutes=330)` or float hours accurately.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise warehouse inventory and fulfillment tracker
+`WarehouseFulfillmentTracker` utilizing five specialized high-performance data structures from `collections`:
+1. Schema-Enforced Records with `namedtuple`:
+   - Define `ItemRecord = namedtuple("ItemRecord", ["sku", "category", "unit_cost", "quantity"])`.
+   - Instantiate records and access fields via dot-notation (`item.sku`) and index positions.
+2. Grouped Cataloging with `defaultdict`:
+   - `build_category_index(items: list[ItemRecord]) -> dict`:
+     * Uses `defaultdict(list)` to categorize items by `category` without key-existence checks.
+     * Computes category aggregate subtotals using `defaultdict(float)`.
+3. Inventory Balance Arithmetic with `Counter`:
+   - `reconcile_inventory(initial_stock: dict[str, int], dispatches: list[ItemRecord], returns: list[ItemRecord]) -> Counter`:
+     * Converts initial stock to `Counter`.
+     * Subtracts dispatch quantities using `stock.subtract(...)`.
+     * Adds return quantities using `stock.update(...)`.
+     * Uses `stock.most_common(3)` to extract the top 3 highest-inventory SKUs.
+     * Identifies any stock deficits (where count < 0) using `[sku for sku, count in stock.items() if count < 0]`.
+4. High-Throughput Queue Buffering with `deque`:
+   - `OrderDispatchQueue(max_capacity: int)`:
+     * Manages order IDs using `deque(maxlen=max_capacity)`.
+     * Implements `enqueue_standard(order_id)` (appends to right; O(1)).
+     * Implements `enqueue_expedited_vip(order_id)` (appends to left; O(1)).
+     * Implements `dispatch_next()` (pops from left; O(1)).
+5. Recency Cache Tracking with `OrderedDict`:
+   - Implements a fixed-size LRU catalog view cache using `OrderedDict`:
+     * When an item is queried, moves its key to the end via `ordered_dict.move_to_end(sku)`.
+     * If capacity exceeded, evicts the oldest element from the front via `ordered_dict.popitem(last=False)`.
+
+Sample Input:
+tracker = WarehouseFulfillmentTracker()
+items = [
+    tracker.ItemRecord("SKU-A", "Electronics", 120.0, 5),
+    tracker.ItemRecord("SKU-B", "Electronics", 45.0, 10),
+    tracker.ItemRecord("SKU-C", "Apparel", 25.0, 20)
+]
+
+initial = {"SKU-A": 50, "SKU-B": 30, "SKU-C": 100}
+dispatched = [tracker.ItemRecord("SKU-A", "Electronics", 120.0, 15), tracker.ItemRecord("SKU-C", "Apparel", 25.0, 40)]
+returned = [tracker.ItemRecord("SKU-A", "Electronics", 120.0, 2)]
+
+updated_stock = tracker.reconcile_inventory(initial, dispatched, returned)
+top_stock = updated_stock.most_common(2)
+
+Expected Output:
+Reconciled Stock Counts:
+- SKU-A: 37 (50 - 15 + 2)
+- SKU-B: 30 (30 - 0)
+- SKU-C: 60 (100 - 40)
+Top 2 Stocked Items: [('SKU-C', 60), ('SKU-A', 37)]
+
+Dispatch Queue Operations:
+- Enqueue Standard ORD-101
+- Enqueue Expedited VIP ORD-999
+- Next Dispatched: ORD-999 (Expedited processed first)
+
+Category Catalog:
+- Electronics: 2 items, Total Cost: $1050.00
+- Apparel: 1 item, Total Cost: $500.00
+
+Constraints & Edge Cases:
+- `Counter.subtract()` allows values to become negative; functions must handle or report negative balances appropriately.
+- `deque` operations (`append`, `appendleft`, `popleft`) must maintain O(1) time complexity.
+================================================================================
