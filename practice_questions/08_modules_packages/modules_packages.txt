@@ -1,0 +1,55 @@
+================================================================================
+PRACTICE QUESTIONS: TOPIC 08 - MODULES AND PACKAGES
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a dynamic module introspection and loader utility
+`ModulePluginManager` demonstrating Python's module import system, `sys.modules` cache,
+`sys.path` search order, and dynamic imports via `importlib`:
+1. Search Path Registration:
+   - `add_lookup_path(self, dir_path: str) -> bool`:
+     * Resolves canonical directory path.
+     * Checks if directory is already present in `sys.path`.
+     * If absent, prepends it to index 0 of `sys.path` to give it top lookup priority and returns `True`.
+     * If already present, returns `False`.
+2. Dynamic Import & Cache Inspection:
+   - `load_and_inspect_module(self, module_name: str) -> dict`:
+     * Checks if `module_name` is already resident in `sys.modules`.
+     * Dynamically imports the module using `importlib.import_module(module_name)`.
+     * Inspects module attributes:
+       - `name`: `mod.__name__`
+       - `file_location`: `getattr(mod, "__file__", "BUILT_IN")`
+       - `is_cached`: Boolean indicating whether it was already in `sys.modules` prior to the call.
+       - `public_callables`: Alphabetically sorted list of all callable attributes that do not begin with an underscore `_`.
+3. Dynamic Function Invocation:
+   - `execute_plugin_function(self, module_name: str, function_name: str, *args, **kwargs) -> object`:
+     * Loads the target module.
+     * Uses `getattr(mod, function_name, None)` to look up the function.
+     * If attribute does not exist or is not callable, raises `AttributeError(f"Function '{function_name}' not found in '{module_name}'")`.
+     * Invokes and returns the function's execution result.
+
+Sample Input:
+manager = ModulePluginManager()
+math_info = manager.load_and_inspect_module("math")
+result_sqrt = manager.execute_plugin_function("math", "sqrt", 144)
+
+# Re-inspecting cached module:
+math_cached_info = manager.load_and_inspect_module("math")
+
+Expected Output:
+Module Introspection (math):
+- Name: math
+- File Location: BUILT_IN (or path to math extension DLL / so)
+- Was Already Cached: True (standard built-in)
+- Sample Public Callables: ['acos', 'asin', 'atan', 'ceil', 'cos', 'exp', 'floor', 'log', 'sin', 'sqrt', ...]
+Dynamic Invocation (math.sqrt(144)): 12.0
+
+Attempting invocation of missing function ('non_existent_fn'):
+Caught Expected: AttributeError("Function 'non_existent_fn' not found in 'math'")
+
+Constraints & Edge Cases:
+- Attempting to dynamically import a non-existent module name must raise `ModuleNotFoundError`.
+- `add_lookup_path` must reject non-existent directories by raising `NotADirectoryError`.
+================================================================================
