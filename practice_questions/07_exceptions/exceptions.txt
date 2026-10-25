@@ -105,3 +105,59 @@ Constraints & Edge Cases:
 - Empty `query_path` should return `{"status": "SUCCESS", "value": data_structure, "depth": 0}`.
 - Specific exception handlers must strictly appear before any general superclass handlers in the code structure.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a simulated transactional database executor
+`execute_transaction(conn_pool: dict, queries: list[str], fail_on_query_index: int = -1) -> dict`
+demonstrating the complete, precise lifecycle of `try`, `except`, `else`, and `finally` clauses:
+1. Lifecycle Execution Contract:
+   - `try`:
+     * Checks out an active database connection token (e.g. marks `conn_pool["status"] = "BUSY"`).
+     * Iterates through `queries`. If current index == `fail_on_query_index`, raises `RuntimeError(f"Query '{queries[index]}' execution failed")`.
+     * Accumulates successfully executed query names in a staging list.
+   - `except RuntimeError as err`:
+     * Executes ONLY if an error occurred during execution.
+     * Records rollback event (`conn_pool["rollbacks"] += 1`) and logs failure message.
+     * Prepares failure response record.
+   - `else`:
+     * Executes ONLY if the `try` block ran to completion with ZERO exceptions.
+     * Commits transaction (`conn_pool["commits"] += 1`).
+     * Prepares success response record containing all committed queries.
+   - `finally`:
+     * ALWAYS executes without exception, regardless of whether `try` succeeded, an error was caught,
+       or an unexpected exception occurred.
+     * Guarantees releasing the connection back to idle state (`conn_pool["status"] = "IDLE"`).
+     * Records cleanup timestamp and increments `conn_pool["total_transactions"] += 1`.
+2. Return Override Caveat Demonstration:
+   - Include a code snippet / explanation demonstrating why placing an explicit `return` or `break`
+     inside a `finally` block is dangerous (it silences any active exceptions and overrides prior returns).
+
+Sample Input:
+pool = {"status": "IDLE", "commits": 0, "rollbacks": 0, "total_transactions": 0}
+queries_batch = ["SELECT * FROM users", "UPDATE users SET active=1", "INSERT INTO audit_log VALUES (1)"]
+
+# Case A: Successful Execution (exercises try -> else -> finally)
+res_success = execute_transaction(pool, queries_batch, fail_on_query_index=-1)
+
+# Case B: Execution with Failure (exercises try -> except -> finally)
+res_failure = execute_transaction(pool, queries_batch, fail_on_query_index=1)
+
+Expected Output:
+Case A (Success):
+- Result: {'status': 'COMMITTED', 'queries_run': 3}
+- Pool State: {'status': 'IDLE', 'commits': 1, 'rollbacks': 0, 'total_transactions': 1}
+
+Case B (Failure on query index 1):
+- Result: {'status': 'ROLLED_BACK', 'failed_query': 'UPDATE users SET active=1', 'error': "Query 'UPDATE users SET active=1' execution failed"}
+- Pool State: {'status': 'IDLE', 'commits': 1, 'rollbacks': 1, 'total_transactions': 2}
+
+Lifecycle Verification:
+In Case A: `else` ran (commit executed), `except` was bypassed, `finally` released connection.
+In Case B: `except` ran (rollback executed), `else` was bypassed, `finally` released connection.
+
+Constraints & Edge Cases:
+- The connection must be returned to `"IDLE"` in `finally` even if `queries` contains invalid data types.
+- The `else` block must never execute if an exception was raised and caught in `try`.
+================================================================================
