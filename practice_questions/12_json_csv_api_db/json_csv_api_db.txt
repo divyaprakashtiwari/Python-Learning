@@ -497,3 +497,49 @@ Constraints & Edge Cases:
 - Leading or trailing whitespace must be automatically trimmed before validation.
 - Internationalized domain names (IDN) or unicode symbols must be handled without unhandled UnicodeError.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an asynchronous concurrency manager `AsyncBatchExecutor` using standard library `asyncio` to execute rate-limited, timeout-bounded I/O operations:
+1. Simulated Asynchronous Service Call (`fetch_simulated_resource(item_id: int, latency: float, fail_probability: float = 0.0) -> dict[str, Any]`):
+   - Simulates non-blocking network I/O using `await asyncio.sleep(latency)`.
+   - Simulates sporadic failures by raising `TimeoutError` or `ConnectionResetError`.
+2. Concurrency Throttling via Semaphore:
+   - Uses `asyncio.Semaphore(max_concurrent)` to ensure no more than `max_concurrent` worker coroutines run simultaneously.
+3. Timeout Enforcement:
+   - Wraps individual coroutine executions with `asyncio.wait_for(coroutine, timeout=per_item_timeout)`.
+   - Catches `asyncio.TimeoutError` so a slow item does not stall the entire execution queue.
+4. Resilient Batch Aggregation (`execute_batch(items: list[dict[str, Any]], max_concurrency: int = 3, timeout_per_item: float = 2.0) -> dict[str, Any]`):
+   - Schedules all items concurrently using `asyncio.gather(*tasks, return_exceptions=True)`.
+   - Accurately segregates successful results from failed items without terminating early.
+5. Benchmark Analytics:
+   - Measures elapsed wall-clock execution time and compares against hypothetical sequential execution time to verify concurrency gain.
+
+Sample Input:
+# Prepare 6 simulated API queries with varying simulated latencies (in seconds)
+work_items = [
+    {"id": 1, "latency": 0.5, "fail": False},
+    {"id": 2, "latency": 1.2, "fail": False},
+    {"id": 3, "latency": 2.5, "fail": False},  # Will exceed 1.5s timeout!
+    {"id": 4, "latency": 0.3, "fail": True},   # Simulated failure
+    {"id": 5, "latency": 0.6, "fail": False},
+    {"id": 6, "latency": 0.4, "fail": False}
+]
+
+executor = AsyncBatchExecutor()
+report = asyncio.run(executor.execute_batch(work_items, max_concurrency=3, timeout_per_item=1.5))
+
+Expected Output:
+Batch Execution Completed in: ~1.7 seconds (vs ~5.5s sequential)
+Total Items Dispatched: 6
+Successful Results: 4 (IDs: 1, 2, 5, 6)
+Timeouts Encountered: 1 (ID: 3 exceeded 1.5s timeout)
+Errors Caught: 1 (ID: 4 failed with simulated ConnectionResetError)
+Throttling Verification: Max concurrent tasks never exceeded 3
+
+Constraints & Edge Cases:
+- Never use blocking sleep `time.sleep()` inside coroutines; always use non-blocking `await asyncio.sleep()`.
+- Unhandled coroutine exceptions must NOT crash the event loop; handle gracefully via `return_exceptions=True`.
+- Cleanup of cancelled tasks must be guaranteed.
+================================================================================
