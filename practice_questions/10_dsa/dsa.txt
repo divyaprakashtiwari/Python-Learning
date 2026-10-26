@@ -521,3 +521,52 @@ Constraints & Edge Cases:
 - `shortest_path_bfs` with identical start and target (`start == target`) must return `[start]`.
 - Cycles must not cause infinite recursion or infinite loops; visited states must strictly prevent re-exploration.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a Dynamic Programming (DP) problem solver demonstrating both Top-Down (Memoization) and Bottom-Up (Tabulation) paradigms along with path reconstruction:
+1. Variable Step Climbing Stairs (`count_stair_ways(total_steps: int, allowed_steps: list[int]) -> int`):
+   - Computes the number of distinct ways to climb `total_steps` stairs when each move can take any number of steps listed in `allowed_steps`.
+   - Uses a 1D DP tabulation array where `dp[i] = sum(dp[i - step] for step in allowed_steps if i >= step)`.
+   - Base case: `dp[0] = 1`.
+2. 0/1 Knapsack with Item Backtracking (`knapsack_01(weights: list[int], values: list[int], max_weight: int) -> tuple[int, list[int]]`):
+   - Given `N` items with respective weights and values, finds the maximum total value without exceeding `max_weight`.
+   - Builds a 2D table `dp[i][w]` representing optimal value considering first `i` items with capacity `w`.
+   - Reconstructs the exact indices of selected items by backtracking from `dp[N][max_weight]`:
+     * If `dp[i][w] != dp[i-1][w]`, then item `i-1` was included in the optimal knapsack.
+3. Coin Change Solver:
+   - Minimum Coins (`coin_change_min(coins: list[int], target_amount: int) -> int`):
+     * Finds fewest coins required to make up `target_amount`.
+     * Returns `-1` if target cannot be formed by any coin combination.
+   - Distinct Combinations (`coin_change_ways(coins: list[int], target_amount: int) -> int`):
+     * Finds total number of distinct unordered combinations that sum to `target_amount`.
+     * Solves via 1D array outer-looping over coin denominations to avoid counting duplicate permutations.
+
+Sample Input:
+# 1. Climbing Stairs
+ways = count_stair_ways(total_steps=5, allowed_steps=[1, 2, 3])
+
+# 2. 0/1 Knapsack
+item_weights = [2, 3, 4, 5]
+item_values = [3, 4, 5, 8]
+capacity = 7
+max_val, selected_indices = knapsack_01(item_weights, item_values, capacity)
+
+# 3. Coin Change
+coins = [1, 2, 5]
+min_coins_res = coin_change_min(coins, target_amount=11)
+ways_res = coin_change_ways(coins, target_amount=5)
+
+Expected Output:
+Climbing Stairs Ways to reach 5 steps: 13
+Knapsack Maximum Value for Capacity 7: 12
+Knapsack Selected Item Indices: [1, 3] (Item 1: weight 3 val 4; Item 3: weight 5 val 8)
+Minimum Coins to Make 11: 3 (5 + 5 + 1)
+Total Distinct Ways to Make 5 with [1, 2, 5]: 4 ([5], [2, 2, 1], [2, 1, 1, 1], [1, 1, 1, 1, 1])
+
+Constraints & Edge Cases:
+- Target amount `0` for coin change returns `0` minimum coins and `1` way.
+- Negative target amounts or weights must raise `ValueError`.
+- 0/1 knapsack must respect item individuality (each item can be selected at most once).
+================================================================================
