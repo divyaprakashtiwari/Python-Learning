@@ -359,3 +359,80 @@ Constraints & Edge Cases:
 - Boolean parsing must raise `ValueError` on ambiguous strings like `"maybe"`.
 - Environment variable overrides must properly parse integer/boolean strings when accessed via typed getters.
 ================================================================================
+
+Question 7 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an HTML scraping and table extraction engine `HTMLDataScraper` built entirely with the standard library (`html.parser.HTMLParser`, `urllib.request`, `urllib.parse`):
+1. Subclassed HTML Parser (`TableAndLinkParser`):
+   - Overrides `handle_starttag(tag, attrs)`, `handle_endtag(tag)`, and `handle_data(data)`.
+   - Filters out unwanted blocks: `<script>`, `<style>`, and HTML comments.
+   - Decodes HTML entities (e.g. `&amp;` -> `&`, `&copy;` -> `©`) using `html.unescape`.
+2. Structured Table Extraction (`extract_tables(html_content: str) -> list[list[dict[str, str]]]`):
+   - Identifies HTML `<table>` elements.
+   - Extracts header cells `<th>` as column names.
+   - Extracts data cells `<td>` inside each `<tr>`, producing a list of dictionaries per table.
+3. Link Crawler with Relative URL Resolution (`extract_links(html_content: str, base_url: str) -> list[dict[str, str]]`):
+   - Gathers all `<a href="...">anchor text</a>` tags.
+   - Converts relative URLs (e.g. `"/about"`) into absolute URLs (`"https://example.com/about"`) using `urllib.parse.urljoin`.
+   - Discards `javascript:` or anchor `#` fragment links.
+4. Clean Text Extraction (`get_text_content(html_content: str) -> str`):
+   - Extracts human-readable plain text with normalized paragraph whitespace.
+
+Sample Input:
+html_sample = """
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sample Financial Report</title>
+    <style>body { font-family: Arial; }</style>
+</head>
+<body>
+    <h1>Q3 Quarterly Performance &amp; Metrics</h1>
+    <p>Please review our official <a href="/reports/q3.pdf">PDF Documentation</a> or visit <a href="https://partner.com">Partner Portal</a>.</p>
+    
+    <table id="financials">
+        <tr>
+            <th>Quarter</th>
+            <th>Revenue</th>
+            <th>Profit</th>
+        </tr>
+        <tr>
+            <td>Q1 2026</td>
+            <td>$1,200,000</td>
+            <td>$350,000</td>
+        </tr>
+        <tr>
+            <td>Q2 2026</td>
+            <td>$1,450,000</td>
+            <td>$420,000</td>
+        </tr>
+    </table>
+</body>
+</html>
+"""
+
+scraper = HTMLDataScraper()
+tables = scraper.extract_tables(html_sample)
+links = scraper.extract_links(html_sample, base_url="https://company.example.com/investors/")
+clean_text = scraper.get_text_content(html_sample)
+
+Expected Output:
+Extracted Tables Count: 1
+Table 0 Rows:
+[
+  {'Quarter': 'Q1 2026', 'Revenue': '$1,200,000', 'Profit': '$350,000'},
+  {'Quarter': 'Q2 2026', 'Revenue': '$1,450,000', 'Profit': '$420,000'}
+]
+Extracted Links:
+[
+  {'text': 'PDF Documentation', 'url': 'https://company.example.com/reports/q3.pdf'},
+  {'text': 'Partner Portal', 'url': 'https://partner.com'}
+]
+Sanitized Plain Text Contains: "Q3 Quarterly Performance & Metrics"
+
+Constraints & Edge Cases:
+- Must use standard library `html.parser` without external dependencies like `BeautifulSoup` or `lxml`.
+- Broken or unclosed tags must not cause parser crash.
+- Empty table or tables without headers must generate numbered fallback column names (`"col_0"`, `"col_1"`).
+================================================================================
