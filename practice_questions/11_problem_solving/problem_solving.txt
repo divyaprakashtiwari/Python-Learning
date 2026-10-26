@@ -238,3 +238,67 @@ Constraints & Edge Cases:
 - Empty strings `""` are considered valid anagrams of each other.
 - Strings with unequal lengths after non-alphabetic filtering must return `False` immediately in $O(1)$.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a 2D matrix computing engine `MatrixProcessor` for multidimensional transformations:
+1. Matrix Multiplication (`multiply(A: list[list[int]], B: list[list[int]]) -> list[list[int]]`):
+   - Computes product $C = A \times B$ where $A$ is $M \times K$ and $B$ is $K \times N$.
+   - Validates that columns of $A$ equal rows of $B$; raises `ValueError` if dimensions are incompatible.
+2. Matrix Transposition (`transpose(M: list[list[int]]) -> list[list[int]]`):
+   - Flips an $M \times N$ matrix over its main diagonal to produce an $N \times M$ matrix.
+3. In-Place 90-Degree Clockwise Rotation (`rotate_clockwise_inplace(M: list[list[int]]) -> None`):
+   - Given an $N \times N$ 2D square matrix, rotates it 90 degrees clockwise directly in-place without allocating a second matrix.
+   - Applies the two-step algorithmic transformation:
+     * Transpose the matrix across the primary diagonal ($M[i][j] \leftrightarrow M[j][i]$ for $i < j$).
+     * Horizontally reflect the matrix by reversing every row ($row.reverse()$).
+   - Auxiliary space must be strictly $O(1)$.
+4. Spiral Order Traversal (`spiral_order(M: list[list[int]]) -> list[int]`):
+   - Returns all elements of an $M \times N$ matrix in clockwise spiral order.
+   - Dynamically manages four boundary pointers: `top`, `bottom`, `left`, `right`.
+
+Sample Input:
+processor = MatrixProcessor()
+
+# 1. Multiplication
+A = [[1, 2], [3, 4]]
+B = [[2, 0], [1, 2]]
+prod = processor.multiply(A, B)
+
+# 2. Transposition
+rect_mat = [[1, 2, 3], [4, 5, 6]]
+transposed = processor.transpose(rect_mat)
+
+# 3. In-Place Rotation
+sq_mat = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+processor.rotate_clockwise_inplace(sq_mat)
+
+# 4. Spiral Order
+spiral_mat = [
+    [1,  2,  3,  4],
+    [5,  6,  7,  8],
+    [9, 10, 11, 12]
+]
+spiral_res = processor.spiral_order(spiral_mat)
+
+Expected Output:
+Matrix Product A x B: [[4, 4], [10, 8]]
+Transposed Rectangular Matrix: [[1, 4], [2, 5], [3, 6]]
+90-Degree Clockwise Rotated Matrix:
+[
+  [7, 4, 1],
+  [8, 5, 2],
+  [9, 6, 3]
+]
+Spiral Order Traversal: [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]
+
+Constraints & Edge Cases:
+- Empty matrices `[]` or matrices with empty rows `[[]]` must return `[]` without error.
+- In-place rotation must strictly modify the passed matrix reference without allocating new rows.
+- Non-square matrix passed to `rotate_clockwise_inplace` must raise `ValueError`.
+================================================================================
