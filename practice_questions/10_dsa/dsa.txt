@@ -292,3 +292,63 @@ Constraints & Edge Cases:
 - Dequeue or peek on empty `TwoStackQueue` must raise `IndexError` or custom underflow error.
 - If `elimination_step <= 0` or participant list is empty, `josephus_circle` must raise `ValueError`.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a Singly Linked List and implements classical pointer-manipulation algorithms without using Python lists as internal storage:
+1. `ListNode[T]` and `SinglyLinkedList[T]` classes:
+   - `ListNode` has attributes `val: T` and `next: Optional[ListNode[T]]`.
+   - `SinglyLinkedList` maintains a `head: Optional[ListNode[T]]` pointer and provides:
+     * `append(val: T) -> None`: Inserts node at tail.
+     * `prepend(val: T) -> None`: Inserts node at head in O(1).
+     * `delete_value(val: T) -> bool`: Deletes first occurrence of node with value `val`; returns `True` if found and deleted, `False` otherwise.
+     * `to_list() -> list[T]`: Traverses the list and returns values in a standard Python list.
+2. In-Place Reversal:
+   - `reverse()`: Reverses the linked list pointers in-place iteratively using three pointers (`prev`, `curr`, `next_node`) with O(N) time and O(1) space.
+3. Middle Node Search (`find_middle() -> Optional[T]`):
+   - Uses the fast & slow pointer technique (tortoise and hare) in a single pass.
+   - Slow pointer advances 1 step while fast pointer advances 2 steps.
+   - For even lengths, returns the second middle node.
+4. Floyd's Cycle Detection and Entry Point (`detect_cycle() -> tuple[bool, Optional[T]]`):
+   - Detects whether a linked list contains a loop using fast and slow pointers.
+   - If a cycle is detected, resets one pointer to `head` and advances both pointers at equal speed to locate the exact node where the cycle begins.
+   - Returns `(True, entry_val)` if cycle exists, or `(False, None)` otherwise.
+5. Merge Two Sorted Lists (`merge_sorted_lists(l1: ListNode, l2: ListNode) -> ListNode`):
+   - Merges two individually sorted linked list heads into a single sorted list by splicing existing nodes without creating new nodes.
+
+Sample Input:
+# 1 & 2. SLL and Reverse
+sll = SinglyLinkedList[int]()
+for x in [10, 20, 30, 40, 50]:
+    sll.append(x)
+mid_val = sll.find_middle()
+sll.reverse()
+reversed_list = sll.to_list()
+
+# 3. Cycle Detection
+cycle_sll = SinglyLinkedList[int]()
+for x in [1, 2, 3, 4, 5]:
+    cycle_sll.append(x)
+# Artificially create cycle connecting node 5 back to node 3
+node_3 = cycle_sll.head.next.next  # value 3
+tail_node = node_3.next.next        # value 5
+tail_node.next = node_3
+has_cycle, cycle_entry = cycle_sll.detect_cycle()
+
+# 4. Merge Two Sorted
+l1 = build_linked_list([1, 3, 5])
+l2 = build_linked_list([2, 4, 6])
+merged_head = merge_sorted_lists(l1, l2)
+merged_list = linked_list_to_list(merged_head)
+
+Expected Output:
+Middle Node of [10, 20, 30, 40, 50]: 30
+Reversed Linked List: [50, 40, 30, 20, 10]
+Cycle Detected: True, Cycle Entry Node Value: 3
+Merged Sorted List: [1, 2, 3, 4, 5, 6]
+
+Constraints & Edge Cases:
+- Reversal and merging must be performed strictly in-place by updating pointer references; do not copy values into an array to rebuild nodes.
+- Handled edge cases: empty list (`head is None`), single node, cycle pointing back to head (`node 5 -> node 1`).
+================================================================================
