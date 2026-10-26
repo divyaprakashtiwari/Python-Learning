@@ -168,3 +168,66 @@ Constraints & Edge Cases:
 - All four algorithms must achieve strict O(log N) time complexity and O(1) auxiliary space.
 - Empty array `[]` input must return `-1` for exact/rotated search, `0` for insert position, and `(-1, -1)` for occurrence range.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a robust Stack data structure and applies it to real-world algorithmic problems:
+1. Custom Stack Class (`ArrayStack[T]`):
+   - Implements standard LIFO operations: `push(item: T) -> None`, `pop() -> T`, `peek() -> T`, `is_empty() -> bool`, and `__len__() -> int`.
+   - Raises a custom exception `StackUnderflowError` if `pop()` or `peek()` is invoked on an empty stack.
+   - Provides a clean string representation `__repr__` indicating stack depth and top item.
+2. Balanced Delimiters Validator (`is_balanced(expression: str) -> tuple[bool, str]`):
+   - Evaluates strings containing brackets `()`, `{}`, `[]` along with intervening text.
+   - Uses a stack to ensure every opening bracket is matched by the correct closing delimiter in nested order.
+   - Returns `(True, "Balanced")` or `(False, "<reason>")` describing the mismatch (e.g., unexpected closing bracket, unclosed opening bracket at end).
+3. Constant-Time Min Stack (`MinStack`):
+   - Implements `push(val: int)`, `pop() -> int`, `top() -> int`, and `get_min() -> int`.
+   - Guarantees O(1) time complexity for ALL operations including `get_min()` by maintaining an auxiliary min-tracking stack.
+4. Reverse Polish Notation (RPN / Postfix) Evaluator (`evaluate_postfix(tokens: list[str]) -> int`):
+   - Evaluates arithmetic postfix expressions supporting `+`, `-`, `*`, `/` (truncating integer division toward zero).
+   - Operates strictly with stack evaluation: operands pushed onto stack, binary operators pop two values and push result.
+
+Sample Input:
+# 1. Custom Stack
+stack = ArrayStack[int]()
+for v in [10, 20, 30]:
+    stack.push(v)
+
+popped_val = stack.pop()
+top_val = stack.peek()
+
+# 2. Balanced Delimiters
+expr1 = "{[a + b] * (c - d)}"
+expr2 = "([)]"
+res1 = is_balanced(expr1)
+res2 = is_balanced(expr2)
+
+# 3. MinStack
+min_s = MinStack()
+min_s.push(5)
+min_s.push(3)
+min_s.push(7)
+min_s.push(2)
+m1 = min_s.get_min()
+min_s.pop()  # pops 2
+m2 = min_s.get_min()
+
+# 4. RPN Evaluator
+rpn_tokens = ["4", "13", "5", "/", "+"]  # 4 + (13 // 5) = 4 + 2 = 6
+rpn_res = evaluate_postfix(rpn_tokens)
+
+Expected Output:
+ArrayStack Popped: 30
+ArrayStack Top: 20, Current Size: 2
+Expression 1 Balanced: (True, 'Balanced')
+Expression 2 Balanced: (False, "Mismatched closing bracket ')' expecting ']'")
+MinStack Initial Min: 2
+MinStack After Popping 2 Min: 3
+Postfix Evaluation Result: 6
+
+Constraints & Edge Cases:
+- `pop()` or `peek()` on empty `ArrayStack` or `MinStack` must raise `StackUnderflowError` with an informative error message.
+- Postfix evaluation division must truncate toward zero (e.g., `-3 // 2` in Python gives `-2`, but `int(-3 / 2)` gives `-1`).
+- Empty expression string `""` in `is_balanced` should evaluate to `(True, "Balanced")`.
+================================================================================
