@@ -1,0 +1,51 @@
+================================================================================
+Topic 11: Python Problem Solving - Practice Questions
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an extensible rule-based FizzBuzz engine `ConfigurableFizzBuzz`:
+1. Core FizzBuzz Specification:
+   - For numbers from `1` to `N` (inclusive):
+     * If divisible by 3, output "Fizz".
+     * If divisible by 5, output "Buzz".
+     * If divisible by both 3 and 5, output "FizzBuzz".
+     * Otherwise, output the string representation of the number itself.
+2. Extensible Rule Engine:
+   - Instead of hardcoding 3 and 5, allow registering arbitrary divisor-to-word mappings
+     (e.g., `{3: "Fizz", 5: "Buzz", 7: "Bazz"}`).
+   - Rules must evaluate in specified order, concatenating matching tags (e.g., 105 is divisible by 3, 5, and 7 -> "FizzBuzzBazz").
+3. Generator-Based Execution:
+   - Provide a generator method `generate_sequence(start: int, stop: int) -> Generator[str, None, None]`
+     that yields values lazily without storing the entire sequence in memory.
+4. Summary Statistics:
+   - Provide a method `frequency_summary(n: int) -> dict[str, int]` that returns counts of pure numbers vs tagged words produced.
+
+Sample Input:
+engine = ConfigurableFizzBuzz()
+# Standard FizzBuzz for first 15 numbers
+standard_results = list(engine.generate_sequence(1, 15))
+
+# Custom rules: 2 -> "Bi", 3 -> "Tri", 5 -> "Quint"
+custom_engine = ConfigurableFizzBuzz(rules={2: "Bi", 3: "Tri", 5: "Quint"})
+custom_results = [custom_engine.evaluate(i) for i in [2, 3, 6, 15, 30, 7]]
+stats = engine.frequency_summary(15)
+
+Expected Output:
+Standard 1 to 15:
+['1', '2', 'Fizz', '4', 'Buzz', 'Fizz', '7', '8', 'Fizz', 'Buzz', '11', 'Fizz', '13', '14', 'FizzBuzz']
+Custom Rule Evaluations:
+- 2 -> 'Bi'
+- 3 -> 'Tri'
+- 6 -> 'BiTri'
+- 15 -> 'TriQuint'
+- 30 -> 'BiTriQuint'
+- 7 -> '7'
+Frequency Summary for 15:
+{'numbers': 8, 'Fizz': 4, 'Buzz': 2, 'FizzBuzz': 1}
+
+Constraints & Edge Cases:
+- Divisors in rules must be non-zero positive integers (`divisor > 0`); raise `ValueError` on 0 or negative divisors.
+- `start` must be less than or equal to `stop`; if `start > stop`, generator yields nothing.
+================================================================================
