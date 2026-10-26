@@ -395,3 +395,71 @@ Constraints & Edge Cases:
 - Benchmarking must use `time.perf_counter` (not `time.time()`) to guarantee monotonic high-resolution clock measurements unaffected by system time adjustments.
 - Avoid printing raw unformatted `pstats` dump to standard output; programmatically parse stats dictionaries.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a lightweight Code Coverage Analyzer `MiniCoverageTracker` using Python's tracing facility (`sys.settrace`) and analyzes Statement vs Branch Coverage on a decision-heavy domain function:
+1. Target System Under Analysis (`evaluate_loan_application`):
+   - A business logic function with multiple nested conditions:
+     ```python
+     def evaluate_loan_application(credit_score: int, income: float, debt: float, has_bankruptcies: bool) -> str:
+         if has_bankruptcies:
+             return "REJECTED_BANKRUPTCY"
+         dti_ratio = debt / income if income > 0 else 1.0
+         if credit_score >= 750 and dti_ratio < 0.3:
+             return "TIER_1_PREFERRED"
+         elif credit_score >= 650:
+             if dti_ratio <= 0.45:
+                 return "TIER_2_STANDARD"
+             else:
+                 return "REJECTED_HIGH_DTI"
+         else:
+             return "REJECTED_LOW_CREDIT"
+     ```
+2. Dynamic Tracer (`MiniCoverageTracker`):
+   - Registers a line-execution callback using `sys.settrace(...)`.
+   - Records every executed line number specifically within the target function's code object (`frame.f_code.co_filename` matches target).
+   - Automatically unhooks trace via `sys.settrace(None)` upon block exit (using a context manager).
+3. Coverage Analysis Engine:
+   - Uses Python's `inspect` or `dis` module to find all executable line numbers in `evaluate_loan_application`.
+   - Calculates Statement Coverage Metric:
+     $$\text{Coverage} \% = \frac{\text{Count of Executed Lines}}{\text{Total Executable Lines}} \times 100\%$$
+   - Reports the exact set of unvisited / missed line numbers.
+4. Test Progression:
+   - Run 1 (Single Happy-Path Test): Measures initial partial coverage (e.g. ~50%).
+   - Run 2 (Comprehensive Test Suite): Executes tests covering all loan paths (bankruptcy, high DTI, low credit, preferred tier, standard tier) and verifies that statement coverage climbs to 100%.
+
+Sample Input:
+tracker = MiniCoverageTracker()
+
+# Suite 1: Single test
+with tracker.trace_execution():
+    evaluate_loan_application(800, 100000, 20000, False)
+summary_suite_1 = tracker.generate_report(evaluate_loan_application)
+
+# Suite 2: Comprehensive suite
+with tracker.trace_execution():
+    evaluate_loan_application(800, 100000, 20000, False)  # TIER_1_PREFERRED
+    evaluate_loan_application(600, 50000, 10000, False)   # REJECTED_LOW_CREDIT
+    evaluate_loan_application(700, 50000, 30000, False)   # REJECTED_HIGH_DTI
+    evaluate_loan_application(700, 50000, 15000, False)   # TIER_2_STANDARD
+    evaluate_loan_application(800, 100000, 20000, True)   # REJECTED_BANKRUPTCY
+summary_suite_2 = tracker.generate_report(evaluate_loan_application)
+
+Expected Output:
+Suite 1 (Single Test):
+- Total Executable Lines: 12
+- Executed Lines: 6
+- Line Coverage: 50.0%
+- Missed Lines: [3, 9, 11, 13]
+Suite 2 (Full Test Suite):
+- Total Executable Lines: 12
+- Executed Lines: 12
+- Line Coverage: 100.0%
+- Missed Lines: []
+
+Constraints & Edge Cases:
+- The tracing hook must filter strictly for target functions to prevent tracking Python internal libraries.
+- The tracer context manager must reset `sys.settrace(None)` in a `finally` block even if an exception occurs during execution.
+================================================================================
