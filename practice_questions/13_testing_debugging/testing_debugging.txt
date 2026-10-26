@@ -1,0 +1,48 @@
+================================================================================
+Topic 13: Testing and Debugging - Practice Questions
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a domain model `BankAccount` and builds an automated unit test suite using standard library `unittest`:
+1. Domain Model Specification (`BankAccount`):
+   - `__init__(account_holder: str, initial_balance: float = 0.0)`: Initializes account; raises `ValueError` if `initial_balance < 0`.
+   - `deposit(amount: float) -> float`: Adds amount to balance and returns new balance; raises `ValueError` if `amount <= 0`.
+   - `withdraw(amount: float) -> float`: Subtracts amount from balance and returns new balance; raises `ValueError` if `amount <= 0`, or raises custom `InsufficientFundsError` if `amount > balance`.
+   - `balance`: Read-only property returning current funds.
+2. Test Suite Implementation (`TestBankAccount(unittest.TestCase)`):
+   - Test method `test_initial_balance_valid`: Asserts balance equals initialized amount.
+   - Test method `test_initial_balance_negative`: Uses `assertRaises(ValueError)` to verify negative initial deposits fail.
+   - Test method `test_deposit_success`: Verifies balance increments correctly after multiple deposits.
+   - Test method `test_deposit_invalid_amount`: Asserts zero or negative deposit raises `ValueError`.
+   - Test method `test_withdraw_success`: Asserts withdrawal decrements balance accurately.
+   - Test method `test_withdraw_insufficient_funds`: Asserts `InsufficientFundsError` is raised when overdrawing.
+3. Programmatic Test Runner:
+   - Loads test cases via `unittest.TestLoader().loadTestsFromTestCase(...)`.
+   - Executes tests using `unittest.TextTestRunner(verbosity=2)`.
+   - Programmatically inspects the `TestResult` object: verifies `testsRun`, `failures`, `errors`, and `wasSuccessful()`.
+
+Sample Input:
+# Programmatic test execution
+suite = unittest.TestLoader().loadTestsFromTestCase(TestBankAccount)
+runner = unittest.TextTestRunner(verbosity=0)
+result = runner.run(suite)
+
+# Inspect outcomes
+total_ran = result.testsRun
+was_success = result.wasSuccessful()
+fail_count = len(result.failures)
+err_count = len(result.errors)
+
+Expected Output:
+Tests Run: 6
+All Tests Passed: True
+Failures Count: 0
+Errors Count: 0
+Execution Status: SUCCESS
+
+Constraints & Edge Cases:
+- Floating point balance operations must be tested using `assertAlmostEqual(actual, expected, places=2)` to prevent IEEE-754 precision mismatches.
+- Tests must be completely self-contained; test execution order must not affect outcomes.
+================================================================================
