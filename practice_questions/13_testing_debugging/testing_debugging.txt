@@ -46,3 +46,52 @@ Constraints & Edge Cases:
 - Floating point balance operations must be tested using `assertAlmostEqual(actual, expected, places=2)` to prevent IEEE-754 precision mismatches.
 - Tests must be completely self-contained; test execution order must not affect outcomes.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a File-Backed Cache Manager `PersistentFileCache` and constructs a comprehensive test fixture harness demonstrating `setUp`, `tearDown`, `setUpClass`, `tearDownClass`, and `addCleanup`:
+1. System Under Test (`PersistentFileCache`):
+   - `__init__(cache_dir: str)`: Creates directory if non-existent.
+   - `set(key: str, data: dict[str, Any], ttl_seconds: float = 3600.0) -> None`: Serializes dictionary to `<cache_dir>/<key>.json` with expiration timestamp metadata.
+   - `get(key: str) -> Optional[dict[str, Any]]`: Reads cached JSON; returns `None` if absent or if expired (deleting stale file upon detection).
+   - `delete(key: str) -> bool`: Removes cache file; returns `True` if existed.
+   - `clear() -> int`: Cleans all entries in cache directory and returns count of purged entries.
+2. Fixture Lifecycle Architecture (`TestPersistentFileCache(unittest.TestCase)`):
+   - `setUpClass(cls)`:
+     * Creates an isolated temporary directory via `tempfile.mkdtemp(prefix="cache_test_")`.
+     * Instantiates shared cache manager.
+   - `tearDownClass(cls)`:
+     * Recursively purges temporary directory via `shutil.rmtree` to avoid leaving orphaned test files on disk.
+   - `setUp(self)`:
+     * Seeds fresh baseline test entries: `cache.set("session_user", {"id": 1, "name": "Alice"})`.
+   - `tearDown(self)`:
+     * Calls `cache.clear()` ensuring each test starts with a known, isolated state.
+   - Dynamic Cleanup via `self.addCleanup`:
+     * In a test creating an explicit lock file, registers an inline cleanup callback to guarantee lock deletion even if an assertion errors midway.
+
+Sample Input:
+# Run test suite programmatically
+suite = unittest.TestLoader().loadTestsFromTestCase(TestPersistentFileCache)
+runner = unittest.TextTestRunner(verbosity=0)
+result = runner.run(suite)
+
+# Inspect lifecycle verification
+is_successful = result.wasSuccessful()
+tests_executed = result.testsRun
+
+Expected Output:
+Fixture Lifecycle Tests Run: 5
+- test_get_existing_baseline: PASSED
+- test_expired_entry_purged: PASSED
+- test_cache_delete_removes_file: PASSED
+- test_cache_clear_purges_all: PASSED
+- test_cleanup_callback_executed: PASSED
+All Fixture Tests Passed: True
+Temporary Directory Cleared Post-Class: Verified
+
+Constraints & Edge Cases:
+- Tests must never pollute repository directories; all files must reside in `tempfile.gettempdir()`.
+- Expired entries must be verified with artificial clock manipulation or low TTL (`ttl=0.01`).
+- Failure of a single test must not prevent `tearDown` or `tearDownClass` from running.
+================================================================================
