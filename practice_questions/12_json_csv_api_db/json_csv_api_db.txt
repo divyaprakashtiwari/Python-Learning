@@ -120,3 +120,53 @@ Constraints & Edge Cases:
 - Files must be opened with `open(..., 'w', newline='', encoding='utf-8')` to guarantee proper cross-platform newline behavior.
 - Missing values in numeric columns during aggregation must be skipped without crashing the calculation.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a production-grade REST API client `StandardAPIClient` built exclusively with Python's standard library (`urllib.request`, `urllib.parse`, `urllib.error`):
+1. HTTP GET with Query Parameters (`get(endpoint: str, params: Optional[dict[str, Any]] = None, headers: Optional[dict[str, str]] = None, timeout: float = 10.0) -> dict[str, Any]`):
+   - Encodes query dictionaries using `urllib.parse.urlencode`.
+   - Appends query string to target URL.
+   - Sets standard headers: `"Accept": "application/json"`, custom `"User-Agent"`, and optional auth tokens.
+2. HTTP POST with JSON Body (`post(endpoint: str, payload: dict[str, Any], headers: Optional[dict[str, str]] = None, timeout: float = 10.0) -> dict[str, Any]`):
+   - Encodes JSON payload to UTF-8 bytes.
+   - Sets `"Content-Type": "application/json"`.
+   - Sends payload via `urllib.request.Request` with `data=encoded_bytes`.
+3. Error Handling and Status Codes:
+   - Catches `urllib.error.HTTPError`: extracts HTTP status code (e.g. 404, 500) and response body JSON, raising a custom `APIResponseError`.
+   - Catches `urllib.error.URLError`: handles connection refusal or DNS failure, raising a custom `APIConnectionError`.
+   - Catches `TimeoutError` or socket timeout.
+4. Retry with Exponential Backoff:
+   - For transient server errors (HTTP 500, 502, 503, 504), retries up to `max_retries` (default 3) times with exponential backoff delay ($2^k \times \text{delay}$).
+5. Mockable Transport Hook:
+   - Provides a pluggable URL opener/handler interface so responses can be unit tested without requiring real network internet access.
+
+Sample Input:
+client = StandardAPIClient(base_url="https://api.example.com/v1", default_timeout=5.0)
+
+# 1. GET with query parameters
+get_response = client.get("users", params={"role": "admin", "page": 1})
+
+# 2. POST with JSON body
+new_user_data = {"name": "Jordan Lee", "email": "jordan@example.com"}
+post_response = client.post("users", payload=new_user_data)
+
+# 3. Simulate error handling on 404
+try:
+    client.get("users/99999")
+except APIResponseError as err:
+    error_status = err.status_code
+    error_message = err.message
+
+Expected Output:
+GET Request URL Built: 'https://api.example.com/v1/users?role=admin&page=1'
+GET Status Code: 200, Users Retrieved: 5
+POST Status Code: 201, Created User ID: 'usr_8921'
+Handled 404 APIResponseError: Status 404, Message: 'Resource user with ID 99999 not found'
+
+Constraints & Edge Cases:
+- Must use standard library modules only; do not import third-party packages like `requests` or `httpx`.
+- Payloads must be encoded to UTF-8 bytes before transmission.
+- Network timeouts must be explicitly bounded to avoid hanging indefinitely.
+================================================================================
