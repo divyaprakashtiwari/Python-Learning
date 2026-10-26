@@ -464,3 +464,60 @@ Constraints & Edge Cases:
 - BST validation must enforce strict inequalities (`<` and `>`), rejecting duplicate node values.
 - Invert tree must modify links and return the root without allocating an entirely duplicate set of nodes.
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an Adjacency-List Graph structure (`Graph[T]`) supporting directed and undirected operations, pathfinding, and cycle detection:
+1. Graph Representation:
+   - Maintains an internal adjacency map `adj_list: dict[T, list[T]]`.
+   - `add_vertex(v: T) -> None`.
+   - `add_edge(u: T, v: T, directed: bool = False) -> None`: Adds edge from `u` to `v` (and `v` to `u` if undirected).
+2. Breadth-First Search & Shortest Path:
+   - `bfs(start: T) -> list[T]`: Explores graph layer-by-layer using a FIFO queue and a visited set.
+   - `shortest_path_bfs(start: T, target: T) -> Optional[list[T]]`:
+     * Returns the shortest path (minimum edge count) from `start` to `target` in an unweighted graph.
+     * Reconstructs path backwards by tracking each node's `parent` during queue traversal.
+     * Returns `None` if no path connects `start` and `target`.
+3. Depth-First Search & Connectivity:
+   - `dfs(start: T) -> list[T]`: Explores deepest reachable paths first (implemented iteratively with a stack).
+   - `connected_components() -> list[list[T]]`: Discovers all distinct connected subgraphs in an undirected graph.
+4. Directed Cycle Detection:
+   - `has_cycle_directed() -> bool`:
+     * Implements 3-color state tracking (`WHITE` = unvisited, `GRAY` = currently on DFS recursion stack, `BLACK` = fully explored).
+     * Returns `True` if a back-edge (edge leading to a `GRAY` node) is encountered.
+
+Sample Input:
+g = Graph[str]()
+# Build undirected graph:
+# A --- B --- C
+# |     |
+# D --- E
+edges = [("A", "B"), ("A", "D"), ("B", "C"), ("B", "E"), ("D", "E")]
+for u, v in edges:
+    g.add_edge(u, v, directed=False)
+
+bfs_order = g.bfs("A")
+dfs_order = g.dfs("A")
+path_a_to_c = g.shortest_path_bfs("A", "C")
+components = g.connected_components()
+
+# Build directed graph with cycle: 1 -> 2 -> 3 -> 1
+dg = Graph[int]()
+dg.add_edge(1, 2, directed=True)
+dg.add_edge(2, 3, directed=True)
+dg.add_edge(3, 1, directed=True)
+has_cycle = dg.has_cycle_directed()
+
+Expected Output:
+BFS Traversal from 'A': ['A', 'B', 'D', 'C', 'E']
+DFS Traversal from 'A': ['A', 'D', 'E', 'B', 'C']
+Shortest Path from 'A' to 'C': ['A', 'B', 'C'] (Length: 2 edges)
+Connected Components Count: 1
+Directed Graph Contains Cycle: True
+
+Constraints & Edge Cases:
+- Graph may contain disconnected components or isolated single vertices.
+- `shortest_path_bfs` with identical start and target (`start == target`) must return `[start]`.
+- Cycles must not cause infinite recursion or infinite loops; visited states must strictly prevent re-exploration.
+================================================================================
