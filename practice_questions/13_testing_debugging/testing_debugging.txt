@@ -463,3 +463,70 @@ Constraints & Edge Cases:
 - The tracing hook must filter strictly for target functions to prevent tracking Python internal libraries.
 - The tracer context manager must reset `sys.settrace(None)` in a `finally` block even if an exception occurs during execution.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a Contract-Driven Defensive Ledger `ContractLedger` demonstrating the Design by Contract (DbC) paradigm using decorators for preconditions, postconditions, and class invariants:
+1. Contract Enforcement Decorators:
+   - `@precondition(predicate, error_msg)`:
+     * Evaluates predicate against incoming function arguments prior to execution.
+     * Raises `PreconditionViolationError` immediately if condition is falsified.
+   - `@postcondition(predicate, error_msg)`:
+     * Evaluates predicate against function return value and input arguments after execution.
+     * Raises `PostconditionViolationError` if the returned result violates expectations.
+   - Class Invariant Validator (`check_invariants(self)`):
+     * Ensures internal state consistency holds true across every operation (e.g. `total_balance == sum(entry.amount)` and `total_balance >= 0`).
+2. Domain Model (`ContractLedger`):
+   - Internal state:
+     * `self._entries: list[LedgerEntry]`
+     * `self._balance: float`
+   - Method `credit(amount: float, source: str) -> float`:
+     * Precondition: `amount > 0` and non-empty `source`.
+     * Postcondition: `new_balance == old_balance + amount`.
+     * Preserves class invariant: `_balance >= 0`.
+   - Method `debit(amount: float, destination: str) -> float`:
+     * Precondition: `amount > 0`, non-empty `destination`, and `amount <= self._balance`.
+     * Postcondition: `new_balance == old_balance - amount`.
+   - Method `transfer_to(recipient_ledger: ContractLedger, amount: float) -> tuple[float, float]`:
+     * Atomic transfer between two ledgers ensuring conserved sum invariant across both instances.
+3. Unit Test Verification (`TestDefensiveProgrammingContracts(unittest.TestCase)`):
+   - Verifies that invalid inputs fail at the contract boundary (precondition), preventing partial mutations.
+   - Verifies postcondition and invariant assertions catch any corrupted mock return states.
+
+Sample Input:
+ledger = ContractLedger(account_id="ACC-001", initial_deposit=500.0)
+
+# 1. Valid Transactions
+b1 = ledger.credit(200.0, source="Payroll")
+b2 = ledger.debit(150.0, destination="Utility Bill")
+
+# 2. Precondition Violation Test (Negative Debit)
+precond_caught = False
+try:
+    ledger.debit(-50.0, destination="Refund")
+except PreconditionViolationError:
+    precond_caught = True
+
+# 3. Overdraw Violation Test (Debit exceeds balance)
+overdraw_caught = False
+try:
+    ledger.debit(1000.0, destination="Luxury Purchase")
+except PreconditionViolationError:
+    overdraw_caught = True
+
+# 4. Invariant Integrity Verification
+invariant_holds = ledger.verify_invariants()
+
+Expected Output:
+Balance after $200 Credit: $700.00
+Balance after $150 Debit: $550.00
+Negative Debit Precondition Blocked: True
+Overdraw Precondition Blocked: True
+Class Invariant (Balance == Sum of Transactions and Balance >= 0): TRUE
+All Defensive Contracts Verified: True
+
+Constraints & Edge Cases:
+- Decorators must preserve function signature, docstring, and metadata using `functools.wraps`.
+- An invalid transaction must fail cleanly without modifying `_entries` or `_balance` (strict rollback/no-op on contract breach).
+================================================================================
