@@ -137,3 +137,51 @@ Constraints & Edge Cases:
 - Never use simple `assertTrue(a == b)` where specialized assertions like `assertEqual` or `assertDictEqual` provide clear visual diffs upon failure.
 - Exception verification must assert both exception class and specific attribute values inside the context manager.
 ================================================================================
+
+Question 4 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an e-commerce Payment Service `CheckoutService` and tests it using `unittest.mock` (`Mock`, `MagicMock`, `@patch`, `side_effect`, `call_args_list`) without making network calls:
+1. System Under Test (`CheckoutService`):
+   - Dependencies: `PaymentGatewayClient` (remote API) and `EmailNotificationService` (SMTP).
+   - Method `process_order(order_id: str, amount: float, customer_email: str) -> dict[str, Any]`:
+     * Charges payment gateway: `gateway.charge(amount, currency="USD") -> dict`.
+     * If charge succeeds (`status == "COMPLETED"`): sends email receipt via `emailer.send_receipt(to, order_id, amount)` and returns order record.
+     * If charge raises `GatewayTimeoutError`: retries up to 2 times before giving up and raising `PaymentFailedError`.
+     * If charge fails permanently (e.g. `CardDeclinedError`): does NOT send receipt; raises `PaymentDeclinedError`.
+2. Mocking Test Suite (`TestCheckoutServiceMocking(unittest.TestCase)`):
+   - Test Method 1 (Happy Path):
+     * Mocks `PaymentGatewayClient` and `EmailNotificationService`.
+     * Sets `mock_gateway.charge.return_value = {"status": "COMPLETED", "tx_id": "TXN_778"}`.
+     * Asserts `mock_gateway.charge.assert_called_once_with(150.0, currency="USD")`.
+     * Asserts `mock_emailer.send_receipt.assert_called_once_with("alice@example.com", "ORD_101", 150.0)`.
+   - Test Method 2 (Card Declined):
+     * Configures `mock_gateway.charge.side_effect = CardDeclinedError("Insufficient funds")`.
+     * Asserts `PaymentDeclinedError` is raised.
+     * Asserts `mock_emailer.send_receipt.assert_not_called()`.
+   - Test Method 3 (Transient Failure with Successful Retry):
+     * Configures `side_effect = [GatewayTimeoutError("Timeout"), {"status": "COMPLETED", "tx_id": "TXN_999"}]`.
+     * Verifies that `charge` was called exactly twice (`self.assertEqual(mock_gateway.charge.call_count, 2)`).
+     * Verifies successful order completion on the second attempt.
+
+Sample Input:
+# Programmatic test execution
+suite = unittest.TestLoader().loadTestsFromTestCase(TestCheckoutServiceMocking)
+runner = unittest.TextTestRunner(verbosity=0)
+result = runner.run(suite)
+
+# Inspect test results
+is_success = result.wasSuccessful()
+tests_ran = result.testsRun
+
+Expected Output:
+Mocking Tests Run: 3
+- test_payment_success_triggers_receipt: PASSED
+- test_card_declined_aborts_without_receipt: PASSED
+- test_gateway_timeout_retries_and_succeeds: PASSED
+All Mock Tests Passed: True
+
+Constraints & Edge Cases:
+- Never patch where an object is defined; patch where it is *imported and looked up* by the consumer module.
+- Always clean up patches (via context manager or decorator) to prevent mock leakage across test cases.
+================================================================================
