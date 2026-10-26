@@ -302,3 +302,55 @@ Constraints & Edge Cases:
 - In-place rotation must strictly modify the passed matrix reference without allocating new rows.
 - Non-square matrix passed to `rotate_clockwise_inplace` must raise `ValueError`.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a lossless compression engine `StringCompressor` implementing Run-Length Encoding (RLE) with multi-digit handling and size optimization:
+1. Run-Length Compression (`compress(s: str, enforce_shorter: bool = True) -> str`):
+   - Scans string `s` and counts contiguous repetitions of each character.
+   - Outputs each character followed by its count (e.g., `"aabcccccaaa"` -> `"a2b1c5a3"`).
+   - If `enforce_shorter` is `True` and the resulting compressed string length is greater than or equal to the original string length (e.g., `"abcdef"` -> `"a1b1c1d1e1f1"`), returns the original string unchanged.
+2. Robust Decompression (`decompress(compressed: str) -> str`):
+   - Parses compressed strings where counts can be multi-digit integers (e.g., `"a12b3"` expands to 12 `'a'`s followed by 3 `'b'`s).
+   - Raises `ValueError` if the formatted syntax is corrupt (e.g. starts with a digit, contains unescaped special tokens, or has non-numeric counts).
+3. In-Place Array Character Compression (`compress_char_array_inplace(chars: list[str]) -> int`):
+   - Given an array of characters, compresses it in-place with $O(1)$ extra space.
+   - For consecutive groups of repeating characters:
+     * Writes character followed by count digits only if count > 1 (e.g., `["a", "a", "b", "b", "c", "c", "c"]` becomes `["a", "2", "b", "2", "c", "3"]`).
+     * Modifies the array in-place up to the returned length index.
+4. Compression Analytics (`compression_stats(original: str, compressed: str) -> dict[str, Any]`):
+   - Returns a dictionary detailing: `original_length`, `compressed_length`, `bytes_saved`, and `compression_ratio` (as percentage).
+
+Sample Input:
+compressor = StringCompressor()
+
+# 1. Standard Compression
+s1 = "aabcccccaaa"
+comp1 = compressor.compress(s1)
+
+# 2. String that does not benefit from compression
+s2 = "abcdef"
+comp2 = compressor.compress(s2, enforce_shorter=True)
+
+# 3. Multi-digit Decompression
+decomp = compressor.decompress("w10b2x1")
+
+# 4. In-Place Array Compression
+char_arr = ["a", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b", "b"]
+new_len = compressor.compress_char_array_inplace(char_arr)
+
+# 5. Stats
+stats = compressor.compression_stats(s1, comp1)
+
+Expected Output:
+Compressed 'aabcccccaaa': 'a2b1c5a3'
+Compressed 'abcdef' (shorter enforced): 'abcdef'
+Decompressed 'w10b2x1': 'wwwwwwwwwwbbx'
+In-Place Array New Length: 4 (Array prefix: ['a', 'b', '1', '2'])
+Compression Ratio for 'aabcccccaaa': 27.27% savings (11 -> 8 chars)
+
+Constraints & Edge Cases:
+- Empty string input `""` must return `""` with 0% ratio.
+- Decompression must raise `ValueError` on malformed inputs such as `"12abc"` or `"a"`.
+================================================================================
