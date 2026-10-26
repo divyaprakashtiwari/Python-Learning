@@ -352,3 +352,57 @@ Constraints & Edge Cases:
 - Reversal and merging must be performed strictly in-place by updating pointer references; do not copy values into an array to rebuild nodes.
 - Handled edge cases: empty list (`head is None`), single node, cycle pointing back to head (`node 5 -> node 1`).
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that builds a complete Hash Map data structure (`SeparateChainingHashMap[K, V]`) from first principles without using Python's built-in `dict` or `set` types:
+1. Bucket Array & Collision Resolution:
+   - Maintains an internal array of buckets `self._buckets` of length `capacity` (initialized to e.g. 8).
+   - Resolves collisions via Separate Chaining, where each bucket holds a singly linked list (or list of `HashNode(key, value, next)`).
+   - Computes bucket index via modulo hashing: `index = abs(hash(key)) % self._capacity`.
+2. Core Dictionary Operations:
+   - `put(key: K, value: V) -> None`: Inserts or updates the key-value pair. If the key already exists in the chain, updates its value in-place without incrementing size.
+   - `get(key: K, default: Optional[V] = None) -> Optional[V]`: Traverses the bucket chain to return the associated value; returns `default` if key is not found.
+   - `remove(key: K) -> V`: Deletes the key-value pair from its chain and returns the removed value; raises `KeyError` if key is absent.
+   - `__contains__(key: K) -> bool` and `__len__() -> int`.
+3. Dynamic Rehashing & Resizing:
+   - Calculates the load factor $\alpha = \frac{\text{size}}{\text{capacity}}$.
+   - Defines a maximum load factor threshold (e.g. 0.75).
+   - When a `put` causes the load factor to exceed 0.75, automatically doubles capacity (`capacity *= 2`) and rehashes every existing key-value entry into the newly sized bucket table.
+4. Introspection Methods:
+   - `load_factor() -> float`: Returns current load factor.
+   - `collision_count() -> int`: Returns total count of keys stored beyond the primary head node across all buckets.
+
+Sample Input:
+hash_map = SeparateChainingHashMap[str, int](initial_capacity=4, max_load_factor=0.75)
+hash_map.put("apple", 100)
+hash_map.put("banana", 200)
+hash_map.put("cherry", 300)   # size = 3, load factor = 3/4 = 0.75 (at threshold)
+
+lf_before = hash_map.load_factor()
+cap_before = hash_map.capacity
+
+hash_map.put("date", 400)     # size = 4, triggers rehashing: capacity doubles to 8
+lf_after = hash_map.load_factor()
+cap_after = hash_map.capacity
+
+val_banana = hash_map.get("banana")
+hash_map.put("banana", 250)   # update existing key
+updated_banana = hash_map.get("banana")
+removed_val = hash_map.remove("apple")
+has_apple = "apple" in hash_map
+
+Expected Output:
+Load Factor Before Resizing: 0.75 (Capacity: 4)
+Load Factor After Resizing: 0.5 (Capacity: 8)
+Retrieved Banana Value: 200
+Updated Banana Value: 250
+Removed Apple Value: 100
+Contains Apple After Removal: False
+
+Constraints & Edge Cases:
+- Built-in Python dict (`{}`) or set must NOT be used for internal storage.
+- Key equality must verify both hash identity and `node.key == key` to properly distinguish collided keys.
+- Deleting a non-existent key must raise `KeyError`.
+================================================================================
