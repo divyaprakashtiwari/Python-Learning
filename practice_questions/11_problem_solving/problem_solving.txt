@@ -404,3 +404,54 @@ Constraints & Edge Cases:
 - Negative zero `-0` or zero `0` must return `'zero'`.
 - Subunits must be rounded to two decimal places (e.g., 0.256 rounds to 26 cents).
 ================================================================================
+
+Question 9 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a classical cryptographic cipher suite `ClassicalCipherToolkit` with automated frequency-analysis cryptanalysis:
+1. Caesar Cipher Engine:
+   - `encrypt_caesar(plaintext: str, shift: int) -> str`: Shifts each alphabetic character forward by `shift` positions modulo 26, preserving case and leaving digits/punctuation untouched.
+   - `decrypt_caesar(ciphertext: str, shift: int) -> str`: Inverts the substitution by applying `(26 - (shift % 26))`.
+2. Automated Frequency-Analysis Cracker (`crack_caesar(ciphertext: str) -> tuple[int, str, float]`):
+   - Decrypts unknown Caesar ciphertext without being provided the key.
+   - Compares the letter frequency distribution of all 26 possible decrypted candidates against standard English letter frequencies (e.g., E ~ 12.7%, T ~ 9.1%, A ~ 8.2%).
+   - Calculates the Chi-Squared ($\chi^2$) goodness-of-fit statistic:
+     $$\chi^2 = \sum_{c='a'}^{\text{'z'}} \frac{(O_c - E_c)^2}{E_c}$$
+     where $O_c$ is observed count and $E_c$ is expected count based on decrypted text length.
+   - Returns the shift key yielding the minimum $\chi^2$ value, the recovered plaintext, and the confidence metric.
+3. Polyalphabetic Vigenère Cipher:
+   - `encrypt_vigenere(plaintext: str, keyword: str) -> str`:
+     * Repeatedly shifts characters based on the cyclic letters of `keyword` (e.g., key 'KEY' means shifts [10, 4, 24]).
+     * Non-alphabetic characters do not advance the keyword alignment index.
+   - `decrypt_vigenere(ciphertext: str, keyword: str) -> str`: Reverses the polyalphabetic shift.
+
+Sample Input:
+toolkit = ClassicalCipherToolkit()
+
+# 1. Caesar Cipher
+caesar_plain = "Hello, World! Python Cryptography 101."
+caesar_cipher = toolkit.encrypt_caesar(caesar_plain, shift=7)
+caesar_decrypted = toolkit.decrypt_caesar(caesar_cipher, shift=7)
+
+# 2. Automated Cracking
+intercepted_text = "Esp bftnv mczhy qzi ufxad zgpc esp wlkj ozr."
+best_shift, cracked_plain, score = toolkit.crack_caesar(intercepted_text)
+
+# 3. Vigenère Cipher
+vigenere_plain = "ATTACK AT DAWN"
+vigenere_cipher = toolkit.encrypt_vigenere(vigenere_plain, keyword="LEMON")
+vigenere_decrypted = toolkit.decrypt_vigenere(vigenere_cipher, keyword="LEMON")
+
+Expected Output:
+Caesar Encrypted (shift 7): 'Olssv, Dvysk! Wfaovu Jyfawvnyawof 101.'
+Caesar Decrypted (shift 7): 'Hello, World! Python Cryptography 101.'
+Automated Cracked Shift: 11
+Cracked Plaintext: 'The quick brown fox jumps over the lazy dog.'
+Vigenère Encrypted ('LEMON'): 'LXFOPV EF RNHR'
+Vigenère Decrypted ('LEMON'): 'ATTACK AT DAWN'
+
+Constraints & Edge Cases:
+- Large shifts (e.g., `shift = 1000` or negative shifts `shift = -5`) must normalize properly using `shift % 26`.
+- Empty string input must return `""`.
+- Keyword for Vigenère cipher containing non-alpha characters must raise `ValueError`.
+================================================================================
