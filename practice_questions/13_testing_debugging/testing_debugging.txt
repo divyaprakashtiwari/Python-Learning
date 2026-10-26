@@ -95,3 +95,45 @@ Constraints & Edge Cases:
 - Expired entries must be verified with artificial clock manipulation or low TTL (`ttl=0.01`).
 - Failure of a single test must not prevent `tearDown` or `tearDownClass` from running.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an order calculation engine `OrderProcessingEngine` and implements an exhaustive `unittest.TestCase` suite testing boundary conditions with specialized assertions:
+1. System Under Test (`OrderProcessingEngine`):
+   - Computes line-item totals, applies promotional percentage discounts, taxes, and shipping fees.
+   - Raises structured exception `OrderValidationError(field: str, code: str, message: str)` on invalid inputs (e.g. empty line items, negative quantities, discount > 100%).
+   - Returns structured dictionary:
+     `{"subtotal": float, "discount_amount": float, "tax": float, "shipping": float, "total": float, "applied_promos": list[str]}`.
+2. Specialized Assertion Test Harness (`TestOrderProcessingAssertions(unittest.TestCase)`):
+   - Floating-Point Tolerance: Uses `assertAlmostEqual(actual, expected, places=2)` and `assertAlmostEqual(actual, expected, delta=0.01)` to test monetary calculations.
+   - Unordered Sequence Comparison: Uses `assertCountEqual(actual_promos, expected_promos)` to confirm that applied coupon codes match regardless of generation sequence.
+   - Granular Dictionary Difference: Uses `assertDictEqual(actual_summary, expected_summary)` with meaningful diagnostic messages.
+   - Identity vs Value Equality: Contrasts `assertIs(obj1, obj2)` with `assertEqual(obj1, obj2)`.
+   - Type Membership: Uses `assertIsInstance(result["total"], float)` and `assertIn("TAX_NY_8pct", result["applied_promos"])`.
+   - Exception Payload Verification: Uses `with self.assertRaises(OrderValidationError) as ctx:` and verifies that `ctx.exception.field == "discount_pct"` and `ctx.exception.code == "DISCOUNT_OVERFLOW"`.
+
+Sample Input:
+# Run test suite programmatically
+suite = unittest.TestLoader().loadTestsFromTestCase(TestOrderProcessingAssertions)
+runner = unittest.TextTestRunner(verbosity=0)
+result = runner.run(suite)
+
+# Inspect outcomes
+is_success = result.wasSuccessful()
+ran_count = result.testsRun
+
+Expected Output:
+Assertions Deep Dive Tests Run: 6
+- test_floating_point_tax_precision: PASSED
+- test_discount_unordered_coupons: PASSED
+- test_dict_summary_equality: PASSED
+- test_singleton_sentinel_identity: PASSED
+- test_type_and_collection_membership: PASSED
+- test_exception_context_payload: PASSED
+All Assertion Tests Succeeded: True
+
+Constraints & Edge Cases:
+- Never use simple `assertTrue(a == b)` where specialized assertions like `assertEqual` or `assertDictEqual` provide clear visual diffs upon failure.
+- Exception verification must assert both exception class and specific attribute values inside the context manager.
+================================================================================
