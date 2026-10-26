@@ -54,3 +54,63 @@ Constraints & Edge Cases:
 - For an empty list or single element, `remove_duplicates_sorted` must return `len(nums)` without modification.
 - Subarray bounds must satisfy `0 <= start_idx <= end_idx < len(nums)`.
 ================================================================================
+
+Question 2 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an in-place sorting benchmark engine `SortingComparator`
+implementing optimized Bubble Sort and Selection Sort alongside empirical execution metrics:
+1. Optimized Bubble Sort (`bubble_sort(arr: list[int]) -> dict`):
+   - Operates in-place on a copy of the input list.
+   - Compares adjacent elements `(arr[j], arr[j+1])` and swaps if `arr[j] > arr[j+1]`.
+   - Incorporates an early-exit optimization flag `swapped_in_pass`:
+     * If an entire pass completes with zero swaps, breaks early, achieving O(N) best-case time complexity.
+   - Measures and records:
+     * `sorted_array`: Final sorted list.
+     * `comparison_count`: Total element comparisons performed.
+     * `swap_count`: Total swap operations performed.
+     * `passes_completed`: Number of outer loops executed.
+2. Selection Sort (`selection_sort(arr: list[int]) -> dict`):
+   - Operates in-place on a copy of the input list.
+   - For each index `i` from `0` to `n - 1`:
+     * Scans the remaining unsorted suffix `[i...n-1]` to identify the index of the minimum element.
+     * Swaps the found minimum element with `arr[i]` if the index differs.
+   - Always performs exactly `n * (n - 1) // 2` comparisons, but minimizes write operations to at most `n - 1` swaps.
+   - Measures and records `comparison_count` and `swap_count`.
+3. Stability Demonstration:
+   - Test both sorting algorithms using key-value pairs with duplicated keys:
+     `[("TaskA", 2), ("TaskB", 1), ("TaskC", 2), ("TaskD", 1)]`.
+   - Demonstrate that Bubble Sort preserves relative order of duplicate keys (stable),
+     whereas Selection Sort's long-range swaps can disrupt relative ordering (unstable).
+
+Sample Input:
+comparator = SortingComparator()
+
+test_arr = [64, 25, 12, 22, 11]
+bubble_res = comparator.bubble_sort(test_arr)
+selection_res = comparator.selection_sort(test_arr)
+
+sorted_arr = [1, 2, 3, 4, 5]
+bubble_best = comparator.bubble_sort(sorted_arr)
+
+Expected Output:
+Bubble Sort on [64, 25, 12, 22, 11]:
+- Sorted: [11, 12, 22, 25, 64]
+- Comparisons: 10
+- Swaps: 8
+- Passes: 4
+
+Selection Sort on [64, 25, 12, 22, 11]:
+- Sorted: [11, 12, 22, 25, 64]
+- Comparisons: 10
+- Swaps: 4
+
+Bubble Sort Early-Exit on Already Sorted Array [1, 2, 3, 4, 5]:
+- Comparisons: 4
+- Swaps: 0
+- Passes Completed: 1 (Terminated after 1st pass via early-exit flag)
+
+Constraints & Edge Cases:
+- Empty array `[]` and single-element array `[x]` must return immediately with 0 comparisons and 0 swaps.
+- Sorting operations must not mutate the caller's original input list; operate on shallow copies.
+================================================================================
