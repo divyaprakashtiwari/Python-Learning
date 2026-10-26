@@ -1,0 +1,62 @@
+================================================================================
+Topic 12: JSON, CSV, API, and Database - Practice Questions
+================================================================================
+
+Question 1 (Easy):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a comprehensive `JSONHandler` utility demonstrating robust serialization, deserialization, and custom type encoding/decoding:
+1. Standard Serialization & Deserialization:
+   - `serialize_to_string(data: Any, indent: int = 2, sort_keys: bool = True) -> str`:
+     * Serializes Python dictionaries and lists into formatted JSON strings.
+   - `deserialize_from_string(json_str: str) -> Any`:
+     * Parses JSON string into Python objects, catching `json.JSONDecodeError` and raising an informative custom exception `JSONParsingError`.
+2. File I/O Operations:
+   - `save_to_file(filepath: str, data: Any) -> None` using `json.dump` with UTF-8 encoding.
+   - `load_from_file(filepath: str) -> Any` using `json.load`.
+3. Custom Type Serialization (`CustomJSONEncoder`):
+   - Standard `json.dumps()` fails with `TypeError: Object of type datetime is not JSON serializable`.
+   - Subclass `json.JSONEncoder` to support:
+     * `datetime.datetime` and `datetime.date` -> ISO-8601 formatted string (`YYYY-MM-DDTHH:MM:SS`).
+     * `uuid.UUID` -> string representation.
+     * `set` -> sorted list.
+     * Custom dataclass or objects with `to_dict()` or `__dict__`.
+4. Round-Trip Deserialization with `object_hook`:
+   - `datetime_decoder(dct: dict) -> dict`: Automatically detects ISO datetime strings matching key patterns (e.g. `"created_at"`, `"timestamp"`) and reconstructs native `datetime` instances.
+
+Sample Input:
+handler = JSONHandler()
+
+raw_record = {
+    "user_id": uuid.UUID("12345678-1234-5678-1234-567812345678"),
+    "username": "alex_dev",
+    "created_at": datetime.datetime(2026, 10, 26, 14, 30, 0),
+    "roles": {"admin", "developer"},
+    "is_active": True,
+    "metadata": None
+}
+
+json_output = handler.serialize_to_string(raw_record, indent=2)
+recovered_obj = handler.deserialize_with_hook(json_output)
+
+Expected Output:
+Serialized JSON String:
+{
+  "created_at": "2026-10-26T14:30:00",
+  "is_active": true,
+  "metadata": null,
+  "roles": [
+    "admin",
+    "developer"
+  ],
+  "user_id": "12345678-1234-5678-1234-567812345678",
+  "username": "alex_dev"
+}
+Recovered created_at Type: <class 'datetime.datetime'>
+Recovered user_id: '12345678-1234-5678-1234-567812345678'
+Recovered roles: ['admin', 'developer']
+
+Constraints & Edge Cases:
+- Files must be opened with explicit `encoding="utf-8"` to prevent Windows platform encoding mismatches.
+- Unsupported custom objects must raise `TypeError` via `super().default(o)` rather than silently converting to strings.
+================================================================================
