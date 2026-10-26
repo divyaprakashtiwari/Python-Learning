@@ -297,3 +297,65 @@ Constraints & Edge Cases:
 - Floats must be rounded to 2 decimal places to avoid IEEE-754 precision artifacts.
 - Rejected records must never crash the pipeline; they must be logged to the DLQ.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a hierarchical Configuration Management system (`ConfigManager`) supporting INI formats via `configparser`, JSON config files, and environment variable overrides:
+1. INI Parsing via `configparser.ConfigParser`:
+   - Loads INI files with distinct sections (e.g. `[database]`, `[server]`, `[logging]`).
+   - Supports basic interpolation (e.g. `base_dir = /var/app`, `log_file = %(base_dir)s/app.log`).
+   - Provides strongly-typed getters:
+     * `get_int(section: str, key: str, fallback: Optional[int] = None) -> int`
+     * `get_bool(section: str, key: str, fallback: Optional[bool] = None) -> bool` (supports `'yes'/'no'`, `'true'/'false'`, `'1'/'0'`)
+     * `get_float(section: str, key: str, fallback: Optional[float] = None) -> float`
+     * `get_string(section: str, key: str, fallback: Optional[str] = None) -> str`
+2. Environment Variable Override Hierarchy:
+   - Evaluates settings with defined precedence:
+     $$\text{Environment Variable} > \text{Config File (INI/JSON)} > \text{Default Fallback}$$
+   - Maps environment variables using a standardized prefix pattern (e.g., `APP_DATABASE_HOST` maps to section `database`, option `host`).
+3. Serialization & Export:
+   - `export_to_json(filepath: str) -> None`: Exports entire merged configuration into a structured JSON file.
+   - `save_ini(filepath: str) -> None`: Persists updated in-memory configuration back to disk.
+4. Validation & Schema Enforcement:
+   - Validates that mandatory sections and keys are present, raising `ConfigMissingError` if required keys are missing.
+
+Sample Input:
+ini_text = """
+[server]
+host = 127.0.0.1
+port = 8080
+debug = true
+workers = 4
+
+[database]
+engine = sqlite
+name = app_production.db
+pool_size = 10
+timeout = 30.5
+"""
+
+# Simulate environment override: APP_SERVER_PORT=9000
+os.environ["APP_SERVER_PORT"] = "9000"
+
+manager = ConfigManager()
+manager.load_ini_string(ini_text)
+manager.apply_env_overrides(prefix="APP_")
+
+srv_host = manager.get_string("server", "host")
+srv_port = manager.get_int("server", "port")  # Overridden by environment
+is_debug = manager.get_bool("server", "debug")
+db_timeout = manager.get_float("database", "timeout")
+
+Expected Output:
+Server Host: '127.0.0.1'
+Server Port (Env Overridden): 9000
+Server Debug Mode: True
+Database Timeout: 30.5
+Merged Config Exported to JSON: Successful
+
+Constraints & Edge Cases:
+- Missing sections or keys without fallbacks must raise `ConfigMissingError` (or `configparser.NoOptionError`).
+- Boolean parsing must raise `ValueError` on ambiguous strings like `"maybe"`.
+- Environment variable overrides must properly parse integer/boolean strings when accessed via typed getters.
+================================================================================
