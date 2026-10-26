@@ -346,3 +346,52 @@ Constraints & Edge Cases:
 - Loggers must propagate correctly to root or parent loggers without creating duplicate duplicate handler entries on repeated initializations.
 - Handlers must be closed cleanly (`handler.close()`) to avoid leaving open file descriptors on Windows.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an algorithmic profiling suite `PerformanceAnalyzer` utilizing standard library `cProfile`, `pstats`, and `timeit` to diagnose computational bottlenecks:
+1. Benchmark Workload:
+   - Implements two competing string deduplication strategies:
+     * `dedup_naive(items: list[str]) -> list[str]`: $O(N^2)$ algorithm using membership testing against a result list (`if x not in seen: seen.append(x)`).
+     * `dedup_optimal(items: list[str]) -> list[str]`: $O(N)$ algorithm using a `set()` or `dict.fromkeys(items)` preserving order.
+2. Microbenchmarking Harness (`benchmark_timeit(func, *args, number=1000, repeat=5) -> dict[str, float]`):
+   - Uses `timeit.repeat` with isolated setups.
+   - Calculates statistical aggregates: minimum execution time (representing best possible CPU schedule), mean time, and standard deviation.
+3. Deterministic Profiling via `cProfile.Profile`:
+   - `profile_execution(func, *args, **kwargs) -> pstats.Stats`:
+     * Activates profiler via `pr.enable()` / `pr.disable()`.
+     * Captures function metrics: total calls (`ncalls`), total execution time (`tottime`), and cumulative time (`cumtime`).
+4. Automated Bottleneck Detection (`analyze_hotspots(stats: pstats.Stats, top_n: int = 5) -> list[dict[str, Any]]`):
+   - Sorts stats by cumulative time (`cumtime`).
+   - Programmatically extracts the top `top_n` expensive functions as structured dictionaries containing function name, call count, cumulative time, and percentage of total runtime.
+5. High-Resolution Timing Context Manager (`Timer`):
+   - Implements `@contextmanager def timing_context(label: str)` using `time.perf_counter_ns()` with microsecond precision.
+
+Sample Input:
+analyzer = PerformanceAnalyzer()
+
+# Large test dataset: 5,000 strings with heavy duplicates
+dataset = [f"item_{i % 50}" for i in range(5000)]
+
+# 1. Microbenchmark comparison
+naive_time = analyzer.benchmark_timeit(dedup_naive, dataset, number=10)
+optimal_time = analyzer.benchmark_timeit(dedup_optimal, dataset, number=10)
+
+# 2. cProfile hotspot analysis
+stats = analyzer.profile_execution(dedup_naive, dataset)
+hotspots = analyzer.analyze_hotspots(stats, top_n=3)
+
+Expected Output:
+Microbenchmark Results (Mean time for 10 runs):
+- dedup_naive (O(N^2)): ~45.2 ms
+- dedup_optimal (O(N)): ~0.35 ms
+Speedup Factor: ~129x
+Top Bottlenecks Identified in dedup_naive:
+1. `list.append`: 50 calls, cumtime: 0.0001s
+2. `dedup_naive`: 1 call, tottime: 0.0450s (accounts for 99.2% of workload)
+
+Constraints & Edge Cases:
+- Benchmarking must use `time.perf_counter` (not `time.time()`) to guarantee monotonic high-resolution clock measurements unaffected by system time adjustments.
+- Avoid printing raw unformatted `pstats` dump to standard output; programmatically parse stats dictionaries.
+================================================================================
