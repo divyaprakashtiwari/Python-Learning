@@ -354,3 +354,53 @@ Constraints & Edge Cases:
 - Empty string input `""` must return `""` with 0% ratio.
 - Decompression must raise `ValueError` on malformed inputs such as `"12abc"` or `"a"`.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a comprehensive `NumberToWordsConverter` supporting both Western/International and Indian numbering systems, decimals, and currency formatting:
+1. International / Western Numbering System (`to_words_international(num: int) -> str`):
+   - Chunks the integer into 3-digit triplets: hundreds, thousands, millions, billions, trillions ($10^{12}$).
+   - Accurately converts 3-digit sub-chunks:
+     * Numbers 1-19 (e.g., "fourteen").
+     * Tens multiples with hyphenation for compounds (e.g., "forty-two").
+     * Hundreds (e.g., "seven hundred fifty-six").
+   - Concatenates scale names with proper spacing, handling internal zeroes (e.g. `1,000,005` -> "one million five").
+2. Indian Numbering System (`to_words_indian(num: int) -> str`):
+   - Chunks according to the Indian place value convention: first 3 digits (hundreds), followed by 2-digit groups (thousands, lakhs, crores).
+   - E.g. `12345678` -> "one crore twenty-three lakh forty-five thousand six hundred seventy-eight".
+3. Currency Formatting (`to_currency(amount: float, currency_unit: str = "dollar", subunit: str = "cent") -> str`):
+   - Separates integer dollars from 2-decimal fractional cents.
+   - Formats with pluralization rules (e.g., 1 dollar vs 2 dollars, 1 cent vs 15 cents).
+4. Sign Handling:
+   - Prepends "negative" for values $< 0$.
+   - Explicitly returns "zero" for `0`.
+
+Sample Input:
+converter = NumberToWordsConverter()
+
+# 1. Western System
+w1 = converter.to_words_international(1234567)
+w2 = converter.to_words_international(1000005)
+w3 = converter.to_words_international(-42)
+
+# 2. Indian System
+ind1 = converter.to_words_indian(12345678)
+
+# 3. Currency
+curr1 = converter.to_currency(1050.25, currency_unit="dollar", subunit="cent")
+curr2 = converter.to_currency(1.01, currency_unit="dollar", subunit="cent")
+
+Expected Output:
+International (1234567): 'one million two hundred thirty-four thousand five hundred sixty-seven'
+International (1000005): 'one million five'
+International (-42): 'negative forty-two'
+Indian (12345678): 'one crore twenty-three lakh forty-five thousand six hundred seventy-eight'
+Currency (1050.25): 'one thousand fifty dollars and twenty-five cents'
+Currency (1.01): 'one dollar and one cent'
+
+Constraints & Edge Cases:
+- Numbers up to $\pm 10^{15}$ (quadrillions / arab) must be handled without precision loss.
+- Negative zero `-0` or zero `0` must return `'zero'`.
+- Subunits must be rounded to two decimal places (e.g., 0.256 rounds to 26 cents).
+================================================================================
