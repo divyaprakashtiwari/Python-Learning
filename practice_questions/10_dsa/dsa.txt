@@ -406,3 +406,61 @@ Constraints & Edge Cases:
 - Key equality must verify both hash identity and `node.key == key` to properly distinguish collided keys.
 - Deleting a non-existent key must raise `KeyError`.
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that constructs a Binary Tree and Binary Search Tree (BST) toolkit implementing classical traversals and structural property checks:
+1. `TreeNode[T]` Structure:
+   - Attributes: `val: T`, `left: Optional[TreeNode[T]] = None`, `right: Optional[TreeNode[T]] = None`.
+2. Depth-First Traversals:
+   - `inorder(root: TreeNode) -> list[T]`: Left -> Node -> Right (implemented both recursively and iteratively using an explicit stack).
+   - `preorder(root: TreeNode) -> list[T]`: Node -> Left -> Right.
+   - `postorder(root: TreeNode) -> list[T]`: Left -> Right -> Node.
+3. Breadth-First Level-Order Traversal:
+   - `level_order(root: TreeNode) -> list[list[T]]`:
+     * Uses a double-ended queue (`collections.deque`).
+     * Returns a list of lists, where each sublist contains nodes visited at that specific tree depth level.
+4. Structural Operations:
+   - `max_depth(root: TreeNode) -> int`: Returns maximum height (number of nodes along the longest root-to-leaf path). Empty tree returns `0`.
+   - `invert_tree(root: TreeNode) -> TreeNode`: Inverts/mirrors the binary tree recursively by swapping left and right subtrees for every node in-place.
+5. BST Validity Checker:
+   - `is_valid_bst(root: TreeNode, min_val=float('-inf'), max_val=float('inf')) -> bool`:
+     * Validates that for every node, all descendants in the left subtree are strictly less than node's value, and all descendants in right subtree are strictly greater.
+
+Sample Input:
+# Construct sample binary tree:
+#        4
+#       / \
+#      2   7
+#     / \
+#    1   3
+root = TreeNode(4)
+root.left = TreeNode(2, TreeNode(1), TreeNode(3))
+root.right = TreeNode(7)
+
+in_res = inorder_traversal(root)
+pre_res = preorder_traversal(root)
+post_res = postorder_traversal(root)
+levels = level_order_traversal(root)
+tree_depth = max_depth(root)
+valid_bst = is_valid_bst(root)
+
+# Invert tree
+inverted_root = invert_tree(root)
+in_res_inverted = inorder_traversal(inverted_root)
+
+Expected Output:
+Inorder Traversal: [1, 2, 3, 4, 7]
+Preorder Traversal: [4, 2, 1, 3, 7]
+Postorder Traversal: [1, 3, 2, 7, 4]
+Level Order Traversal: [[4], [2, 7], [1, 3]]
+Tree Max Depth: 3
+Is Valid BST: True
+Inverted Tree Inorder: [7, 4, 3, 2, 1]
+
+Constraints & Edge Cases:
+- Must handle `None` root gracefully without throwing `AttributeError`.
+- BST validation must enforce strict inequalities (`<` and `>`), rejecting duplicate node values.
+- Invert tree must modify links and return the root without allocating an entirely duplicate set of nodes.
+================================================================================
