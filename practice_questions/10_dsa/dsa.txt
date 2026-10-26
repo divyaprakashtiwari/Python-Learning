@@ -231,3 +231,64 @@ Constraints & Edge Cases:
 - Postfix evaluation division must truncate toward zero (e.g., `-3 // 2` in Python gives `-2`, but `int(-3 / 2)` gives `-1`).
 - Empty expression string `""` in `is_balanced` should evaluate to `(True, "Balanced")`.
 ================================================================================
+
+Question 5 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that implements and benchmarks core Queue data structures and solves queue-based problems:
+1. Fixed-Capacity Circular Queue (`CircularQueue[T]`):
+   - Backed by a fixed-size list with `capacity` slots and pointer manipulation (`head`, `tail`, `count`).
+   - Implements:
+     * `enqueue(item: T) -> bool`: Inserts item at tail if not full; returns `True` on success, `False` if full (or raises `QueueOverflowError`).
+     * `dequeue() -> T`: Removes and returns item at head; raises `QueueUnderflowError` if empty.
+     * `front() -> T` and `rear() -> T`: Inspects boundaries without removal.
+     * `is_empty() -> bool` and `is_full() -> bool`.
+     * Calculates wrapping indices via modulo arithmetic: `(tail + 1) % capacity`.
+2. Queue Implemented via Two Stacks (`TwoStackQueue[T]`):
+   - Implements FIFO behavior using two separate stack instances (`in_stack` and `out_stack`).
+   - `enqueue(item: T) -> None`: Pushes directly onto `in_stack` in O(1).
+   - `dequeue() -> T`: Pops from `out_stack`. If `out_stack` is empty, transfers all elements from `in_stack` to `out_stack`, reversing their order to yield O(1) amortized time.
+   - `peek() -> T` and `__len__() -> int`.
+3. Hot Potato / Josephus Simulation (`josephus_circle(names: list[str], elimination_step: int) -> tuple[list[str], str]`):
+   - Simulates circular potato passing where participants form a ring.
+   - Using a queue, each pass dequeues a name and re-enqueues it to the rear.
+   - At every `elimination_step`-th pass, the participant at the front is permanently eliminated and recorded.
+   - Returns a tuple of `(elimination_order, winner)`.
+
+Sample Input:
+# 1. Circular Queue
+cq = CircularQueue[int](capacity=3)
+cq.enqueue(10)
+cq.enqueue(20)
+cq.enqueue(30)
+is_full = cq.is_full()
+d1 = cq.dequeue()
+cq.enqueue(40)  # wraps around index 0
+
+# 2. TwoStackQueue
+tsq = TwoStackQueue[str]()
+tsq.enqueue("A")
+tsq.enqueue("B")
+tsq.enqueue("C")
+q_pop1 = tsq.dequeue()
+tsq.enqueue("D")
+q_pop2 = tsq.dequeue()
+
+# 3. Josephus Ring Simulation
+participants = ["Alice", "Bob", "Charlie", "David", "Emma"]
+eliminated, survivor = josephus_circle(participants, elimination_step=3)
+
+Expected Output:
+Circular Queue Full: True
+Circular Queue Dequeued: 10
+Circular Queue Rear after 40: 40
+TwoStackQueue Dequeued First: 'A'
+TwoStackQueue Dequeued Second: 'B'
+Josephus Elimination Order: ['Charlie', 'Alice', 'Emma', 'Bob']
+Josephus Survivor: 'David'
+
+Constraints & Edge Cases:
+- Circular queue must prevent overwriting when full without resizing.
+- Dequeue or peek on empty `TwoStackQueue` must raise `IndexError` or custom underflow error.
+- If `elimination_step <= 0` or participant list is empty, `josephus_circle` must raise `ValueError`.
+================================================================================
