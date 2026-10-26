@@ -142,3 +142,52 @@ Constraints & Edge Cases:
 - `sieve_primes(limit)` where `limit < 2` must return an empty list `[]`.
 - Primality check must handle very large numbers efficiently without recursing.
 ================================================================================
+
+Question 4 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a Fibonacci engine `FibonacciSuite` implementing and comparing four distinct algorithmic paradigms for computing $F(n)$, alongside an infinite generator:
+1. Iterative Space-Optimized (`fib_iterative(n: int) -> int`):
+   - Computes $F(n)$ using two accumulator variables (`a, b = 0, 1`) in $O(n)$ time and strict $O(1)$ auxiliary space.
+2. Memoized Recursion (`fib_memoized(n: int) -> int`):
+   - Uses top-down recursion with explicit dictionary memoization or `@functools.lru_cache` to eliminate the exponential subtree recalculation of naive recursion.
+3. Logarithmic Matrix Exponentiation (`fib_matrix(n: int) -> int`):
+   - Uses the transformation matrix $M = \begin{pmatrix} 1 & 1 \\ 1 & 0 \end{pmatrix}$ such that $M^n = \begin{pmatrix} F(n+1) & F(n) \\ F(n) & F(n-1) \end{pmatrix}$.
+   - Implements 2x2 matrix multiplication and binary exponentiation (repeated squaring) to calculate $F(n)$ in strict $O(\log n)$ arithmetic steps.
+4. Lazy Infinite Generator (`fib_stream() -> Generator[int, None, None]`):
+   - Yields the infinite sequence $0, 1, 1, 2, 3, 5, 8, 13, \dots$ on demand without termination.
+5. Index Search (`find_index_of_fib(target: int) -> int`):
+   - Given a value, determines its Fibonacci index $n$ if it belongs to the sequence, or `-1` if absent.
+
+Sample Input:
+suite = FibonacciSuite()
+
+# 1. Compare methods for n = 10
+res_iter = suite.fib_iterative(10)
+res_memo = suite.fib_memoized(10)
+res_matrix = suite.fib_matrix(10)
+
+# 2. Large n using logarithmic matrix exponentiation
+res_matrix_large = suite.fib_matrix(50)
+
+# 3. Stream inspection
+stream = suite.fib_stream()
+first_7 = [next(stream) for _ in range(7)]
+
+# 4. Search index
+idx_55 = suite.find_index_of_fib(55)
+idx_50 = suite.find_index_of_fib(50)
+
+Expected Output:
+F(10) Iterative: 55
+F(10) Memoized: 55
+F(10) Matrix (Log N): 55
+F(50) Matrix Exponentiation: 12586269025
+First 7 Fibonacci Numbers: [0, 1, 1, 2, 3, 5, 8]
+Index of 55 in Fibonacci: 10
+Index of 50 in Fibonacci: -1
+
+Constraints & Edge Cases:
+- $F(0) = 0$ and $F(1) = 1$. Negative inputs $n < 0$ must raise `ValueError`.
+- Logarithmic matrix multiplication must handle matrix operations without importing external libraries like NumPy.
+================================================================================
