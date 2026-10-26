@@ -285,3 +285,64 @@ Constraints & Edge Cases:
 - Never invoke interactive `pdb.set_trace()` directly in unattended test scripts without redirecting `stdin`/`stdout`, as it will hang automated CI pipelines.
 - Traceback references must be cleared after post-mortem extraction to avoid cyclic garbage collection leaks.
 ================================================================================
+
+Question 7 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a production Structured Logging subsystem `EnterpriseLogManager` using standard library `logging` and verifies it using `unittest.TestCase.assertLogs`:
+1. Custom JSON Log Formatter (`StructuredJsonFormatter`):
+   - Formats every `logging.LogRecord` as a serialized JSON string containing:
+     * `timestamp`: ISO-8601 UTC string.
+     * `level`: Log level name (e.g. `"INFO"`, `"ERROR"`).
+     * `logger`: Originating logger name.
+     * `message`: Interpolated log message.
+     * `caller`: `"<module_name>:<line_number>"`.
+     * `correlation_id`: Injected request tracking identifier.
+     * `exception`: Formatted traceback string if `exc_info` is supplied.
+2. Contextual Request Filter (`CorrelationIdFilter`):
+   - Subclasses `logging.Filter` to dynamically inject a request-scoped `correlation_id` (using `contextvars.ContextVar`) into every record passing through the handlers.
+3. Multi-Handler Configuration:
+   - Console `StreamHandler`: Outputs human-readable colorized format for local development.
+   - Size-Based `RotatingFileHandler`: Writes JSON logs to file with automatic rollover when size exceeds `maxBytes=1_000_000`, maintaining up to 3 backup archives (`app.log.1`, `app.log.2`).
+4. Unit Testing Logger Behavior (`TestLoggingPipeline(unittest.TestCase)`):
+   - Uses `self.assertLogs(logger="app.security", level="WARNING") as captured_logs:` to assert that sensitive operations (like failed authentication attempts) trigger appropriate warning records.
+   - Inspects `captured_logs.output` and `captured_logs.records` verifying level and correlation ID presence.
+
+Sample Input:
+log_mgr = EnterpriseLogManager(app_name="fintech_api")
+logger = log_mgr.get_logger("fintech_api.auth")
+
+# 1. Set correlation context
+log_mgr.set_correlation_id("REQ_ABC_123")
+
+# 2. Emit logs
+logger.info("User login initiated", extra={"user": "admin_dan"})
+try:
+    1 / 0
+except ZeroDivisionError:
+    logger.error("Authentication computation failed", exc_info=True)
+
+# 3. Unit test log capture
+class TestSecurityLogs(unittest.TestCase):
+    def test_security_audit_logged(self):
+        with self.assertLogs("fintech_api.auth", level="WARNING") as cm:
+            logger.warning("Unauthorized access attempt blocked from IP 192.168.1.100")
+        self.assertIn("Unauthorized access attempt", cm.output[0])
+
+Expected Output:
+Structured JSON Formatter Output:
+{
+  "timestamp": "2026-10-26T17:45:00Z",
+  "level": "INFO",
+  "logger": "fintech_api.auth",
+  "message": "User login initiated",
+  "correlation_id": "REQ_ABC_123",
+  "caller": "auth_service:45"
+}
+Structured Error Log with Exception Traceback: Formatted JSON with stack trace lines.
+Unit Test assertLogs Assertion: PASSED (1 warning log captured)
+
+Constraints & Edge Cases:
+- Loggers must propagate correctly to root or parent loggers without creating duplicate duplicate handler entries on repeated initializations.
+- Handlers must be closed cleanly (`handler.close()`) to avoid leaving open file descriptors on Windows.
+================================================================================
