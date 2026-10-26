@@ -92,3 +92,53 @@ Constraints & Edge Cases:
 - String operations must handle empty strings and single characters as valid palindromes.
 - `is_number_palindrome` must NOT convert the integer to `str(num)` or use any string slicing.
 ================================================================================
+
+Question 3 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a comprehensive prime number suite `PrimeToolkit` for number-theoretic computations:
+1. Fast Primality Test (`is_prime(n: int) -> bool`):
+   - Handles base cases (`n < 2` is False, `2` and `3` are True).
+   - Rules out even numbers and multiples of 3 immediately.
+   - Applies the $6k \pm 1$ optimization loop testing factors up to $\lfloor\sqrt{n}\rfloor$ with step size 6.
+2. Sieve of Eratosthenes (`sieve_primes(limit: int) -> list[int]`):
+   - Computes all prime numbers up to `limit` using a boolean array / bytearray mask.
+   - Starts cross-off marking from $p^2$ for each prime $p$.
+   - Achieves $O(N \log \log N)$ time complexity and returns list of primes in ascending order.
+3. Prime Factorization with Multiplicities (`prime_factorization(n: int) -> dict[int, int]`):
+   - Decomposes integer $n \ge 2$ into its prime components, returning a dictionary mapping each prime factor to its exponent (multiplicity).
+   - E.g. $360 = 2^3 \times 3^2 \times 5^1 \implies \{2: 3, 3: 2, 5: 1\}$.
+4. Goldbach Conjecture Decomposition (`goldbach_pair(even_num: int) -> tuple[int, int]`):
+   - Finds two prime numbers $(p_1, p_2)$ such that $p_1 + p_2 = \text{even\_num}$ with $p_1 \le p_2$.
+   - Returns the pair with the smallest $p_1$. Raises `ValueError` if `even_num` is odd or $\le 2$.
+
+Sample Input:
+toolkit = PrimeToolkit()
+
+# 1. Primality testing
+p1 = toolkit.is_prime(29)
+p2 = toolkit.is_prime(1)
+p3 = toolkit.is_prime(49)
+
+# 2. Sieve up to 30
+primes_up_to_30 = toolkit.sieve_primes(30)
+
+# 3. Factorization
+factors_360 = toolkit.prime_factorization(360)
+
+# 4. Goldbach pair for 28
+goldbach_28 = toolkit.goldbach_pair(28)
+
+Expected Output:
+is_prime(29): True
+is_prime(1): False
+is_prime(49): False
+Sieve Primes up to 30: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+Prime Factorization of 360: {2: 3, 3: 2, 5: 1}
+Goldbach Pair for 28: (5, 23)  # 5 + 23 = 28
+
+Constraints & Edge Cases:
+- Inputs $\le 1$ to `prime_factorization` must raise `ValueError`.
+- `sieve_primes(limit)` where `limit < 2` must return an empty list `[]`.
+- Primality check must handle very large numbers efficiently without recursing.
+================================================================================
