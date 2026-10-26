@@ -436,3 +436,64 @@ Constraints & Edge Cases:
 - Broken or unclosed tags must not cause parser crash.
 - Empty table or tables without headers must generate numbered fallback column names (`"col_0"`, `"col_1"`).
 ================================================================================
+
+Question 8 (Intermediate-Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise email hygiene engine `EmailValidatorSuite` supporting syntax verification, domain classification, and normalization:
+1. Syntactic Validation via RFC Compliant Regex (`validate_syntax(email: str) -> tuple[bool, Optional[str]]`):
+   - Validates that email conforms to standard formatting rules:
+     * Non-empty local-part consisting of allowed characters (`a-z`, `0-9`, dots, hyphens, pluses).
+     * Dots cannot appear consecutively (`..`) or at the start/end of the local part.
+     * Single `@` delimiter separating local part from domain.
+     * Domain must contain at least one dot separating domain label from TLD (`.com`, `.org`, `.io`, etc.).
+     * TLD must be alphabetic and at least 2 characters long.
+   - Returns `(True, "Valid")` or `(False, "<reason>")`.
+2. Component Extraction (`parse_email(email: str) -> dict[str, str]`):
+   - Deconstructs email into local-part, domain, subdomain (if present), and top-level domain (TLD).
+   - Detects sub-addressing / plus-tags (e.g. `alex.dev+newsletter@gmail.com` -> tag: `"newsletter"`).
+3. Risk & Type Classification:
+   - `is_disposable(domain: str) -> bool`: Checks against a blocklist of temporary/disposable providers (e.g., `mailinator.com`, `tempmail.com`, `10minutemail.com`).
+   - `is_role_account(local_part: str) -> bool`: Flags generic department emails (`admin`, `support`, `info`, `sales`, `billing`, `contact`).
+4. Canonical Normalization (`normalize_email(email: str) -> str`):
+   - Converts domain to lowercase.
+   - For major providers like Gmail/Googlemail: strips dots from the local part (`first.last@gmail.com` -> `firstlast@gmail.com`) and removes plus aliases.
+5. Batch Verification (`batch_process(emails: list[str]) -> dict[str, Any]`):
+   - Processes a collection of raw emails and returns metrics: `valid_count`, `invalid_count`, `disposable_count`, `role_based_count`, and cleaned list.
+
+Sample Input:
+suite = EmailValidatorSuite()
+
+test_emails = [
+    "Alex.Dev+marketing@gmail.com",
+    "support@corporate.co.uk",
+    "fraudulent..user@domain.com",
+    "temporary.user@mailinator.com",
+    "plainaddress",
+    "dr.jane_doe@hospital.org"
+]
+
+results = suite.batch_process(test_emails)
+parsed = suite.parse_email("Alex.Dev+marketing@gmail.com")
+normalized = suite.normalize_email("Alex.Dev+marketing@gmail.com")
+
+Expected Output:
+Batch Verification Summary:
+- Total Processed: 6
+- Valid Emails: 4
+- Invalid Syntax: 2 ('fraudulent..user@domain.com', 'plainaddress')
+- Disposable Emails: 1 ('temporary.user@mailinator.com')
+- Role-Based Accounts: 1 ('support@corporate.co.uk')
+Parsed Components for 'Alex.Dev+marketing@gmail.com':
+{
+  'local_part': 'Alex.Dev',
+  'tag': 'marketing',
+  'domain': 'gmail.com',
+  'tld': 'com'
+}
+Normalized Gmail Address: 'alexdev@gmail.com'
+
+Constraints & Edge Cases:
+- Leading or trailing whitespace must be automatically trimmed before validation.
+- Internationalized domain names (IDN) or unicode symbols must be handled without unhandled UnicodeError.
+================================================================================
