@@ -191,3 +191,50 @@ Constraints & Edge Cases:
 - $F(0) = 0$ and $F(1) = 1$. Negative inputs $n < 0$ must raise `ValueError`.
 - Logarithmic matrix multiplication must handle matrix operations without importing external libraries like NumPy.
 ================================================================================
+
+Question 5 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an `AnagramEngine` to analyze, validate, and cluster anagrammatic words and phrases:
+1. Exact & Phrase Anagram Detection:
+   - `is_anagram(s1: str, s2: str) -> bool`:
+     * Checks if two words contain identical characters with matching frequencies.
+     * Normalizes by removing non-alphabetic characters and converting to lowercase.
+     * Evaluates via character frequency mapping in $O(N)$ time instead of $O(N \log N)$ sorting.
+   - `is_phrase_anagram(phrase1: str, phrase2: str) -> bool`:
+     * Supports multi-word anagrams (e.g., "dormitory" vs "dirty room", "debit card" vs "bad credit").
+2. Anagram Grouping (`group_anagrams(words: list[str]) -> list[list[str]]`):
+   - Given a list of strings, groups anagrams together.
+   - Generates hashable keys using 26-element character-count tuples `tuple(count[c])` for strict $O(N \cdot K)$ complexity, where $N$ is word count and $K$ is maximum word length.
+   - Returns groups sorted internally and ordered by group size descending.
+3. Minimum Deletions for Anagram (`min_deletions_to_make_anagram(s1: str, s2: str) -> int`):
+   - Computes the minimum number of character deletions required across both strings so that the remaining strings are anagrams of each other.
+   - E.g., for `"cde"` and `"abc"`, deleting `'d', 'e'` from `s1` and `'a', 'b'` from `s2` requires 4 total deletions.
+
+Sample Input:
+engine = AnagramEngine()
+
+# 1. Simple and Phrase Anagrams
+test1 = engine.is_anagram("silent", "listen")
+test2 = engine.is_phrase_anagram("Debit Card", "Bad Credit")
+test3 = engine.is_anagram("hello", "world")
+
+# 2. Group Anagrams
+words_to_group = ["eat", "tea", "tan", "ate", "nat", "bat"]
+grouped = engine.group_anagrams(words_to_group)
+
+# 3. Minimum Deletions
+deletions = engine.min_deletions_to_make_anagram("cde", "abc")
+
+Expected Output:
+is_anagram('silent', 'listen'): True
+is_phrase_anagram('Debit Card', 'Bad Credit'): True
+is_anagram('hello', 'world'): False
+Grouped Anagrams:
+[['ate', 'eat', 'tea'], ['nat', 'tan'], ['bat']]
+Min Deletions for 'cde' and 'abc': 4
+
+Constraints & Edge Cases:
+- Empty strings `""` are considered valid anagrams of each other.
+- Strings with unequal lengths after non-alphabetic filtering must return `False` immediately in $O(1)$.
+================================================================================
