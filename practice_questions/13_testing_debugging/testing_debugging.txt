@@ -185,3 +185,52 @@ Constraints & Edge Cases:
 - Never patch where an object is defined; patch where it is *imported and looked up* by the consumer module.
 - Always clean up patches (via context manager or decorator) to prevent mock leakage across test cases.
 ================================================================================
+
+Question 5 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a URL Slugifier and Sanitizer `SlugEngine` and constructs a parameterized test suite using `unittest.TestCase.subTest` to evaluate a large test parameter matrix without stopping at first failure:
+1. System Under Test (`SlugEngine`):
+   - Function `slugify(text: str, max_length: int = 50, separator: str = "-", allow_unicode: bool = False) -> str`:
+     * Converts to lowercase and normalizes accented characters (e.g. `é` -> `e`) using `unicodedata.normalize("NFKD")` when `allow_unicode=False`.
+     * Strips non-alphanumeric characters (keeping only letters, digits, and whitespace).
+     * Collapses consecutive whitespace or separator sequences into a single `separator`.
+     * Trims leading and trailing separators.
+     * Truncates at word boundaries so words are not sliced in half if length exceeds `max_length`.
+     * Raises `ValueError` if `text` is empty or only whitespace.
+2. Parameterized Test Suite (`TestSlugEngineParameterized(unittest.TestCase)`):
+   - Parameter Matrix for Success Cases:
+     * Defines a list of test tuples: `[(raw_input, expected_slug, options_dict), ...]`.
+     * Tests standard strings, accented letters, punctuation overload, max-length boundary truncations, and custom separators.
+     * Iterates through matrix using `with self.subTest(input=raw_input, expected=expected_slug):`.
+     * Asserts that `slugify(raw_input, **options_dict) == expected_slug`.
+   - Parameter Matrix for Exception Cases:
+     * Tests whitespace-only, empty strings, and negative lengths.
+     * Iterates using `with self.subTest(invalid_input=val):` asserting `assertRaises(ValueError)`.
+3. Diagnostic Capability:
+   - Demonstrates that if one test matrix row encounters an assertion failure, subsequent `subTest` iterations still execute to completion and isolate the exact failing parameters in the runner report.
+
+Sample Input:
+# Programmatic test execution
+suite = unittest.TestLoader().loadTestsFromTestCase(TestSlugEngineParameterized)
+runner = unittest.TextTestRunner(verbosity=0)
+result = runner.run(suite)
+
+# Inspect subtest reporting
+is_success = result.wasSuccessful()
+tests_ran = result.testsRun
+
+Expected Output:
+Parameterized Test Method Run: 2 (1 for valid matrix with 10 subtests, 1 for invalid matrix with 4 subtests)
+Total SubTests Evaluated: 14
+SubTest Valid Examples:
+- "Hello World!" -> "hello-world"
+- "Crème Brûlée & Café" -> "creme-brulee-cafe"
+- "Python 3.12: The Next Gen" (max_len=15) -> "python-312-the"
+- "Custom___Under__Score" (separator="_") -> "custom_under_score"
+All 14 SubTests Passed: True
+
+Constraints & Edge Cases:
+- Never use a bare `for` loop without `self.subTest`, as a single failure will abort subsequent test permutations.
+- Parameter dictionary passed to `subTest(...)` must clearly identify which row of the test matrix is running.
+================================================================================
