@@ -60,3 +60,63 @@ Constraints & Edge Cases:
 - Files must be opened with explicit `encoding="utf-8"` to prevent Windows platform encoding mismatches.
 - Unsupported custom objects must raise `TypeError` via `super().default(o)` rather than silently converting to strings.
 ================================================================================
+
+Question 2 (Easy-Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a modular CSV processing toolkit `CSVDataHandler` with custom dialect support, schema casting, and summary aggregation:
+1. Flexible Reader with Schema Casting (`read_csv(filepath: str, delimiter: str = ',', schema: Optional[dict[str, type]] = None) -> list[dict[str, Any]]`):
+   - Reads CSV files using `csv.DictReader`.
+   - Strips whitespace from header column names.
+   - If `schema` is provided (e.g. `{"id": int, "salary": float, "is_active": bool}`), dynamically casts cell values into their specified Python types.
+   - Handles empty values gracefully by substituting `None`.
+2. Flexible Writer with Custom Dialects (`write_csv(filepath: str, data: list[dict[str, Any]], fieldnames: list[str], delimiter: str = ',', quoting: int = csv.QUOTE_MINIMAL) -> None`):
+   - Writes records to CSV using `csv.DictWriter`.
+   - Requires explicit `newline=''` on Windows file handles to prevent blank row duplication.
+   - Automatically writes the header row.
+   - Replaces missing dictionary keys with a specified `restval="N/A"`.
+3. Column Aggregator (`aggregate_column(records: list[dict[str, Any]], column_name: str) -> dict[str, float]`):
+   - Computes statistical metrics (`count`, `sum`, `mean`, `min`, `max`) for any numeric column across the parsed records.
+4. Delimiter Sniffer & Auto-Detection:
+   - Uses `csv.Sniffer` to inspect the first 1024 bytes of an unknown CSV file and automatically detect delimiter (comma, tab, pipe) and whether a header exists.
+
+Sample Input:
+handler = CSVDataHandler()
+
+sample_csv_content = """emp_id, name, department, salary, active
+101, Alice Smith, Engineering, 95000.50, True
+102, Bob Jones, Marketing, 62000.00, False
+103, Charlie Brown, Engineering, , True
+104, Diana Prince, Leadership, 145000.00, True
+"""
+# Save to temp file and read back with schema:
+schema = {
+    "emp_id": int,
+    "name": str,
+    "department": str,
+    "salary": float,
+    "active": lambda v: v.strip().lower() == "true" if v else None
+}
+records = handler.parse_csv_string(sample_csv_content, schema=schema)
+salary_stats = handler.aggregate_column(records, "salary")
+
+# Write out to pipe-delimited CSV with all-quote mode
+out_file = "filtered_employees.psv"
+handler.write_csv(out_file, records, fieldnames=["emp_id", "name", "salary"], delimiter="|", quoting=csv.QUOTE_ALL)
+
+Expected Output:
+Parsed Record 0: {'emp_id': 101, 'name': 'Alice Smith', 'department': 'Engineering', 'salary': 95000.5, 'active': True}
+Parsed Record 2 (Missing Salary): {'emp_id': 103, 'name': 'Charlie Brown', 'department': 'Engineering', 'salary': None, 'active': True}
+Salary Aggregates:
+- Count: 3
+- Sum: 302000.50
+- Mean: 100666.83
+- Min: 62000.00
+- Max: 145000.00
+Pipe-Delimited Sample Line:
+"101"|"Alice Smith"|"95000.5"
+
+Constraints & Edge Cases:
+- Files must be opened with `open(..., 'w', newline='', encoding='utf-8')` to guarantee proper cross-platform newline behavior.
+- Missing values in numeric columns during aggregation must be skipped without crashing the calculation.
+================================================================================
