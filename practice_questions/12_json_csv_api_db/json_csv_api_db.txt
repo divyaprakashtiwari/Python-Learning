@@ -170,3 +170,75 @@ Constraints & Edge Cases:
 - Payloads must be encoded to UTF-8 bytes before transmission.
 - Network timeouts must be explicitly bounded to avoid hanging indefinitely.
 ================================================================================
+
+Question 4 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an enterprise SQLite repository `ProductRepository` managing schema migrations, parameterized queries, and ACID transactions:
+1. Database Setup & Connection Management:
+   - Connects to SQLite database (file or in-memory `":memory:"`).
+   - Enables foreign key constraint enforcement via `PRAGMA foreign_keys = ON;`.
+   - Sets `conn.row_factory = sqlite3.Row` to allow accessing row columns both by index and by name.
+2. DDL Schema Definition:
+   - Creates `categories` table (`id INTEGER PRIMARY KEY AUTOINCREMENT`, `name TEXT UNIQUE NOT NULL`).
+   - Creates `products` table:
+     * `id INTEGER PRIMARY KEY AUTOINCREMENT`
+     * `sku TEXT UNIQUE NOT NULL`
+     * `name TEXT NOT NULL`
+     * `price REAL NOT NULL CHECK(price >= 0)`
+     * `stock INTEGER NOT NULL DEFAULT 0`
+     * `category_id INTEGER REFERENCES categories(id) ON DELETE CASCADE`
+     * `created_at TEXT NOT NULL DEFAULT (datetime('now'))`
+3. Parameterized CRUD Operations:
+   - `create_product(product: dict[str, Any]) -> int`: Inserts new product using parameterized placeholders (`?` or `:keys`) to strictly prevent SQL injection.
+   - `get_product_by_id(product_id: int) -> Optional[dict[str, Any]]`: Returns product as dictionary or `None`.
+   - `update_stock(product_id: int, quantity_delta: int) -> bool`: Updates inventory level within an atomic transaction.
+   - `delete_product(product_id: int) -> bool`.
+4. Batch Insertion and Transaction Rollback:
+   - `batch_insert_products(products: list[dict[str, Any]]) -> int`:
+     * Uses `cursor.executemany(...)` within an explicit transaction context manager (`with conn:`).
+     * If any record violates constraints (e.g. negative price or duplicate SKU), automatically rolls back the entire batch, preserving database consistency.
+
+Sample Input:
+repo = ProductRepository(db_path=":memory:")
+repo.init_schema()
+
+# 1. Insert Category
+cat_id = repo.add_category("Electronics")
+
+# 2. Insert Single Product
+prod_id = repo.create_product({
+    "sku": "SKU-LAP-001",
+    "name": "Ultra Laptop 15-inch",
+    "price": 1299.99,
+    "stock": 25,
+    "category_id": cat_id
+})
+
+# 3. Retrieve Product
+prod = repo.get_product_by_id(prod_id)
+
+# 4. Atomic Stock Adjustment
+repo.update_stock(prod_id, quantity_delta=-5)  # sell 5 units
+updated_prod = repo.get_product_by_id(prod_id)
+
+# 5. Batch Insert with Rollback Test
+invalid_batch = [
+    {"sku": "SKU-MOU-001", "name": "Wireless Mouse", "price": 29.99, "stock": 50, "category_id": cat_id},
+    {"sku": "SKU-LAP-001", "name": "Duplicate SKU Laptop", "price": 999.00, "stock": 5, "category_id": cat_id}  # Duplicate SKU!
+]
+rollback_occurred = repo.try_batch_insert(invalid_batch)
+
+Expected Output:
+Category Created ID: 1
+Product Created ID: 1, SKU: 'SKU-LAP-001'
+Initial Stock: 25
+Updated Stock (after -5 delta): 20
+Batch Insertion Exception Handled: sqlite3.IntegrityError - UNIQUE constraint failed
+Rollback Verified: Duplicate batch was rolled back; Wireless Mouse was NOT inserted.
+
+Constraints & Edge Cases:
+- Never use f-strings or `.format()` to construct SQL queries with user variables.
+- Connections and cursors must be closed properly using context managers or explicit `try...finally`.
+- Non-existent IDs must return `None` rather than raising `IndexError`.
+================================================================================
