@@ -543,3 +543,72 @@ Constraints & Edge Cases:
 - Unhandled coroutine exceptions must NOT crash the event loop; handle gracefully via `return_exceptions=True`.
 - Cleanup of cancelled tasks must be guaranteed.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs a modular Command-Line Interface (`DataToolCLI`) built with standard library `argparse` supporting subcommands, custom type validation, mutually exclusive flags, and programmatic test execution:
+1. Subcommand Architecture:
+   - Sets up root parser with metadata (`prog="datatool"`, description, version).
+   - Configures sub-parsers (`subparsers = parser.add_subparsers(dest="subcommand", required=True)`):
+     * `import`: Ingests files into a database.
+       - Positional argument: `filepath` (validated as existing readable file).
+       - Optional flag: `--format` with choices `['csv', 'json']`, default `'csv'`.
+       - Optional flag: `--batch-size` (custom type function ensuring positive integer $> 0$).
+       - Optional flag: `--dry-run` (action `'store_true'`).
+     * `export`: Dumps database tables into external files.
+       - Required option: `--table` (string).
+       - Optional option: `--output` (target destination filepath).
+       - Optional option: `--limit` (integer $> 0$, default 1000).
+     * `stats`: Analyzes existing database metrics.
+       - Optional option: `--detailed` (boolean flag).
+2. Mutually Exclusive Flag Groups:
+   - Root level options allow selecting either `--verbose` (`-v`) or `--quiet` (`-q`), but not both simultaneously.
+3. Custom Type Validation & Error Handling:
+   - Implements custom converter `positive_int(value: str) -> int`: converts to integer and raises `argparse.ArgumentTypeError` if $\le 0$.
+   - Implements custom converter `existing_file(path_str: str) -> str`: checks `os.path.isfile(path_str)` and raises `argparse.ArgumentTypeError` if missing.
+4. Programmatic Testing & In-Process Execution:
+   - `parse_command(args: list[str]) -> argparse.Namespace`:
+     * Accepts list of CLI arguments (e.g. `["import", "sales.csv", "--batch-size", "500"]`).
+     * Intercepts `SystemExit` so unit tests can assert correct parsing or catch syntax violations without terminating Python execution.
+
+Sample Input:
+cli = DataToolCLI()
+
+# Test 1: Valid Import Subcommand
+args1 = cli.parse_command(["import", "test_data.csv", "--format", "csv", "--batch-size", "250", "--dry-run"])
+
+# Test 2: Valid Export Subcommand
+args2 = cli.parse_command(["export", "--table", "customers", "--limit", "50", "--output", "out.json"])
+
+# Test 3: Invalid Positive Integer
+invalid_int_caught = False
+try:
+    cli.parse_command(["import", "test_data.csv", "--batch-size", "-10"])
+except (argparse.ArgumentTypeError, SystemExit, ValueError):
+    invalid_int_caught = True
+
+# Test 4: Mutually Exclusive Violation
+mutex_violation_caught = False
+try:
+    cli.parse_command(["--verbose", "--quiet", "stats"])
+except (SystemExit, ValueError):
+    mutex_violation_caught = True
+
+Expected Output:
+Parsed Subcommand 1: 'import'
+- Filepath: 'test_data.csv'
+- Format: 'csv'
+- Batch Size: 250
+- Dry Run: True
+Parsed Subcommand 2: 'export'
+- Table: 'customers'
+- Limit: 50
+- Output: 'out.json'
+Invalid Batch Size (-10) Handled: True
+Mutually Exclusive Flags (--verbose and --quiet) Conflict Handled: True
+
+Constraints & Edge Cases:
+- Missing required subcommand must trigger informative error message.
+- Parser must not call `sys.exit()` during automated test runs; configure with `exit_on_error=False` or override `error(message)`.
+================================================================================
