@@ -455,3 +455,55 @@ Constraints & Edge Cases:
 - Empty string input must return `""`.
 - Keyword for Vigenère cipher containing non-alpha characters must raise `ValueError`.
 ================================================================================
+
+Question 10 (Advanced):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an automated `SudokuEngine` capable of validating initial board configurations and solving 9x9 Sudoku puzzles using recursive backtracking with constraint pruning:
+1. Board Validation (`is_valid_sudoku(board: list[list[int]]) -> bool`):
+   - Verifies whether an initial partially filled 9x9 grid is valid.
+   - Cells with `0` represent empty entries.
+   - Enforces that no row, column, or 3x3 subgrid contains duplicate values in the range `1..9`.
+2. Move Legality Checker (`is_safe(board: list[list[int]], row: int, col: int, num: int) -> bool`):
+   - Checks if placing digit `num` at `(row, col)` violates row, column, or 3x3 block uniqueness.
+3. Recursive Backtracking Solver (`solve_sudoku(board: list[list[int]]) -> bool`):
+   - Modifies `board` in-place to contain the complete valid solution.
+   - Finds an empty cell (optionally prioritizing cells with the fewest candidate values via MRV heuristic).
+   - Tries candidates `1..9`:
+     * If valid, sets cell and recursively calls solver.
+     * If downstream search yields no solution, resets cell to `0` (backtracks) and attempts next candidate.
+   - Returns `True` if completely solved, or `False` if puzzle is mathematically impossible.
+4. Board Formatter (`format_board(board: list[list[int]]) -> str`):
+   - Outputs a readable ASCII representation with `+-------+-------+-------+` block borders and `|` column separators.
+
+Sample Input:
+engine = SudokuEngine()
+
+puzzle = [
+    [5, 3, 0, 0, 7, 0, 0, 0, 0],
+    [6, 0, 0, 1, 9, 5, 0, 0, 0],
+    [0, 9, 8, 0, 0, 0, 0, 6, 0],
+    [8, 0, 0, 0, 6, 0, 0, 0, 3],
+    [4, 0, 0, 8, 0, 3, 0, 0, 1],
+    [7, 0, 0, 0, 2, 0, 0, 0, 6],
+    [0, 6, 0, 0, 0, 0, 2, 8, 0],
+    [0, 0, 0, 4, 1, 9, 0, 0, 5],
+    [0, 0, 0, 0, 8, 0, 0, 7, 9]
+]
+
+is_initial_valid = engine.is_valid_sudoku(puzzle)
+solved = engine.solve_sudoku(puzzle)
+board_str = engine.format_board(puzzle)
+
+Expected Output:
+Initial Board Valid: True
+Puzzle Solved Successfully: True
+Solved Board First Row: [5, 3, 4, 6, 7, 8, 9, 1, 2]
+Solved Board Middle Row: [4, 2, 6, 8, 5, 3, 7, 9, 1]
+Solved Board Last Row: [3, 4, 5, 2, 8, 1, 6, 7, 9]
+
+Constraints & Edge Cases:
+- Board dimensions must be strictly 9x9 with integer values in `0..9`; invalid dimensions or values must raise `ValueError`.
+- An already completed valid board should return `True` immediately without changes.
+- Unsolvable puzzles must return `False` and restore the board to its initial state without corruption.
+================================================================================
