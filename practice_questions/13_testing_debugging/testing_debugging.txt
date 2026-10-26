@@ -234,3 +234,54 @@ Constraints & Edge Cases:
 - Never use a bare `for` loop without `self.subTest`, as a single failure will abort subsequent test permutations.
 - Parameter dictionary passed to `subTest(...)` must clearly identify which row of the test matrix is running.
 ================================================================================
+
+Question 6 (Intermediate):
+--------------------------------------------------------------------------------
+Problem Statement:
+Write a Python program that designs an automated debugging harness `PdbSessionAutomator` to demonstrate programmatic debugging, command simulation, and post-mortem diagnosis using `pdb`:
+1. Buggy Computational Workflow (`calculate_compound_interest`):
+   - Computes compound interest over a time series with intentional edge-case logic faults (e.g. division by zero on zero frequency or negative rate).
+2. Programmatic Debugger Session Simulation (`PdbSessionAutomator`):
+   - Initializes `pdb.Pdb(stdin=input_stream, stdout=output_stream)`.
+   - Feeds scripted debugger command sequences into `stdin` via `io.StringIO`:
+     * Navigation commands: `n` (step over), `s` (step into), `c` (continue).
+     * Inspection commands: `p <var>` (print value), `pp <expr>` (pretty print), `whatis <var>`.
+     * Stack navigation: `w` (where / stack trace display), `u` (up one stack frame), `d` (down one frame).
+     * Breakpoints: `b <line_or_func>` (set breakpoint), `cl` (clear breakpoint).
+   - Executes the targeted function under the control of the automator (`pdb.runcall(...)`).
+   - Captures the exact interaction log from `stdout` to verify the state of inspected variables at each step.
+3. Post-Mortem Crash Diagnosis (`diagnose_crash(func, *args, **kwargs) -> dict[str, Any]`):
+   - Wraps function in a `try...except Exception:` block.
+   - Upon encountering an uncaught crash, captures `sys.exc_info()[2]` (the traceback object).
+   - Programmatically extracts the crash site frame: file name, line number, offending line source code, local variables dictionary at crash point, and call stack depth.
+
+Sample Input:
+automator = PdbSessionAutomator()
+
+# 1. Scripted interactive commands: inspect variable 'rate', step twice, print 'total', continue
+scripted_commands = "p rate\nn\nn\np total\nc\n"
+session_log = automator.run_scripted_debug(calculate_compound_interest, 1000, 0.05, 3, commands=scripted_commands)
+
+# 2. Crash Diagnosis on zero-division input
+crash_report = automator.diagnose_crash(calculate_compound_interest, 1000, 0.05, 0, frequency=0)
+
+Expected Output:
+Scripted Debugger Session Log:
+(Pdb) p rate
+0.05
+(Pdb) n
+(Pdb) n
+(Pdb) p total
+1050.0
+(Pdb) c
+Crash Diagnosis Summary:
+- Exception Type: ZeroDivisionError
+- Failing Function: 'calculate_compound_interest'
+- Faulting Expression: 'rate / frequency'
+- Captured Local Variables at Crash: {'principal': 1000, 'rate': 0.05, 'frequency': 0}
+- Stack Frame Depth: 3
+
+Constraints & Edge Cases:
+- Never invoke interactive `pdb.set_trace()` directly in unattended test scripts without redirecting `stdin`/`stdout`, as it will hang automated CI pipelines.
+- Traceback references must be cleared after post-mortem extraction to avoid cyclic garbage collection leaks.
+================================================================================
