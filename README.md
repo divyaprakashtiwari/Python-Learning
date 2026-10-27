@@ -161,6 +161,8 @@ Start Here
 - [x] Q08: Pattern Printing
 - [x] Q09: Ternary Operator
 - [x] Q10: Match-Case (Structural Pattern Matching)
+- [x] 📖 Study Notes: [notes/02_control_flow/control_flow.txt](notes/02_control_flow/control_flow.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/02_control_flow/control_flow.txt](practice_questions/02_control_flow/control_flow.txt)
 
 ### 03 — Data Structures
 - [x] Q01: List Basics and Slicing
