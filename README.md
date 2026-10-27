@@ -301,6 +301,8 @@ Start Here
 - [x] Q08: Email Validation and Processing
 - [x] Q09: Async Basics (asyncio)
 - [x] Q10: Command-Line Arguments (argparse)
+- [x] 📖 Study Notes: [notes/12_json_csv_api_db/json_csv_api_db.txt](notes/12_json_csv_api_db/json_csv_api_db.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/12_json_csv_api_db/json_csv_api_db.txt](practice_questions/12_json_csv_api_db/json_csv_api_db.txt)
 
 ### 13 — Testing and Debugging
 - [x] Q01: unittest Basics
