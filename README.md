@@ -315,6 +315,8 @@ Start Here
 - [x] Q08: Profiling and Timing
 - [x] Q09: Code Coverage Concepts
 - [x] Q10: Defensive Programming
+- [x] 📖 Study Notes: [notes/13_testing_debugging/testing_debugging.txt](notes/13_testing_debugging/testing_debugging.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/13_testing_debugging/testing_debugging.txt](practice_questions/13_testing_debugging/testing_debugging.txt)
 
 ---
 
