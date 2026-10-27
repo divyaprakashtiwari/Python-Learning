@@ -217,6 +217,8 @@ Start Here
 - [x] Q08: File Iteration and Large Files
 - [x] Q09: Temporary Files
 - [x] Q10: File Metadata and OS Operations
+- [x] 📖 Study Notes: [notes/06_file_handling/file_handling.txt](notes/06_file_handling/file_handling.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/06_file_handling/file_handling.txt](practice_questions/06_file_handling/file_handling.txt)
 
 ### 07 — Exceptions
 - [x] Q01: Try/Except Basics
