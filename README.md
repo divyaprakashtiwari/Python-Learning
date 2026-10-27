@@ -231,6 +231,8 @@ Start Here
 - [x] Q08: Assertions
 - [x] Q09: Logging Exceptions
 - [x] Q10: Graceful Degradation Patterns
+- [x] 📖 Study Notes: [notes/07_exceptions/exceptions.txt](notes/07_exceptions/exceptions.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/07_exceptions/exceptions.txt](practice_questions/07_exceptions/exceptions.txt)
 
 ### 08 — Modules and Packages
 - [x] Q01: Importing Modules
