@@ -203,6 +203,8 @@ Start Here
 - [x] Q08: Abstract Classes
 - [x] Q09: Property Decorators
 - [x] Q10: Composition vs Inheritance
+- [x] 📖 Study Notes: [notes/05_oop/oop.txt](notes/05_oop/oop.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/05_oop/oop.txt](practice_questions/05_oop/oop.txt)
 
 ### 06 — File Handling
 - [x] Q01: Reading Files
