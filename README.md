@@ -259,6 +259,8 @@ Start Here
 - [x] Q08: Type Hints and Annotations
 - [x] Q09: Dataclasses
 - [x] Q10: Walrus Operator and Modern Python
+- [x] 📖 Study Notes: [notes/09_advanced_python/advanced_python.txt](notes/09_advanced_python/advanced_python.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/09_advanced_python/advanced_python.txt](practice_questions/09_advanced_python/advanced_python.txt)
 
 ### 10 — DSA
 - [x] Q01: Arrays and Two-Pointer Technique
