@@ -147,6 +147,8 @@ Start Here
 - [x] Q08: Number Systems and Conversions
 - [x] Q09: Variable Swapping and Multiple Assignment
 - [x] Q10: Constants and Naming Conventions
+- [x] 📖 Study Notes: [notes/01_python_basics/variables.txt](notes/01_python_basics/variables.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/01_python_basics/variables.txt](practice_questions/01_python_basics/variables.txt)
 
 ### 02 — Control Flow
 - [x] Q01: if/elif/else Basics
