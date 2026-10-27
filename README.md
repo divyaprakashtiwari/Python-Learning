@@ -189,6 +189,8 @@ Start Here
 - [x] Q08: Closures
 - [x] Q09: Higher-Order Functions (map, filter, reduce)
 - [x] Q10: Function Annotations and Docstrings
+- [x] 📖 Study Notes: [notes/04_functions/functions.txt](notes/04_functions/functions.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/04_functions/functions.txt](practice_questions/04_functions/functions.txt)
 
 ### 05 — OOP
 - [x] Q01: Classes and Objects
