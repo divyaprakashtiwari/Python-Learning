@@ -175,6 +175,8 @@ Start Here
 - [x] Q08: List Comprehensions
 - [x] Q09: Stack and Queue with Lists
 - [x] Q10: Sorting and Searching
+- [x] 📖 Study Notes: [notes/03_data_structures/data_structures.txt](notes/03_data_structures/data_structures.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/03_data_structures/data_structures.txt](practice_questions/03_data_structures/data_structures.txt)
 
 ### 04 — Functions
 - [x] Q01: Function Basics
