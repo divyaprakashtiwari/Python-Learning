@@ -245,6 +245,8 @@ Start Here
 - [x] Q08: functools Module
 - [x] Q09: Package Structure
 - [x] Q10: Virtual Environments and pip
+- [x] 📖 Study Notes: [notes/08_modules_packages/modules_packages.txt](notes/08_modules_packages/modules_packages.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/08_modules_packages/modules_packages.txt](practice_questions/08_modules_packages/modules_packages.txt)
 
 ### 09 — Advanced Python
 - [x] Q01: Iterators and __iter__/__next__
