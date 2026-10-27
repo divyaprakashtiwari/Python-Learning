@@ -287,6 +287,8 @@ Start Here
 - [x] Q08: Number to Words
 - [x] Q09: Caesar Cipher
 - [x] Q10: Sudoku Validator
+- [x] 📖 Study Notes: [notes/11_problem_solving/problem_solving.txt](notes/11_problem_solving/problem_solving.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/11_problem_solving/problem_solving.txt](practice_questions/11_problem_solving/problem_solving.txt)
 
 ### 12 — JSON, CSV, API, Database
 - [x] Q01: JSON Read/Write
