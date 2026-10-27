@@ -273,6 +273,8 @@ Start Here
 - [x] Q08: Binary Tree and Traversals
 - [x] Q09: Graph Representation and BFS/DFS
 - [x] Q10: Dynamic Programming Basics
+- [x] 📖 Study Notes: [notes/10_dsa/dsa.txt](notes/10_dsa/dsa.txt)
+- [x] 📝 Practice Questions (10/10): [practice_questions/10_dsa/dsa.txt](practice_questions/10_dsa/dsa.txt)
 
 ### 11 — Problem Solving
 - [x] Q01: FizzBuzz and Variants
