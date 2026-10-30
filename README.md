@@ -287,18 +287,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/10_dsa/](practice_solutions/10_dsa/)
 
 ### 11 — Problem Solving
-- [x] Q01: FizzBuzz and Variants
-- [x] Q02: Palindrome Checker
-- [x] Q03: Prime Numbers
-- [x] Q04: Fibonacci Sequence
-- [x] Q05: Anagram Detector
-- [x] Q06: Matrix Operations
-- [x] Q07: String Compression
-- [x] Q08: Number to Words
-- [x] Q09: Caesar Cipher
-- [x] Q10: Sudoku Validator
+- [x] Q01: [Configurable FizzBuzz Engine](practice_solutions/11_problem_solving/q01_configurable_fizzbuzz_engine.py) — Rule mapping dictionaries, extensible divisor policies, and generator pipelines
+- [x] Q02: [Palindrome Detection Toolkit](practice_solutions/11_problem_solving/q02_palindrome_toolkit.py) — Multi-pointer checks, sentence punctuation normalization, integer reversals without strings
+- [x] Q03: [Prime Number Algorithmic Toolkit](practice_solutions/11_problem_solving/q03_prime_number_toolkit.py) — Trial division optimization (6k±1), Sieve of Eratosthenes, and prime factorization
+- [x] Q04: [Fibonacci Algorithms Suite](practice_solutions/11_problem_solving/q04_fibonacci_algorithms_suite.py) — Recursion, memoization, bottom-up DP table, and matrix exponentiation O(log N)
+- [x] Q05: [Anagram Engine & Frequency Hashes](practice_solutions/11_problem_solving/q05_anagram_engine.py) — Frequency counting vectors, sorted canonical signatures, and anagram grouping
+- [x] Q06: [Matrix Processor & Spiral Traversal](practice_solutions/11_problem_solving/q06_matrix_processor.py) — In-place 90° rotation, boundary spiral traversal, and matrix multiplication
+- [x] Q07: [Run-Length String Compressor](practice_solutions/11_problem_solving/q07_string_compressor_rle.py) — RLE lossless compression, decompression decoder, and compression ratio metrics
+- [x] Q08: [Number to Words Converter](practice_solutions/11_problem_solving/q08_number_to_words_converter.py) — Recursive scale parsing (thousands, millions, billions) with hyphenated compounds
+- [x] Q09: [Classical Cipher Cryptanalysis](practice_solutions/11_problem_solving/q09_classical_cipher_cryptanalysis.py) — Caesar cipher encryption, decryption, and frequency analysis cryptanalysis
+- [x] Q10: [Sudoku Engine & Backtracking](practice_solutions/11_problem_solving/q10_sudoku_engine_backtracking.py) — 9x9 board validity auditing and constraint satisfaction backtracking solver
 - [x] 📖 Study Notes: [notes/11_problem_solving/problem_solving.txt](notes/11_problem_solving/problem_solving.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/11_problem_solving/problem_solving.txt](practice_questions/11_problem_solving/problem_solving.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/11_problem_solving/](practice_solutions/11_problem_solving/)
 
 ### 12 — JSON, CSV, API, Database
 - [x] Q01: JSON Read/Write
