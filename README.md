@@ -197,18 +197,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/04_functions/](practice_solutions/04_functions/)
 
 ### 05 — OOP
-- [x] Q01: Classes and Objects
-- [x] Q02: Instance and Class Variables
-- [x] Q03: Methods (instance, class, static)
-- [x] Q04: Inheritance
-- [x] Q05: Polymorphism
-- [x] Q06: Encapsulation
-- [x] Q07: Magic/Dunder Methods
-- [x] Q08: Abstract Classes
-- [x] Q09: Property Decorators
-- [x] Q10: Composition vs Inheritance
+- [x] Q01: [Bank Account Model](practice_solutions/05_oop/q01_bank_account.py) — Classes, instances, state mutation, deposits/withdrawals, overdraft checks
+- [x] Q02: [Class vs Instance Variables](practice_solutions/05_oop/q02_class_vs_instance_vars.py) — Shared state vs instance attributes, instance shadowing, mutation leaks
+- [x] Q03: [Method Types Showcase](practice_solutions/05_oop/q03_method_types_employee.py) — Instance methods, @classmethod alternative constructors, and @staticmethod
+- [x] Q04: [Vehicle Rental Inheritance](practice_solutions/05_oop/q04_inheritance_vehicle_rental.py) — Multi-level inheritance, super() initialization, and method overrides
+- [x] Q05: [Polymorphic Duck Typing](practice_solutions/05_oop/q05_polymorphism_duck_typing.py) — Protocol-based duck typing, unified interface dispatch without inheritance
+- [x] Q06: [Encapsulation & Name Mangling](practice_solutions/05_oop/q06_encapsulation_name_mangling.py) — Public, protected (_prefix), private (__mangled) visibility guards
+- [x] Q07: [2D Vector Magic Dunder Methods](practice_solutions/05_oop/q07_dunder_vector2d.py) — __repr__, __str__, __add__, __sub__, __mul__, __abs__, and __eq__
+- [x] Q08: [ABC Storage Framework](practice_solutions/05_oop/q08_abc_storage_framework.py) — abc.ABC, @abstractmethod enforcement, interface decoupling
+- [x] Q09: [Climate Control Property Decorators](practice_solutions/05_oop/q09_property_decorators_climate.py) — @property getter, @setter validation, and deleter controls
+- [x] Q10: [E-Commerce Strategy Pattern](practice_solutions/05_oop/q10_strategy_ecommerce_checkout.py) — Object composition over inheritance, interchangeable payment strategies
 - [x] 📖 Study Notes: [notes/05_oop/oop.txt](notes/05_oop/oop.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/05_oop/oop.txt](practice_questions/05_oop/oop.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/05_oop/](practice_solutions/05_oop/)
 
 ### 06 — File Handling
 - [x] Q01: Reading Files
