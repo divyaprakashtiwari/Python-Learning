@@ -137,18 +137,19 @@ Start Here
 ## ✅ Progress Checklist
 
 ### 01 — Python Basics
-- [x] Q01: Variables and Data Types
-- [x] Q02: Type Casting
-- [x] Q03: String Operations
-- [x] Q04: Arithmetic Operators
-- [x] Q05: Comparison and Logical Operators
-- [x] Q06: Input and Output
-- [x] Q07: String Formatting
-- [x] Q08: Number Systems and Conversions
-- [x] Q09: Variable Swapping and Multiple Assignment
-- [x] Q10: Constants and Naming Conventions
+- [x] Q01: [Annual Salary Calculator](practice_solutions/01_python_basics/q01_annual_salary.py) — Tax deductions, net pay calculation, and dynamic type deduction
+- [x] Q02: [Safe Type Converter](practice_solutions/01_python_basics/q02_safe_type_converter.py) — Robust multi-type parsing with fallback default handling
+- [x] Q03: [Compound Interest Breakdown](practice_solutions/01_python_basics/q03_compound_interest_breakdown.py) — Mathematical formulas, precision rounding, and power operations
+- [x] Q04: [String Slicing & Masking](practice_solutions/01_python_basics/q04_string_slicing_masking.py) — PII data sanitization, credit card masking, and step slicing
+- [x] Q05: [Security Access Evaluator](practice_solutions/01_python_basics/q05_security_evaluator.py) — Multi-role boolean logic, operator precedence, short-circuiting
+- [x] Q06: [Aligned Invoice Generator](practice_solutions/01_python_basics/q06_aligned_invoice_generator.py) — Tabular console layout with ANSI padding and separators
+- [x] Q07: [Telemetry Stream Formatter](practice_solutions/01_python_basics/q07_telemetry_formatter.py) — f-string precision specifiers, engineering notation, fixed widths
+- [x] Q08: [Number Systems & Permissions](practice_solutions/01_python_basics/q08_number_systems_permissions.py) — Binary bitmasks, octal permissions (chmod), hex colors
+- [x] Q09: [Packet Unpacking & Rotation](practice_solutions/01_python_basics/q09_packet_unpacking_rotation.py) — Extended tuple unpacking (*rest) and cyclic variable rotation
+- [x] Q10: [Frozen Constants Namespace](practice_solutions/01_python_basics/q10_frozen_constants_namespace.py) — Immutable configuration objects and attribute protection
 - [x] 📖 Study Notes: [notes/01_python_basics/variables.txt](notes/01_python_basics/variables.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/01_python_basics/variables.txt](practice_questions/01_python_basics/variables.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/01_python_basics/](practice_solutions/01_python_basics/)
 
 ### 02 — Control Flow
 - [x] Q01: if/elif/else Basics
