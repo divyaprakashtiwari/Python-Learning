@@ -302,18 +302,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/11_problem_solving/](practice_solutions/11_problem_solving/)
 
 ### 12 — JSON, CSV, API, Database
-- [x] Q01: JSON Read/Write
-- [x] Q02: CSV Processing
-- [x] Q03: REST API Basics (urllib)
-- [x] Q04: SQLite Database CRUD
-- [x] Q05: Data Transformation Pipeline
-- [x] Q06: Config File Parsing
-- [x] Q07: Web Scraping Basics (urllib)
-- [x] Q08: Email Validation and Processing
-- [x] Q09: Async Basics (asyncio)
-- [x] Q10: Command-Line Arguments (argparse)
+- [x] Q01: [JSON Custom Encoder & Deserializer](practice_solutions/12_json_csv_api_db/q01_json_handler_custom_encoder.py) — json.JSONEncoder, datetime/UUID serialization, object_hook parsing
+- [x] Q02: [CSV Data Handler & Aggregations](practice_solutions/12_json_csv_api_db/q02_csv_data_handler_aggregations.py) — csv.DictReader, csv.DictWriter, type casting, summary aggregations
+- [x] Q03: [Standard API Client (urllib)](practice_solutions/12_json_csv_api_db/q03_standard_api_client_urllib.py) — urllib.request.Request, headers, query encoding, HTTP error handling
+- [x] Q04: [SQLite Product Repository](practice_solutions/12_json_csv_api_db/q04_sqlite_product_repository.py) — sqlite3 schema migration, parameterized queries, and ACID transactions
+- [x] Q05: [Heterogeneous ETL Pipeline](practice_solutions/12_json_csv_api_db/q05_heterogeneous_etl_pipeline.py) — Ingest CSV, join JSON config, transform records, and load into SQLite
+- [x] Q06: [Hierarchical Config Manager](practice_solutions/12_json_csv_api_db/q06_hierarchical_config_manager.py) — configparser INI files, environment variable overrides, schema validation
+- [x] Q07: [HTML Scraper & Table Parser](practice_solutions/12_json_csv_api_db/q07_html_scraper_table_parser.py) — html.parser.HTMLParser streaming table extraction without third-party deps
+- [x] Q08: [Email Validator Suite](practice_solutions/12_json_csv_api_db/q08_email_validator_suite.py) — RFC-compliant regex email auditing, domain parsing, and MX record simulation
+- [x] Q09: [Async Batch Executor (asyncio)](practice_solutions/12_json_csv_api_db/q09_async_batch_executor.py) — asyncio.gather, asyncio.Semaphore concurrency throttling, async retry delays
+- [x] Q10: [Data Tool CLI (argparse)](practice_solutions/12_json_csv_api_db/q10_data_tool_cli_argparse.py) — argparse subcommands, mutually exclusive flags, and tabular formatting
 - [x] 📖 Study Notes: [notes/12_json_csv_api_db/json_csv_api_db.txt](notes/12_json_csv_api_db/json_csv_api_db.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/12_json_csv_api_db/json_csv_api_db.txt](practice_questions/12_json_csv_api_db/json_csv_api_db.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/12_json_csv_api_db/](practice_solutions/12_json_csv_api_db/)
 
 ### 13 — Testing and Debugging
 - [x] Q01: unittest Basics
