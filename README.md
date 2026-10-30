@@ -212,18 +212,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/05_oop/](practice_solutions/05_oop/)
 
 ### 06 — File Handling
-- [x] Q01: Reading Files
-- [x] Q02: Writing Files
-- [x] Q03: File Modes and Appending
-- [x] Q04: Working with File Paths
-- [x] Q05: CSV File Handling
-- [x] Q06: Context Managers (with statement)
-- [x] Q07: Binary Files
-- [x] Q08: File Iteration and Large Files
-- [x] Q09: Temporary Files
-- [x] Q10: File Metadata and OS Operations
+- [x] Q01: [Log Analyzer & Cursor Tracking](practice_solutions/06_file_handling/q01_log_analyzer_cursor.py) — File reading, seek(), tell(), cursor tracking, and log aggregation
+- [x] Q02: [Atomic Audit Report](practice_solutions/06_file_handling/q02_atomic_audit_report.py) — Atomic file writes, temporary staging, and safe filesystem rename replacement
+- [x] Q03: [Open Modes Financial Ledger](practice_solutions/06_file_handling/q03_open_modes_ledger.py) — Exclusive creation (x), append mode (a), read/write updates (r+)
+- [x] Q04: [Pathlib Asset Auditor](practice_solutions/06_file_handling/q04_pathlib_asset_auditor.py) — Object-oriented pathlib.Path traversal, extension matching, and size stats
+- [x] Q05: [Payroll CSV Processing](practice_solutions/06_file_handling/q05_payroll_csv_processing.py) — csv.DictReader, csv.DictWriter, schema validation, and payroll calculations
+- [x] Q06: [Transactional Context Manager](practice_solutions/06_file_handling/q06_transactional_context_manager.py) — Custom __enter__/__exit__ protocol, exception rollback, auto-closing
+- [x] Q07: [Binary Inspector & XOR Cipher](practice_solutions/06_file_handling/q07_binary_inspector_xor.py) — Binary modes (rb/wb), bytearray manipulation, magic byte inspection
+- [x] Q08: [Large File Streaming Pipeline](practice_solutions/06_file_handling/q08_large_file_streaming.py) — Memory-efficient chunked streaming generator for arbitrarily large files
+- [x] Q09: [Ephemeral Sandbox Tempfile](practice_solutions/06_file_handling/q09_ephemeral_sandbox_tempfile.py) — tempfile.NamedTemporaryFile and TemporaryDirectory lifecycle management
+- [x] Q10: [Directory Mirror & Sync](practice_solutions/06_file_handling/q10_directory_mirror_sync.py) — os.walk, shutil operations, checksum-based mirror synchronization
 - [x] 📖 Study Notes: [notes/06_file_handling/file_handling.txt](notes/06_file_handling/file_handling.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/06_file_handling/file_handling.txt](practice_questions/06_file_handling/file_handling.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/06_file_handling/](practice_solutions/06_file_handling/)
 
 ### 07 — Exceptions
 - [x] Q01: Try/Except Basics
