@@ -152,18 +152,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/01_python_basics/](practice_solutions/01_python_basics/)
 
 ### 02 — Control Flow
-- [x] Q01: if/elif/else Basics
-- [x] Q02: Nested Conditionals
-- [x] Q03: for Loop Fundamentals
-- [x] Q04: while Loop Fundamentals
-- [x] Q05: break and continue
-- [x] Q06: Nested Loops
-- [x] Q07: Loop with else
-- [x] Q08: Pattern Printing
-- [x] Q09: Ternary Operator
-- [x] Q10: Match-Case (Structural Pattern Matching)
+- [x] Q01: [Progressive Tax Calculator](practice_solutions/02_control_flow/q01_progressive_tax_calculator.py) — Tiered tax bracket logic, marginal rate processing, and deductions
+- [x] Q02: [Loan Underwriting Engine](practice_solutions/02_control_flow/q02_loan_underwriting_engine.py) — Nested conditional underwriting with credit scoring and LTV bounds
+- [x] Q03: [Time-Series Reductions & SMA](practice_solutions/02_control_flow/q03_timeseries_reductions_sma.py) — Moving window averages, loop aggregations, anomaly detection
+- [x] Q04: [Collatz Conjecture Analyzer](practice_solutions/02_control_flow/q04_collatz_conjecture_analyzer.py) — while loop state transitions, orbit length, peak path tracking
+- [x] Q05: [Network Packet Filter](practice_solutions/02_control_flow/q05_network_packet_filter.py) — break/continue filtering, corrupted payload rejection, early termination
+- [x] Q06: [Matrix Multiplication & Frobenius](practice_solutions/02_control_flow/q06_matrix_multiplication_frobenius.py) — 2D nested loops, dot-product calculations, matrix norms
+- [x] Q07: [Loop-Else Search Constructs](practice_solutions/02_control_flow/q07_loop_else_constructs.py) — for...else and while...else idioms for prime searches and target lookup
+- [x] Q08: [Geometric Pattern Generator](practice_solutions/02_control_flow/q08_geometric_patterns.py) — Nested index transformations, hollow pyramids, and diamond printing
+- [x] Q09: [Ternary Decision Expressions](practice_solutions/02_control_flow/q09_ternary_expressions.py) — Inline conditional expressions, sanitization fallbacks, status badges
+- [x] Q10: [Structural Pattern Matching](practice_solutions/02_control_flow/q10_structural_pattern_matching.py) — Python 3.10+ match/case syntax with guards and payload destructuring
 - [x] 📖 Study Notes: [notes/02_control_flow/control_flow.txt](notes/02_control_flow/control_flow.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/02_control_flow/control_flow.txt](practice_questions/02_control_flow/control_flow.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/02_control_flow/](practice_solutions/02_control_flow/)
 
 ### 03 — Data Structures
 - [x] Q01: List Basics and Slicing
