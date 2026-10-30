@@ -272,18 +272,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/09_advanced_python/](practice_solutions/09_advanced_python/)
 
 ### 10 — DSA
-- [x] Q01: Arrays and Two-Pointer Technique
-- [x] Q02: Bubble Sort and Selection Sort
-- [x] Q03: Binary Search
-- [x] Q04: Stack Implementation
-- [x] Q05: Queue Implementation
-- [x] Q06: Linked List
-- [x] Q07: Hash Table
-- [x] Q08: Binary Tree and Traversals
-- [x] Q09: Graph Representation and BFS/DFS
-- [x] Q10: Dynamic Programming Basics
+- [x] Q01: [Two-Pointer Algorithms](practice_solutions/10_dsa/q01_two_pointer_algorithms.py) — O(N) pair sums, container with most water, and Dutch National Flag 3-way partitioning
+- [x] Q02: [Bubble & Selection Sort Comparator](practice_solutions/10_dsa/q02_bubble_selection_sort_comparator.py) — In-place comparisons, swap counters, adaptive early termination, stability
+- [x] Q03: [Binary Search Suite](practice_solutions/10_dsa/q03_binary_search_suite.py) — Exact search, lower/upper bounds, rotated sorted array search, and peak element discovery
+- [x] Q04: [Stack Applications Engine](practice_solutions/10_dsa/q04_stack_applications.py) — Monotonic stack for next greater element, balanced parentheses, and postfix expression evaluation
+- [x] Q05: [Queue Structures & Josephus Problem](practice_solutions/10_dsa/q05_queue_structures_josephus.py) — Circular queue with bounded buffers, deque operations, and Josephus elimination
+- [x] Q06: [Singly Linked List Pointer Operations](practice_solutions/10_dsa/q06_singly_linked_list_pointer_ops.py) — In-place reversal, cycle detection (Floyd's Tortoise and Hare), and merge sort
+- [x] Q07: [Separate Chaining Hash Map](practice_solutions/10_dsa/q07_separate_chaining_hash_map.py) — Custom hash table with dynamic array doubling, load factor re-hashing, and collision buckets
+- [x] Q08: [Binary Search Tree Traversals](practice_solutions/10_dsa/q08_binary_tree_traversals_bst.py) — In-order, pre-order, post-order, level-order BFS, and BST balance/LCA discovery
+- [x] Q09: [Graph BFS/DFS & Cycle Detection](practice_solutions/10_dsa/q09_graph_bfs_dfs_cycle_detection.py) — Adjacency list representation, topological sort (Kahn's), and directed cycle detection
+- [x] Q10: [Dynamic Programming Suite](practice_solutions/10_dsa/q10_dynamic_programming_suite.py) — 0/1 Knapsack, Longest Common Subsequence (LCS), and memoized Coin Change
 - [x] 📖 Study Notes: [notes/10_dsa/dsa.txt](notes/10_dsa/dsa.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/10_dsa/dsa.txt](practice_questions/10_dsa/dsa.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/10_dsa/](practice_solutions/10_dsa/)
 
 ### 11 — Problem Solving
 - [x] Q01: FizzBuzz and Variants
