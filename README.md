@@ -317,18 +317,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/12_json_csv_api_db/](practice_solutions/12_json_csv_api_db/)
 
 ### 13 — Testing and Debugging
-- [x] Q01: unittest Basics
-- [x] Q02: Test Fixtures (setUp/tearDown)
-- [x] Q03: Assertions Deep Dive
-- [x] Q04: Mocking
-- [x] Q05: Parameterized Tests
-- [x] Q06: Debugging with pdb
-- [x] Q07: Logging
-- [x] Q08: Profiling and Timing
-- [x] Q09: Code Coverage Concepts
-- [x] Q10: Defensive Programming
+- [x] Q01: [Bank Account unittest Suite](practice_solutions/13_testing_debugging/q01_bank_account_unittest.py) — unittest.TestCase, assertEqual, assertRaises, and edge case coverage
+- [x] Q02: [Persistent Cache Fixtures](practice_solutions/13_testing_debugging/q02_persistent_cache_fixtures.py) — setUp, tearDown, setUpClass, and tearDownClass temporary disk lifecycle
+- [x] Q03: [Order Processing Assertions](practice_solutions/13_testing_debugging/q03_order_processing_assertions.py) — assertAlmostEqual, assertIn, assertRegex, assertCountEqual, and assertIsNone
+- [x] Q04: [Checkout Service Mocking](practice_solutions/13_testing_debugging/q04_checkout_service_mocking.py) — unittest.mock.Mock, side_effect retries, transient network faults, email receipt verification
+- [x] Q05: [Slug Engine SubTests](practice_solutions/13_testing_debugging/q05_slug_engine_subtests.py) — Parameterized testing via self.subTest evaluating 14 matrix inputs without aborting
+- [x] Q06: [Debugging with Pdb & Post-Mortem](practice_solutions/13_testing_debugging/q06_debugging_with_pdb.py) — Scripted pdb.Pdb command execution via StringIO and post-mortem crash inspection
+- [x] Q07: [Enterprise Logging Subsystem](practice_solutions/13_testing_debugging/q07_enterprise_logging_subsystem.py) — Structured JSON logging, RotatingFileHandler, contextvars, assertLogs verification
+- [x] Q08: [Performance Profiling Suite](practice_solutions/13_testing_debugging/q08_performance_profiling_suite.py) — cProfile deterministic profiling, pstats analysis, microbenchmarking, high-precision timing
+- [x] Q09: [Mini Coverage Tracker](practice_solutions/13_testing_debugging/q09_mini_coverage_tracker.py) — sys.settrace statement coverage tracking, AST/bytecode discovery, missed line reporting
+- [x] Q10: [Contract-Driven Defensive Ledger](practice_solutions/13_testing_debugging/q10_contract_driven_ledger.py) — Design by Contract (DbC) decorators: @precondition, @postcondition, class invariants
 - [x] 📖 Study Notes: [notes/13_testing_debugging/testing_debugging.txt](notes/13_testing_debugging/testing_debugging.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/13_testing_debugging/testing_debugging.txt](practice_questions/13_testing_debugging/testing_debugging.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/13_testing_debugging/](practice_solutions/13_testing_debugging/)
 
 ---
 
