@@ -13,21 +13,21 @@ Every question is a standalone, runnable `.py` file with:
 
 ## 📚 Topic Index
 
-| # | Folder | Topics Covered | Questions |
-|---|--------|---------------|-----------|
-| 01 | `01_python_basics/` | Variables, data types, type casting, input/output, operators | 10 |
-| 02 | `02_control_flow/` | if/elif/else, for/while loops, break/continue, nested loops | 10 |
-| 03 | `03_data_structures/` | Lists, tuples, sets, dictionaries, nested structures | 10 |
-| 04 | `04_functions/` | Def, args, kwargs, lambda, recursion, scope, closures | 10 |
-| 05 | `05_oop/` | Classes, inheritance, polymorphism, encapsulation, magic methods | 10 |
-| 06 | `06_file_handling/` | Read, write, append, CSV, context managers, binary files | 10 |
-| 07 | `07_exceptions/` | Try/except, custom exceptions, finally, exception chaining | 10 |
-| 08 | `08_modules_packages/` | Imports, __name__, packages, standard library, pip | 10 |
-| 09 | `09_advanced_python/` | Iterators, comprehensions, decorators, generators, regex, type hints | 10 |
-| 10 | `10_dsa/` | Sorting, searching, stacks, queues, linked lists, trees, graphs | 10 |
-| 11 | `11_problem_solving/` | Logic puzzles, math problems, string challenges, pattern printing | 10 |
-| 12 | `12_json_csv_api_db/` | JSON, CSV, REST APIs, SQLite, async basics | 10 |
-| 13 | `13_testing_debugging/` | unittest, assertions, mocking, debugging, logging, profiling | 10 |
+| # | Practice Solutions Folder | Practice Questions | Study Notes | Solutions | Status |
+|---|---------------------------|-------------------|-------------|:---------:|:------:|
+| 01 | [`practice_solutions/01_python_basics/`](practice_solutions/01_python_basics/) | [`practice_questions/01_python_basics/`](practice_questions/01_python_basics/variables.txt) | [`notes/01_python_basics/`](notes/01_python_basics/variables.txt) | 10 / 10 | Complete |
+| 02 | [`practice_solutions/02_control_flow/`](practice_solutions/02_control_flow/) | [`practice_questions/02_control_flow/`](practice_questions/02_control_flow/control_flow.txt) | [`notes/02_control_flow/`](notes/02_control_flow/control_flow.txt) | 10 / 10 | Complete |
+| 03 | [`practice_solutions/03_data_structures/`](practice_solutions/03_data_structures/) | [`practice_questions/03_data_structures/`](practice_questions/03_data_structures/data_structures.txt) | [`notes/03_data_structures/`](notes/03_data_structures/data_structures.txt) | 10 / 10 | Complete |
+| 04 | [`practice_solutions/04_functions/`](practice_solutions/04_functions/) | [`practice_questions/04_functions/`](practice_questions/04_functions/functions.txt) | [`notes/04_functions/`](notes/04_functions/functions.txt) | 10 / 10 | Complete |
+| 05 | [`practice_solutions/05_oop/`](practice_solutions/05_oop/) | [`practice_questions/05_oop/`](practice_questions/05_oop/oop.txt) | [`notes/05_oop/`](notes/05_oop/oop.txt) | 10 / 10 | Complete |
+| 06 | [`practice_solutions/06_file_handling/`](practice_solutions/06_file_handling/) | [`practice_questions/06_file_handling/`](practice_questions/06_file_handling/file_handling.txt) | [`notes/06_file_handling/`](notes/06_file_handling/file_handling.txt) | 10 / 10 | Complete |
+| 07 | [`practice_solutions/07_exceptions/`](practice_solutions/07_exceptions/) | [`practice_questions/07_exceptions/`](practice_questions/07_exceptions/exceptions.txt) | [`notes/07_exceptions/`](notes/07_exceptions/exceptions.txt) | 10 / 10 | Complete |
+| 08 | [`practice_solutions/08_modules_packages/`](practice_solutions/08_modules_packages/) | [`practice_questions/08_modules_packages/`](practice_questions/08_modules_packages/modules_packages.txt) | [`notes/08_modules_packages/`](notes/08_modules_packages/modules_packages.txt) | 10 / 10 | Complete |
+| 09 | [`practice_solutions/09_advanced_python/`](practice_solutions/09_advanced_python/) | [`practice_questions/09_advanced_python/`](practice_questions/09_advanced_python/advanced_python.txt) | [`notes/09_advanced_python/`](notes/09_advanced_python/advanced_python.txt) | 10 / 10 | Complete |
+| 10 | [`practice_solutions/10_dsa/`](practice_solutions/10_dsa/) | [`practice_questions/10_dsa/`](practice_questions/10_dsa/dsa.txt) | [`notes/10_dsa/`](notes/10_dsa/dsa.txt) | 10 / 10 | Complete |
+| 11 | [`practice_solutions/11_problem_solving/`](practice_solutions/11_problem_solving/) | [`practice_questions/11_problem_solving/`](practice_questions/11_problem_solving/problem_solving.txt) | [`notes/11_problem_solving/`](notes/11_problem_solving/problem_solving.txt) | 10 / 10 | Complete |
+| 12 | [`practice_solutions/12_json_csv_api_db/`](practice_solutions/12_json_csv_api_db/) | [`practice_questions/12_json_csv_api_db/`](practice_questions/12_json_csv_api_db/json_csv_api_db.txt) | [`notes/12_json_csv_api_db/`](notes/12_json_csv_api_db/json_csv_api_db.txt) | 10 / 10 | Complete |
+| 13 | [`practice_solutions/13_testing_debugging/`](practice_solutions/13_testing_debugging/) | [`practice_questions/13_testing_debugging/`](practice_questions/13_testing_debugging/testing_debugging.txt) | [`notes/13_testing_debugging/`](notes/13_testing_debugging/testing_debugging.txt) | 10 / 10 | Complete |
 
 ---
 
@@ -35,19 +35,29 @@ Every question is a standalone, runnable `.py` file with:
 
 ```
 Python Learning/
-├── README.md                    ← You are here
-├── 01_python_basics/
-│   ├── q01_variables_and_types.py
-│   ├── q02_type_casting.py
-│   ├── ...
-│   └── q10_*.py
-├── 02_control_flow/
-│   ├── q01_if_elif_else.py
+├── README.md                    ← Master Curriculum & Practice Solutions Index
+├── practice_solutions/          ← Complete 130 Verified Practice Solutions (10 per topic)
+│   ├── 01_python_basics/        ← Solutions q01 to q10
+│   ├── 02_control_flow/         ← Solutions q01 to q10
+│   ├── 03_data_structures/      ← Solutions q01 to q10
+│   ├── 04_functions/            ← Solutions q01 to q10
+│   ├── 05_oop/                  ← Solutions q01 to q10
+│   ├── 06_file_handling/        ← Solutions q01 to q10
+│   ├── 07_exceptions/           ← Solutions q01 to q10
+│   ├── 08_modules_packages/     ← Solutions q01 to q10
+│   ├── 09_advanced_python/      ← Solutions q01 to q10
+│   ├── 10_dsa/                  ← Solutions q01 to q10
+│   ├── 11_problem_solving/      ← Solutions q01 to q10
+│   ├── 12_json_csv_api_db/      ← Solutions q01 to q10
+│   └── 13_testing_debugging/    ← Solutions q01 to q10
+├── practice_questions/          ← Problem Specifications & Test Vectors (13 Topics)
+│   ├── 01_python_basics/
 │   └── ...
-├── ...
-├── 13_testing_debugging/
+├── notes/                       ← Comprehensive Study Notes & Guides
+│   ├── 01_python_basics/
 │   └── ...
-├── Basic.py                     ← Existing files
+├── 01_python_basics/ ... 13_testing_debugging/ ← Topic Exercise Modules
+├── Basic.py
 ├── ConditionalStatement.py
 ├── DictionarySet.py
 ├── Practice Questions.py
