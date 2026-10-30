@@ -182,18 +182,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/03_data_structures/](practice_solutions/03_data_structures/)
 
 ### 04 — Functions
-- [x] Q01: Function Basics
-- [x] Q02: Default and Keyword Arguments
-- [x] Q03: *args and **kwargs
-- [x] Q04: Return Values and Multiple Returns
-- [x] Q05: Lambda Functions
-- [x] Q06: Recursion
-- [x] Q07: Scope and LEGB Rule
-- [x] Q08: Closures
-- [x] Q09: Higher-Order Functions (map, filter, reduce)
-- [x] Q10: Function Annotations and Docstrings
+- [x] Q01: [Cone Properties Calculator](practice_solutions/04_functions/q01_cone_properties.py) — Geometric decomposition, math constants, and parameter validation
+- [x] Q02: [Mutable Default Arguments](practice_solutions/04_functions/q02_mutable_default_args.py) — Safe sentinel default pattern (None) preventing cross-call state leaks
+- [x] Q03: [Dynamic SQL Query Builder](practice_solutions/04_functions/q03_dynamic_sql_builder.py) — Variadic *args and **kwargs processing with parameter sanitization
+- [x] Q04: [Multi-Return Factory](practice_solutions/04_functions/q04_multi_return_factory.py) — Tuple unpacking, structured dictionary returns, and multiple exit points
+- [x] Q05: [Lambda Ranking & Dispatch](practice_solutions/04_functions/q05_lambda_ranking_dispatch.py) — Anonymous functions, multi-criteria sorting keys, and dispatch tables
+- [x] Q06: [Recursive Tree & Nested Sum](practice_solutions/04_functions/q06_recursion_tree_sum.py) — Recursive base cases, nested tree traversals, and recursion depth limits
+- [x] Q07: [LEGB Scope & Nonlocal](practice_solutions/04_functions/q07_legb_scope_nonlocal.py) — Local, Enclosing, Global, Builtin name resolution and nonlocal bindings
+- [x] Q08: [Closure Rate Limiter](practice_solutions/04_functions/q08_closure_rate_limiter.py) — State encapsulation via lexical closures and sliding window limits
+- [x] Q09: [Functional Pipeline Compose](practice_solutions/04_functions/q09_functional_pipeline_compose.py) — Higher-order functions, map, filter, functools.reduce, and currying
+- [x] Q10: [Type Contract & Docstring Decorator](practice_solutions/04_functions/q10_type_contract_decorator.py) — Runtime signature inspection, type annotations, and docstring auditing
 - [x] 📖 Study Notes: [notes/04_functions/functions.txt](notes/04_functions/functions.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/04_functions/functions.txt](practice_questions/04_functions/functions.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/04_functions/](practice_solutions/04_functions/)
 
 ### 05 — OOP
 - [x] Q01: Classes and Objects
