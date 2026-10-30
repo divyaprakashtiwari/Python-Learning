@@ -257,18 +257,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/08_modules_packages/](practice_solutions/08_modules_packages/)
 
 ### 09 — Advanced Python
-- [x] Q01: Iterators and __iter__/__next__
-- [x] Q02: Generators and yield
-- [x] Q03: Decorators (Function)
-- [x] Q04: Decorators (Class-based and Parameterized)
-- [x] Q05: Context Managers (Custom)
-- [x] Q06: List/Dict/Set Comprehensions (Advanced)
-- [x] Q07: Regular Expressions
-- [x] Q08: Type Hints and Annotations
-- [x] Q09: Dataclasses
-- [x] Q10: Walrus Operator and Modern Python
+- [x] Q01: [Ring Buffer State Iterator](practice_solutions/09_advanced_python/q01_ring_buffer_iterator.py) — Custom iterator protocol (__iter__ / __next__), StopIteration, circular ring buffer
+- [x] Q02: [Generator Coroutine Pipeline](practice_solutions/09_advanced_python/q02_generator_coroutine_pipeline.py) — Bidirectional generators, yield expressions, .send(), .throw(), and .close()
+- [x] Q03: [Security & Observability Decorators](practice_solutions/09_advanced_python/q03_security_observability_decorators.py) — Parameterized decorators, execution auditing, and metadata preservation
+- [x] Q04: [Class Decorator Rate Limiter](practice_solutions/09_advanced_python/q04_class_decorator_rate_limiter.py) — Stateful class-based decorators using __call__ for sliding window rate limiting
+- [x] Q05: [Execution Sandbox Context Manager](practice_solutions/09_advanced_python/q05_execution_sandbox_context_manager.py) — contextlib.contextmanager, stdout/stderr redirection, execution timers
+- [x] Q06: [Advanced Comprehensions Pipeline](practice_solutions/09_advanced_python/q06_advanced_comprehensions_pipeline.py) — Multi-variable matrix comprehensions, dict/set projections, and walrus filtering
+- [x] Q07: [Regex Log Analyzer & Redaction](practice_solutions/09_advanced_python/q07_regex_log_analyzer_redaction.py) — Named capture groups, positive/negative lookaround, PII scrubbing (emails/IPs)
+- [x] Q08: [Typing Generics & Protocols](practice_solutions/09_advanced_python/q08_typing_generics_protocols.py) — Generic[T], TypeVar, runtime @runtime_checkable Protocols, and Union/Optional
+- [x] Q09: [Immutable Dataclass Trade Order](practice_solutions/09_advanced_python/q09_dataclass_immutable_trade_order.py) — @dataclass(frozen=True, slots=True), __post_init__ validation, field defaults
+- [x] Q10: [Modern Python Features Suite](practice_solutions/09_advanced_python/q10_modern_python_features.py) — Walrus operator (:=), positional-only (/), kw-only (*), and match-case guards
 - [x] 📖 Study Notes: [notes/09_advanced_python/advanced_python.txt](notes/09_advanced_python/advanced_python.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/09_advanced_python/advanced_python.txt](practice_questions/09_advanced_python/advanced_python.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/09_advanced_python/](practice_solutions/09_advanced_python/)
 
 ### 10 — DSA
 - [x] Q01: Arrays and Two-Pointer Technique
