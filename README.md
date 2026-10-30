@@ -242,18 +242,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/07_exceptions/](practice_solutions/07_exceptions/)
 
 ### 08 — Modules and Packages
-- [x] Q01: Importing Modules
-- [x] Q02: Creating Your Own Module
-- [x] Q03: __name__ == "__main__"
-- [x] Q04: Standard Library Tour (os, sys, math)
-- [x] Q05: datetime Module
-- [x] Q06: collections Module
-- [x] Q07: itertools Module
-- [x] Q08: functools Module
-- [x] Q09: Package Structure
-- [x] Q10: Virtual Environments and pip
+- [x] Q01: [Dynamic Module Loader](practice_solutions/08_modules_packages/q01_dynamic_module_loader.py) — importlib dynamic imports, sys.modules cache inspection, and hot-reloading
+- [x] Q02: [Module __all__ Exports](practice_solutions/08_modules_packages/q02_module_all_exports.py) — Controlling public API surfaces, wildcard import restrictions, namespace hygiene
+- [x] Q03: [Main Guard CLI Tool](practice_solutions/08_modules_packages/q03_main_guard_cli_tool.py) — __name__ == "__main__" design, module vs script execution, and exit codes
+- [x] Q04: [Standard Library Orchestrator](practice_solutions/08_modules_packages/q04_stdlib_orchestrator.py) — os, sys, and math orchestration for environment and runtime diagnostics
+- [x] Q05: [DateTime Scheduler & Timezones](practice_solutions/08_modules_packages/q05_datetime_scheduler.py) — datetime, zoneinfo timezone arithmetic, ISO-8601 parsing, and timestamps
+- [x] Q06: [Collections Warehouse Engine](practice_solutions/08_modules_packages/q06_collections_warehouse.py) — defaultdict, Counter, deque, OrderedDict, and ChainMap inventory management
+- [x] Q07: [Itertools Pipeline Engine](practice_solutions/08_modules_packages/q07_itertools_engine.py) — count, cycle, chain, groupby, islice, and combinations/permutations
+- [x] Q08: [Functools High-Performance Toolbox](practice_solutions/08_modules_packages/q08_functools_toolbox.py) — lru_cache, partial, reduce, total_ordering, and singledispatch
+- [x] Q09: [Subpackage Facade Architecture](practice_solutions/08_modules_packages/q09_subpackage_facade_architecture.py) — __init__.py package exposure, relative imports, and clean facades
+- [x] Q10: [Packaging Manifest Auditor](practice_solutions/08_modules_packages/q10_packaging_manifest_auditor.py) — pyproject.toml, virtual environment detection, and dependency graph checks
 - [x] 📖 Study Notes: [notes/08_modules_packages/modules_packages.txt](notes/08_modules_packages/modules_packages.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/08_modules_packages/modules_packages.txt](practice_questions/08_modules_packages/modules_packages.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/08_modules_packages/](practice_solutions/08_modules_packages/)
 
 ### 09 — Advanced Python
 - [x] Q01: Iterators and __iter__/__next__
