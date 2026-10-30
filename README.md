@@ -227,18 +227,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/06_file_handling/](practice_solutions/06_file_handling/)
 
 ### 07 — Exceptions
-- [x] Q01: Try/Except Basics
-- [x] Q02: Multiple Exception Types
-- [x] Q03: else and finally
-- [x] Q04: Raising Exceptions
-- [x] Q05: Custom Exceptions
-- [x] Q06: Exception Chaining
-- [x] Q07: Context Manager Exception Handling
-- [x] Q08: Assertions
-- [x] Q09: Logging Exceptions
-- [x] Q10: Graceful Degradation Patterns
+- [x] Q01: [Safe Ratio Evaluator](practice_solutions/07_exceptions/q01_safe_ratio_evaluator.py) — Try/except handling for ZeroDivisionError and TypeError with telemetry fallback
+- [x] Q02: [Nested Lookup Hierarchy](practice_solutions/07_exceptions/q02_nested_lookup_hierarchy.py) — Multiple exception clauses, IndexError, KeyError, and class inheritance trees
+- [x] Q03: [Transactional Else & Finally](practice_solutions/07_exceptions/q03_try_except_else_finally.py) — Complete try/except/else/finally resource lifecycle and state commits
+- [x] Q04: [Defensive Validation & Reraise](practice_solutions/07_exceptions/q04_defensive_validation_reraise.py) — Input boundary validation, sanitization guards, and bare reraising
+- [x] Q05: [Custom Exception Hierarchy](practice_solutions/07_exceptions/q05_custom_exception_hierarchy.py) — Domain exception trees with structured error codes and contextual payloads
+- [x] Q06: [Exception Chaining & Cause](practice_solutions/07_exceptions/q06_exception_chaining_cause.py) — Explicit chaining (raise ... from exc), root-cause auditing, and suppressed context
+- [x] Q07: [Fault-Tolerant Scope Manager](practice_solutions/07_exceptions/q07_fault_tolerant_scope.py) — Context manager exception suppression (__exit__ returning True) and auditing
+- [x] Q08: [Raise vs Assert Portfolio](practice_solutions/07_exceptions/q08_raise_vs_assert_portfolio.py) — Production defensive exceptions vs internal developer contract assertions
+- [x] Q09: [Incident Telemetry Reporter](practice_solutions/07_exceptions/q09_incident_telemetry_reporter.py) — Traceback formatting, sys.exc_info(), structured error telemetry
+- [x] Q10: [Resilient Circuit Breaker](practice_solutions/07_exceptions/q10_resilient_circuit_breaker.py) — State machine (CLOSED/OPEN/HALF_OPEN), failure thresholds, and automatic recovery
 - [x] 📖 Study Notes: [notes/07_exceptions/exceptions.txt](notes/07_exceptions/exceptions.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/07_exceptions/exceptions.txt](practice_questions/07_exceptions/exceptions.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/07_exceptions/](practice_solutions/07_exceptions/)
 
 ### 08 — Modules and Packages
 - [x] Q01: Importing Modules
