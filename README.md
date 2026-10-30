@@ -167,18 +167,19 @@ Start Here
 - [x] 💡 Solution Suite (10/10): [practice_solutions/02_control_flow/](practice_solutions/02_control_flow/)
 
 ### 03 — Data Structures
-- [x] Q01: List Basics and Slicing
-- [x] Q02: List Methods and Manipulation
-- [x] Q03: Tuple Operations
-- [x] Q04: Set Operations
-- [x] Q05: Dictionary Basics
-- [x] Q06: Dictionary Methods
-- [x] Q07: Nested Data Structures
-- [x] Q08: List Comprehensions
-- [x] Q09: Stack and Queue with Lists
-- [x] Q10: Sorting and Searching
+- [x] Q01: [List Slicing & Strided Mutations](practice_solutions/03_data_structures/q01_list_slicing_mutations.py) — Slice assignment, strided reversals, and in-place chunk updates
+- [x] Q02: [List Mutation Methods](practice_solutions/03_data_structures/q02_list_mutation_methods.py) — insert, extend, remove, pop, index lookup with exception safeguards
+- [x] Q03: [NamedTuple Geospatial Modeling](practice_solutions/03_data_structures/q03_namedtuple_geospatial.py) — typing.NamedTuple immutability, coordinate modeling, and distance metrics
+- [x] Q04: [RBAC Set Operations](practice_solutions/03_data_structures/q04_rbac_set_operations.py) — Role-based access control, set union, intersection, symmetric difference
+- [x] Q05: [Dictionary Header Normalizer](practice_solutions/03_data_structures/q05_dict_header_normalizer.py) — Schema key normalization, collision merging, case insensitivity
+- [x] Q06: [Dictionary Methods & Hierarchy](practice_solutions/03_data_structures/q06_dict_methods_hierarchy.py) — setdefault, update, fromkeys, and safe deep dictionary access
+- [x] Q07: [Nested JSON Flattener](practice_solutions/03_data_structures/q07_nested_json_flattener.py) — Recursive dictionary flattening and unflattening with dot-notation
+- [x] Q08: [Advanced Comprehensions Engine](practice_solutions/03_data_structures/q08_advanced_comprehensions.py) — Nested list, dict, and set comprehensions with conditional projections
+- [x] Q09: [Bounded Stack & Queue](practice_solutions/03_data_structures/q09_bounded_stack_queue.py) — LIFO and FIFO implementations with circular boundary overflow guards
+- [x] Q10: [Order Book Timsort & Bisect](practice_solutions/03_data_structures/q10_order_book_timsort_bisect.py) — Custom sorting keys, stability, bisect.insort binary searching
 - [x] 📖 Study Notes: [notes/03_data_structures/data_structures.txt](notes/03_data_structures/data_structures.txt)
 - [x] 📝 Practice Questions (10/10): [practice_questions/03_data_structures/data_structures.txt](practice_questions/03_data_structures/data_structures.txt)
+- [x] 💡 Solution Suite (10/10): [practice_solutions/03_data_structures/](practice_solutions/03_data_structures/)
 
 ### 04 — Functions
 - [x] Q01: Function Basics
