@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `1 / 6` |
-| **Completed Topics** | `13 / 142` |
-| **Pending Topics** | `129` |
-| **Python Examples Created (`.py`)** | `39` |
-| **Meaningful Commits Made (Course)** | `14` |
-| **Practice Questions Created/Completed** | `39` |
+| **Completed Topics** | `14 / 142` |
+| **Pending Topics** | `128` |
+| **Python Examples Created (`.py`)** | `42` |
+| **Meaningful Commits Made (Course)** | `15` |
+| **Practice Questions Created/Completed** | `42` |
 
 ---
 
@@ -34,10 +34,10 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 2: Python Data Structures (`1 / 10`)
+## Phase 2: Python Data Structures (`2 / 10`)
 
 - [x] 1. Strings (`Phase_02_Python_Data_Structures/01_Strings/`)
-- [ ] 2. Lists (`Phase_02_Python_Data_Structures/02_Lists/`)
+- [x] 2. Lists (`Phase_02_Python_Data_Structures/02_Lists/`)
 - [ ] 3. Tuples (`Phase_02_Python_Data_Structures/03_Tuples/`)
 - [ ] 4. Sets (`Phase_02_Python_Data_Structures/04_Sets/`)
 - [ ] 5. Dictionaries (`Phase_02_Python_Data_Structures/05_Dictionaries/`)
