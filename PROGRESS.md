@@ -9,15 +9,15 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `0 / 6` |
-| **Completed Topics** | `7 / 142` |
-| **Pending Topics** | `135` |
-| **Python Examples Created (`.py`)** | `21` |
-| **Meaningful Commits Made (Course)** | `8` |
-| **Practice Questions Created/Completed** | `21` |
+| **Completed Topics** | `8 / 142` |
+| **Pending Topics** | `134` |
+| **Python Examples Created (`.py`)** | `24` |
+| **Meaningful Commits Made (Course)** | `9` |
+| **Practice Questions Created/Completed** | `24` |
 
 ---
 
-## Phase 1: Python Fundamentals (`7 / 12`)
+## Phase 1: Python Fundamentals (`8 / 12`)
 
 - [x] 1. Introduction to Python (`Phase_01_Python_Fundamentals/01_Introduction_to_Python/`)
 - [x] 2. Installing Python and IDE Setup (`Phase_01_Python_Fundamentals/02_Installing_Python_and_IDE_Setup/`)
@@ -26,7 +26,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 5. Type Casting (`Phase_01_Python_Fundamentals/05_Type_Casting/`)
 - [x] 6. Input and Output (`Phase_01_Python_Fundamentals/06_Input_and_Output/`)
 - [x] 7. Operators (`Phase_01_Python_Fundamentals/07_Operators/`)
-- [ ] 8. Conditional Statements (if, elif, else) (`Phase_01_Python_Fundamentals/08_Conditional_Statements/`)
+- [x] 8. Conditional Statements (if, elif, else) (`Phase_01_Python_Fundamentals/08_Conditional_Statements/`)
 - [ ] 9. Loops (for, while) (`Phase_01_Python_Fundamentals/09_Loops/`)
 - [ ] 10. Break, Continue and Pass (`Phase_01_Python_Fundamentals/10_Break_Continue_and_Pass/`)
 - [ ] 11. Pattern Programming (`Phase_01_Python_Fundamentals/11_Pattern_Programming/`)
