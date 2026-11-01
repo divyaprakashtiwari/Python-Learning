@@ -9,17 +9,17 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `0 / 6` |
-| **Completed Topics** | `0 / 142` |
-| **Pending Topics** | `142` |
-| **Python Examples Created (`.py`)** | `0` |
-| **Meaningful Commits Made (Course)** | `1` |
-| **Practice Questions Created/Completed** | `0` |
+| **Completed Topics** | `1 / 142` |
+| **Pending Topics** | `141` |
+| **Python Examples Created (`.py`)** | `3` |
+| **Meaningful Commits Made (Course)** | `2` |
+| **Practice Questions Created/Completed** | `3` |
 
 ---
 
-## Phase 1: Python Fundamentals (`0 / 12`)
+## Phase 1: Python Fundamentals (`1 / 12`)
 
-- [ ] 1. Introduction to Python (`Phase_01_Python_Fundamentals/01_Introduction_to_Python/`)
+- [x] 1. Introduction to Python (`Phase_01_Python_Fundamentals/01_Introduction_to_Python/`)
 - [ ] 2. Installing Python and IDE Setup (`Phase_01_Python_Fundamentals/02_Installing_Python_and_IDE_Setup/`)
 - [ ] 3. Variables and Constants (`Phase_01_Python_Fundamentals/03_Variables_and_Constants/`)
 - [ ] 4. Data Types (`Phase_01_Python_Fundamentals/04_Data_Types/`)
