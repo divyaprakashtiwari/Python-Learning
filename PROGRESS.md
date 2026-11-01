@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `1 / 6` |
-| **Completed Topics** | `18 / 142` |
-| **Pending Topics** | `124` |
-| **Python Examples Created (`.py`)** | `54` |
-| **Meaningful Commits Made (Course)** | `19` |
-| **Practice Questions Created/Completed** | `54` |
+| **Completed Topics** | `19 / 142` |
+| **Pending Topics** | `123` |
+| **Python Examples Created (`.py`)** | `57` |
+| **Meaningful Commits Made (Course)** | `20` |
+| **Practice Questions Created/Completed** | `57` |
 
 ---
 
@@ -34,7 +34,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 2: Python Data Structures (`6 / 10`)
+## Phase 2: Python Data Structures (`7 / 10`)
 
 - [x] 1. Strings (`Phase_02_Python_Data_Structures/01_Strings/`)
 - [x] 2. Lists (`Phase_02_Python_Data_Structures/02_Lists/`)
@@ -42,7 +42,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 4. Sets (`Phase_02_Python_Data_Structures/04_Sets/`)
 - [x] 5. Dictionaries (`Phase_02_Python_Data_Structures/05_Dictionaries/`)
 - [x] 6. List Comprehensions (`Phase_02_Python_Data_Structures/06_List_Comprehensions/`)
-- [ ] 7. Dictionary Comprehensions (`Phase_02_Python_Data_Structures/07_Dictionary_Comprehensions/`)
+- [x] 7. Dictionary Comprehensions (`Phase_02_Python_Data_Structures/07_Dictionary_Comprehensions/`)
 - [ ] 8. Nested Data Structures (`Phase_02_Python_Data_Structures/08_Nested_Data_Structures/`)
 - [ ] 9. Common Built-in Methods (`Phase_02_Python_Data_Structures/09_Common_Built_in_Methods/`)
 - [ ] 10. String Manipulation (`Phase_02_Python_Data_Structures/10_String_Manipulation/`)
