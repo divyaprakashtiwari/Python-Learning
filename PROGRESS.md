@@ -9,18 +9,18 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `0 / 6` |
-| **Completed Topics** | `1 / 142` |
-| **Pending Topics** | `141` |
-| **Python Examples Created (`.py`)** | `3` |
-| **Meaningful Commits Made (Course)** | `2` |
-| **Practice Questions Created/Completed** | `3` |
+| **Completed Topics** | `2 / 142` |
+| **Pending Topics** | `140` |
+| **Python Examples Created (`.py`)** | `6` |
+| **Meaningful Commits Made (Course)** | `3` |
+| **Practice Questions Created/Completed** | `6` |
 
 ---
 
-## Phase 1: Python Fundamentals (`1 / 12`)
+## Phase 1: Python Fundamentals (`2 / 12`)
 
 - [x] 1. Introduction to Python (`Phase_01_Python_Fundamentals/01_Introduction_to_Python/`)
-- [ ] 2. Installing Python and IDE Setup (`Phase_01_Python_Fundamentals/02_Installing_Python_and_IDE_Setup/`)
+- [x] 2. Installing Python and IDE Setup (`Phase_01_Python_Fundamentals/02_Installing_Python_and_IDE_Setup/`)
 - [ ] 3. Variables and Constants (`Phase_01_Python_Fundamentals/03_Variables_and_Constants/`)
 - [ ] 4. Data Types (`Phase_01_Python_Fundamentals/04_Data_Types/`)
 - [ ] 5. Type Casting (`Phase_01_Python_Fundamentals/05_Type_Casting/`)
