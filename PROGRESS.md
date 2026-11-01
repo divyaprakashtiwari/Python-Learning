@@ -9,21 +9,21 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `0 / 6` |
-| **Completed Topics** | `4 / 142` |
-| **Pending Topics** | `138` |
-| **Python Examples Created (`.py`)** | `12` |
-| **Meaningful Commits Made (Course)** | `5` |
-| **Practice Questions Created/Completed** | `12` |
+| **Completed Topics** | `5 / 142` |
+| **Pending Topics** | `137` |
+| **Python Examples Created (`.py`)** | `15` |
+| **Meaningful Commits Made (Course)** | `6` |
+| **Practice Questions Created/Completed** | `15` |
 
 ---
 
-## Phase 1: Python Fundamentals (`4 / 12`)
+## Phase 1: Python Fundamentals (`5 / 12`)
 
 - [x] 1. Introduction to Python (`Phase_01_Python_Fundamentals/01_Introduction_to_Python/`)
 - [x] 2. Installing Python and IDE Setup (`Phase_01_Python_Fundamentals/02_Installing_Python_and_IDE_Setup/`)
 - [x] 3. Variables and Constants (`Phase_01_Python_Fundamentals/03_Variables_and_Constants/`)
 - [x] 4. Data Types (`Phase_01_Python_Fundamentals/04_Data_Types/`)
-- [ ] 5. Type Casting (`Phase_01_Python_Fundamentals/05_Type_Casting/`)
+- [x] 5. Type Casting (`Phase_01_Python_Fundamentals/05_Type_Casting/`)
 - [ ] 6. Input and Output (`Phase_01_Python_Fundamentals/06_Input_and_Output/`)
 - [ ] 7. Operators (`Phase_01_Python_Fundamentals/07_Operators/`)
 - [ ] 8. Conditional Statements (if, elif, else) (`Phase_01_Python_Fundamentals/08_Conditional_Statements/`)
