@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `4 / 6` |
-| **Completed Topics** | `44 / 142` |
-| **Pending Topics** | `98` |
-| **Python Examples Created (`.py`)** | `132` |
-| **Meaningful Commits Made (Course)** | `67` |
-| **Practice Questions Created/Completed** | `132` |
+| **Completed Topics** | `45 / 142` |
+| **Pending Topics** | `97` |
+| **Python Examples Created (`.py`)** | `135` |
+| **Meaningful Commits Made (Course)** | `72` |
+| **Practice Questions Created/Completed** | `135` |
 
 ---
 
@@ -81,9 +81,9 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 5: Intermediate and Advanced Python (`0 / 17`)
+## Phase 5: Intermediate and Advanced Python (`1 / 17`)
 
-- [ ] 1. Exception Handling (`Phase_05_Intermediate_and_Advanced_Python/01_Exception_Handling/`)
+- [x] 1. Exception Handling (`Phase_05_Intermediate_and_Advanced_Python/01_Exception_Handling/`)
 - [ ] 2. File Handling (`Phase_05_Intermediate_and_Advanced_Python/02_File_Handling/`)
 - [ ] 3. Working with JSON (`Phase_05_Intermediate_and_Advanced_Python/03_Working_with_JSON/`)
 - [ ] 4. Iterators (`Phase_05_Intermediate_and_Advanced_Python/04_Iterators/`)
