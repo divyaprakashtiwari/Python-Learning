@@ -8,12 +8,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 | Metric | Count |
 | :--- | :--- |
-| **Completed Phases** | `2 / 6` |
-| **Completed Topics** | `32 / 142` |
-| **Pending Topics** | `110` |
-| **Python Examples Created (`.py`)** | `96` |
-| **Meaningful Commits Made (Course)** | `33` |
-| **Practice Questions Created/Completed** | `96` |
+| **Completed Phases** | `3 / 6` |
+| **Completed Topics** | `33 / 142` |
+| **Pending Topics** | `109` |
+| **Python Examples Created (`.py`)** | `99` |
+| **Meaningful Commits Made (Course)** | `34` |
+| **Practice Questions Created/Completed** | `99` |
 
 ---
 
@@ -49,7 +49,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 3: Functions and Modular Programming (`10 / 11`)
+## Phase 3: Functions and Modular Programming (`11 / 11` — COMPLETE)
 
 - [x] 1. Functions (`Phase_03_Functions_and_Modular_Programming/01_Functions/`)
 - [x] 2. Parameters and Arguments (`Phase_03_Functions_and_Modular_Programming/02_Parameters_and_Arguments/`)
@@ -61,7 +61,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 8. Recursion (`Phase_03_Functions_and_Modular_Programming/08_Recursion/`)
 - [x] 9. Scope and Lifetime of Variables (`Phase_03_Functions_and_Modular_Programming/09_Scope_and_Lifetime_of_Variables/`)
 - [x] 10. Modules and Packages (`Phase_03_Functions_and_Modular_Programming/10_Modules_and_Packages/`)
-- [ ] 11. Built-in Modules (`Phase_03_Functions_and_Modular_Programming/11_Built_in_Modules/`)
+- [x] 11. Built-in Modules (`Phase_03_Functions_and_Modular_Programming/11_Built_in_Modules/`)
 
 ---
 
