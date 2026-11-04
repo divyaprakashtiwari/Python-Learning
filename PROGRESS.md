@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `3 / 6` |
-| **Completed Topics** | `34 / 142` |
-| **Pending Topics** | `108` |
-| **Python Examples Created (`.py`)** | `102` |
-| **Meaningful Commits Made (Course)** | `37` |
-| **Practice Questions Created/Completed** | `102` |
+| **Completed Topics** | `35 / 142` |
+| **Pending Topics** | `107` |
+| **Python Examples Created (`.py`)** | `105` |
+| **Meaningful Commits Made (Course)** | `40` |
+| **Practice Questions Created/Completed** | `105` |
 
 ---
 
@@ -65,10 +65,10 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 4: Object-Oriented Programming (`1 / 11`)
+## Phase 4: Object-Oriented Programming (`2 / 11`)
 
 - [x] 1. Classes and Objects (`Phase_04_Object_Oriented_Programming/01_Classes_and_Objects/`)
-- [ ] 2. Constructors (`Phase_04_Object_Oriented_Programming/02_Constructors/`)
+- [x] 2. Constructors (`Phase_04_Object_Oriented_Programming/02_Constructors/`)
 - [ ] 3. Instance and Class Variables (`Phase_04_Object_Oriented_Programming/03_Instance_and_Class_Variables/`)
 - [ ] 4. Instance, Class and Static Methods (`Phase_04_Object_Oriented_Programming/04_Instance_Class_and_Static_Methods/`)
 - [ ] 5. Inheritance (`Phase_04_Object_Oriented_Programming/05_Inheritance/`)
