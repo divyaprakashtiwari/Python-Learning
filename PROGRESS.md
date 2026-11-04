@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `4 / 6` |
-| **Completed Topics** | `48 / 142` |
-| **Pending Topics** | `94` |
-| **Python Examples Created (`.py`)** | `144` |
-| **Meaningful Commits Made (Course)** | `87` |
-| **Practice Questions Created/Completed** | `144` |
+| **Completed Topics** | `49 / 142` |
+| **Pending Topics** | `93` |
+| **Python Examples Created (`.py`)** | `147` |
+| **Meaningful Commits Made (Course)** | `92` |
+| **Practice Questions Created/Completed** | `147` |
 
 ---
 
@@ -81,13 +81,13 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 5: Intermediate and Advanced Python (`4 / 17`)
+## Phase 5: Intermediate and Advanced Python (`5 / 17`)
 
 - [x] 1. Exception Handling (`Phase_05_Intermediate_and_Advanced_Python/01_Exception_Handling/`)
 - [x] 2. File Handling (`Phase_05_Intermediate_and_Advanced_Python/02_File_Handling/`)
 - [x] 3. Working with JSON (`Phase_05_Intermediate_and_Advanced_Python/03_Working_with_JSON/`)
 - [x] 4. Iterators (`Phase_05_Intermediate_and_Advanced_Python/04_Iterators/`)
-- [ ] 5. Generators (`Phase_05_Intermediate_and_Advanced_Python/05_Generators/`)
+- [x] 5. Generators (`Phase_05_Intermediate_and_Advanced_Python/05_Generators/`)
 - [ ] 6. Decorators (`Phase_05_Intermediate_and_Advanced_Python/06_Decorators/`)
 - [ ] 7. Closures (`Phase_05_Intermediate_and_Advanced_Python/07_Closures/`)
 - [ ] 8. Context Managers (`Phase_05_Intermediate_and_Advanced_Python/08_Context_Managers/`)
