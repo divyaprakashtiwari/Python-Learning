@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `3 / 6` |
-| **Completed Topics** | `40 / 142` |
-| **Pending Topics** | `102` |
-| **Python Examples Created (`.py`)** | `120` |
-| **Meaningful Commits Made (Course)** | `55` |
-| **Practice Questions Created/Completed** | `120` |
+| **Completed Topics** | `41 / 142` |
+| **Pending Topics** | `101` |
+| **Python Examples Created (`.py`)** | `123` |
+| **Meaningful Commits Made (Course)** | `58` |
+| **Practice Questions Created/Completed** | `123` |
 
 ---
 
@@ -65,7 +65,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 4: Object-Oriented Programming (`7 / 11`)
+## Phase 4: Object-Oriented Programming (`8 / 11`)
 
 - [x] 1. Classes and Objects (`Phase_04_Object_Oriented_Programming/01_Classes_and_Objects/`)
 - [x] 2. Constructors (`Phase_04_Object_Oriented_Programming/02_Constructors/`)
@@ -74,7 +74,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 5. Inheritance (`Phase_04_Object_Oriented_Programming/05_Inheritance/`)
 - [x] 6. Multiple Inheritance (`Phase_04_Object_Oriented_Programming/06_Multiple_Inheritance/`)
 - [x] 7. Polymorphism (`Phase_04_Object_Oriented_Programming/07_Polymorphism/`)
-- [ ] 8. Encapsulation (`Phase_04_Object_Oriented_Programming/08_Encapsulation/`)
+- [x] 8. Encapsulation (`Phase_04_Object_Oriented_Programming/08_Encapsulation/`)
 - [ ] 9. Abstraction (`Phase_04_Object_Oriented_Programming/09_Abstraction/`)
 - [ ] 10. Method Overriding (`Phase_04_Object_Oriented_Programming/10_Method_Overriding/`)
 - [ ] 11. Magic/Dunder Methods (`Phase_04_Object_Oriented_Programming/11_Magic_Dunder_Methods/`)
