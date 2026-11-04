@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `2 / 6` |
-| **Completed Topics** | `28 / 142` |
-| **Pending Topics** | `114` |
-| **Python Examples Created (`.py`)** | `84` |
-| **Meaningful Commits Made (Course)** | `29` |
-| **Practice Questions Created/Completed** | `84` |
+| **Completed Topics** | `29 / 142` |
+| **Pending Topics** | `113` |
+| **Python Examples Created (`.py`)** | `87` |
+| **Meaningful Commits Made (Course)** | `30` |
+| **Practice Questions Created/Completed** | `87` |
 
 ---
 
@@ -49,7 +49,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 3: Functions and Modular Programming (`6 / 11`)
+## Phase 3: Functions and Modular Programming (`7 / 11`)
 
 - [x] 1. Functions (`Phase_03_Functions_and_Modular_Programming/01_Functions/`)
 - [x] 2. Parameters and Arguments (`Phase_03_Functions_and_Modular_Programming/02_Parameters_and_Arguments/`)
@@ -57,7 +57,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 4. Default Arguments (`Phase_03_Functions_and_Modular_Programming/04_Default_Arguments/`)
 - [x] 5. Keyword Arguments (`Phase_03_Functions_and_Modular_Programming/05_Keyword_Arguments/`)
 - [x] 6. `*args` and `**kwargs` (`Phase_03_Functions_and_Modular_Programming/06_Args_and_Kwargs/`)
-- [ ] 7. Lambda Functions (`Phase_03_Functions_and_Modular_Programming/07_Lambda_Functions/`)
+- [x] 7. Lambda Functions (`Phase_03_Functions_and_Modular_Programming/07_Lambda_Functions/`)
 - [ ] 8. Recursion (`Phase_03_Functions_and_Modular_Programming/08_Recursion/`)
 - [ ] 9. Scope and Lifetime of Variables (`Phase_03_Functions_and_Modular_Programming/09_Scope_and_Lifetime_of_Variables/`)
 - [ ] 10. Modules and Packages (`Phase_03_Functions_and_Modular_Programming/10_Modules_and_Packages/`)
