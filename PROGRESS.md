@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `4 / 6` |
-| **Completed Topics** | `56 / 142` |
-| **Pending Topics** | `86` |
-| **Python Examples Created (`.py`)** | `168` |
-| **Meaningful Commits Made (Course)** | `127` |
-| **Practice Questions Created/Completed** | `168` |
+| **Completed Topics** | `57 / 142` |
+| **Pending Topics** | `85` |
+| **Python Examples Created (`.py`)** | `171` |
+| **Meaningful Commits Made (Course)** | `132` |
+| **Practice Questions Created/Completed** | `171` |
 
 ---
 
@@ -81,7 +81,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 5: Intermediate and Advanced Python (`12 / 17`)
+## Phase 5: Intermediate and Advanced Python (`13 / 17`)
 
 - [x] 1. Exception Handling (`Phase_05_Intermediate_and_Advanced_Python/01_Exception_Handling/`)
 - [x] 2. File Handling (`Phase_05_Intermediate_and_Advanced_Python/02_File_Handling/`)
@@ -95,7 +95,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 10. Python Collections Module (`Phase_05_Intermediate_and_Advanced_Python/10_Python_Collections_Module/`)
 - [x] 11. Map, Filter and Reduce (`Phase_05_Intermediate_and_Advanced_Python/11_Map_Filter_and_Reduce/`)
 - [x] 12. Enumerate and Zip (`Phase_05_Intermediate_and_Advanced_Python/12_Enumerate_and_Zip/`)
-- [ ] 13. Shallow Copy vs Deep Copy (`Phase_05_Intermediate_and_Advanced_Python/13_Shallow_Copy_vs_Deep_Copy/`)
+- [x] 13. Shallow Copy vs Deep Copy (`Phase_05_Intermediate_and_Advanced_Python/13_Shallow_Copy_vs_Deep_Copy/`)
 - [ ] 14. Virtual Environments and pip (`Phase_05_Intermediate_and_Advanced_Python/14_Virtual_Environments_and_Pip/`)
 - [ ] 15. Type Hints (`Phase_05_Intermediate_and_Advanced_Python/15_Type_Hints/`)
 - [ ] 16. Dataclasses (`Phase_05_Intermediate_and_Advanced_Python/16_Dataclasses/`)
