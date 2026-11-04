@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `3 / 6` |
-| **Completed Topics** | `38 / 142` |
-| **Pending Topics** | `104` |
-| **Python Examples Created (`.py`)** | `114` |
-| **Meaningful Commits Made (Course)** | `49` |
-| **Practice Questions Created/Completed** | `114` |
+| **Completed Topics** | `39 / 142` |
+| **Pending Topics** | `103` |
+| **Python Examples Created (`.py`)** | `117` |
+| **Meaningful Commits Made (Course)** | `52` |
+| **Practice Questions Created/Completed** | `117` |
 
 ---
 
@@ -65,14 +65,14 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 4: Object-Oriented Programming (`5 / 11`)
+## Phase 4: Object-Oriented Programming (`6 / 11`)
 
 - [x] 1. Classes and Objects (`Phase_04_Object_Oriented_Programming/01_Classes_and_Objects/`)
 - [x] 2. Constructors (`Phase_04_Object_Oriented_Programming/02_Constructors/`)
 - [x] 3. Instance and Class Variables (`Phase_04_Object_Oriented_Programming/03_Instance_and_Class_Variables/`)
 - [x] 4. Instance, Class and Static Methods (`Phase_04_Object_Oriented_Programming/04_Instance_Class_and_Static_Methods/`)
 - [x] 5. Inheritance (`Phase_04_Object_Oriented_Programming/05_Inheritance/`)
-- [ ] 6. Multiple Inheritance (`Phase_04_Object_Oriented_Programming/06_Multiple_Inheritance/`)
+- [x] 6. Multiple Inheritance (`Phase_04_Object_Oriented_Programming/06_Multiple_Inheritance/`)
 - [ ] 7. Polymorphism (`Phase_04_Object_Oriented_Programming/07_Polymorphism/`)
 - [ ] 8. Encapsulation (`Phase_04_Object_Oriented_Programming/08_Encapsulation/`)
 - [ ] 9. Abstraction (`Phase_04_Object_Oriented_Programming/09_Abstraction/`)
