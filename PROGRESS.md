@@ -8,12 +8,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 | Metric | Count |
 | :--- | :--- |
-| **Completed Phases** | `3 / 6` |
-| **Completed Topics** | `43 / 142` |
-| **Pending Topics** | `99` |
-| **Python Examples Created (`.py`)** | `129` |
-| **Meaningful Commits Made (Course)** | `64` |
-| **Practice Questions Created/Completed** | `129` |
+| **Completed Phases** | `4 / 6` |
+| **Completed Topics** | `44 / 142` |
+| **Pending Topics** | `98` |
+| **Python Examples Created (`.py`)** | `132` |
+| **Meaningful Commits Made (Course)** | `67` |
+| **Practice Questions Created/Completed** | `132` |
 
 ---
 
@@ -65,7 +65,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 4: Object-Oriented Programming (`10 / 11`)
+## Phase 4: Object-Oriented Programming (`11 / 11` — COMPLETE)
 
 - [x] 1. Classes and Objects (`Phase_04_Object_Oriented_Programming/01_Classes_and_Objects/`)
 - [x] 2. Constructors (`Phase_04_Object_Oriented_Programming/02_Constructors/`)
@@ -77,7 +77,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 8. Encapsulation (`Phase_04_Object_Oriented_Programming/08_Encapsulation/`)
 - [x] 9. Abstraction (`Phase_04_Object_Oriented_Programming/09_Abstraction/`)
 - [x] 10. Method Overriding (`Phase_04_Object_Oriented_Programming/10_Method_Overriding/`)
-- [ ] 11. Magic/Dunder Methods (`Phase_04_Object_Oriented_Programming/11_Magic_Dunder_Methods/`)
+- [x] 11. Magic/Dunder Methods (`Phase_04_Object_Oriented_Programming/11_Magic_Dunder_Methods/`)
 
 ---
 
