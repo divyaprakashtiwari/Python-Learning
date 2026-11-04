@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `2 / 6` |
-| **Completed Topics** | `23 / 142` |
-| **Pending Topics** | `119` |
-| **Python Examples Created (`.py`)** | `69` |
-| **Meaningful Commits Made (Course)** | `24` |
-| **Practice Questions Created/Completed** | `69` |
+| **Completed Topics** | `24 / 142` |
+| **Pending Topics** | `118` |
+| **Python Examples Created (`.py`)** | `72` |
+| **Meaningful Commits Made (Course)** | `25` |
+| **Practice Questions Created/Completed** | `72` |
 
 ---
 
@@ -49,10 +49,10 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 3: Functions and Modular Programming (`1 / 11`)
+## Phase 3: Functions and Modular Programming (`2 / 11`)
 
 - [x] 1. Functions (`Phase_03_Functions_and_Modular_Programming/01_Functions/`)
-- [ ] 2. Parameters and Arguments (`Phase_03_Functions_and_Modular_Programming/02_Parameters_and_Arguments/`)
+- [x] 2. Parameters and Arguments (`Phase_03_Functions_and_Modular_Programming/02_Parameters_and_Arguments/`)
 - [ ] 3. Return Statements (`Phase_03_Functions_and_Modular_Programming/03_Return_Statements/`)
 - [ ] 4. Default Arguments (`Phase_03_Functions_and_Modular_Programming/04_Default_Arguments/`)
 - [ ] 5. Keyword Arguments (`Phase_03_Functions_and_Modular_Programming/05_Keyword_Arguments/`)
