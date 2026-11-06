@@ -8,12 +8,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 | Metric | Count |
 | :--- | :--- |
-| **Completed Phases** | `4 / 6` |
-| **Completed Topics** | `60 / 142` |
-| **Pending Topics** | `82` |
-| **Python Examples Created (`.py`)** | `180` |
-| **Meaningful Commits Made (Course)** | `147` |
-| **Practice Questions Created/Completed** | `180` |
+| **Completed Phases** | `5 / 6` |
+| **Completed Topics** | `61 / 142` |
+| **Pending Topics** | `81` |
+| **Python Examples Created (`.py`)** | `183` |
+| **Meaningful Commits Made (Course)** | `152` |
+| **Practice Questions Created/Completed** | `183` |
 
 ---
 
@@ -81,7 +81,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 5: Intermediate and Advanced Python (`16 / 17`)
+## Phase 5: Intermediate and Advanced Python (`17 / 17` — COMPLETE)
 
 - [x] 1. Exception Handling (`Phase_05_Intermediate_and_Advanced_Python/01_Exception_Handling/`)
 - [x] 2. File Handling (`Phase_05_Intermediate_and_Advanced_Python/02_File_Handling/`)
@@ -99,7 +99,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 14. Virtual Environments and pip (`Phase_05_Intermediate_and_Advanced_Python/14_Virtual_Environments_and_Pip/`)
 - [x] 15. Type Hints (`Phase_05_Intermediate_and_Advanced_Python/15_Type_Hints/`)
 - [x] 16. Dataclasses (`Phase_05_Intermediate_and_Advanced_Python/16_Dataclasses/`)
-- [ ] 17. Working with APIs (`Phase_05_Intermediate_and_Advanced_Python/17_Working_with_APIs/`)
+- [x] 17. Working with APIs (`Phase_05_Intermediate_and_Advanced_Python/17_Working_with_APIs/`)
 
 ---
 
