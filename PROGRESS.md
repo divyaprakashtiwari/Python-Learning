@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `66 / 142` |
-| **Pending Topics** | `76` |
-| **Python Examples Created (`.py`)** | `198` |
-| **Meaningful Commits Made (Course)** | `177` |
-| **Practice Questions Created/Completed** | `198` |
+| **Completed Topics** | `67 / 142` |
+| **Pending Topics** | `75` |
+| **Python Examples Created (`.py`)** | `201` |
+| **Meaningful Commits Made (Course)** | `182` |
+| **Practice Questions Created/Completed** | `201` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`5 / 81`)
+## Phase 6: Data Structures and Algorithms (`6 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -111,9 +111,9 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 3. Big O Notation (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/03_Big_O_Notation/`)
 - [x] 4. Best, Average and Worst Cases (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/04_Best_Average_and_Worst_Cases/`)
 
-### B. Searching (`1 / 3`)
+### B. Searching (`2 / 3`)
 - [x] 1. Linear Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/01_Linear_Search/`)
-- [ ] 2. Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/02_Binary_Search/`)
+- [x] 2. Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/02_Binary_Search/`)
 - [ ] 3. Variations of Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/03_Variations_of_Binary_Search/`)
 
 ### C. Sorting (`0 / 7`)
