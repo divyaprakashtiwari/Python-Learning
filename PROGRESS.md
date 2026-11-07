@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `63 / 142` |
-| **Pending Topics** | `79` |
-| **Python Examples Created (`.py`)** | `189` |
-| **Meaningful Commits Made (Course)** | `162` |
-| **Practice Questions Created/Completed** | `189` |
+| **Completed Topics** | `64 / 142` |
+| **Pending Topics** | `78` |
+| **Python Examples Created (`.py`)** | `192` |
+| **Meaningful Commits Made (Course)** | `167` |
+| **Practice Questions Created/Completed** | `192` |
 
 ---
 
@@ -103,12 +103,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`2 / 81`)
+## Phase 6: Data Structures and Algorithms (`3 / 81`)
 
-### A. Complexity Analysis (`2 / 4`)
+### A. Complexity Analysis (`3 / 4`)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
 - [x] 2. Space Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/02_Space_Complexity/`)
-- [ ] 3. Big O Notation (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/03_Big_O_Notation/`)
+- [x] 3. Big O Notation (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/03_Big_O_Notation/`)
 - [ ] 4. Best, Average and Worst Cases (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/04_Best_Average_and_Worst_Cases/`)
 
 ### B. Searching (`0 / 3`)
