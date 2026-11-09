@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `70 / 142` |
-| **Pending Topics** | `72` |
-| **Python Examples Created (`.py`)** | `210` |
-| **Meaningful Commits Made (Course)** | `197` |
-| **Practice Questions Created/Completed** | `210` |
+| **Completed Topics** | `71 / 142` |
+| **Pending Topics** | `71` |
+| **Python Examples Created (`.py`)** | `213` |
+| **Meaningful Commits Made (Course)** | `202` |
+| **Practice Questions Created/Completed** | `213` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`9 / 81`)
+## Phase 6: Data Structures and Algorithms (`10 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -116,10 +116,10 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 2. Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/02_Binary_Search/`)
 - [x] 3. Variations of Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/03_Variations_of_Binary_Search/`)
 
-### C. Sorting (`2 / 7`)
+### C. Sorting (`3 / 7`)
 - [x] 1. Bubble Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/01_Bubble_Sort/`)
 - [x] 2. Selection Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/02_Selection_Sort/`)
-- [ ] 3. Insertion Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/03_Insertion_Sort/`)
+- [x] 3. Insertion Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/03_Insertion_Sort/`)
 - [ ] 4. Merge Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/04_Merge_Sort/`)
 - [ ] 5. Quick Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/05_Quick_Sort/`)
 - [ ] 6. Heap Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/06_Heap_Sort/`)
