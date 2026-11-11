@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `79 / 142` |
-| **Pending Topics** | `63` |
-| **Python Examples Created (`.py`)** | `237` |
-| **Meaningful Commits Made (Course)** | `242` |
-| **Practice Questions Created/Completed** | `237` |
+| **Completed Topics** | `80 / 142` |
+| **Pending Topics** | `62` |
+| **Python Examples Created (`.py`)** | `240` |
+| **Meaningful Commits Made (Course)** | `247` |
+| **Practice Questions Created/Completed** | `240` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`18 / 81`)
+## Phase 6: Data Structures and Algorithms (`19 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -125,12 +125,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 6. Heap Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/06_Heap_Sort/`)
 - [x] 7. Counting Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/07_Counting_Sort/`)
 
-### D. Arrays and Strings (`4 / 6`)
+### D. Arrays and Strings (`5 / 6`)
 - [x] 1. Array Operations (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/01_Array_Operations/`)
 - [x] 2. Two Pointer Technique (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/02_Two_Pointer_Technique/`)
 - [x] 3. Sliding Window (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/03_Sliding_Window/`)
 - [x] 4. Prefix Sum (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/04_Prefix_Sum/`)
-- [ ] 5. Kadane's Algorithm (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/05_Kadanes_Algorithm/`)
+- [x] 5. Kadane's Algorithm (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/05_Kadanes_Algorithm/`)
 - [ ] 6. String Problems (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/06_String_Problems/`)
 
 ### E. Linked Lists (`0 / 6`)
