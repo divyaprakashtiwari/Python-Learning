@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `73 / 142` |
-| **Pending Topics** | `69` |
-| **Python Examples Created (`.py`)** | `219` |
-| **Meaningful Commits Made (Course)** | `212` |
-| **Practice Questions Created/Completed** | `219` |
+| **Completed Topics** | `74 / 142` |
+| **Pending Topics** | `68` |
+| **Python Examples Created (`.py`)** | `222` |
+| **Meaningful Commits Made (Course)** | `217` |
+| **Practice Questions Created/Completed** | `222` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`12 / 81`)
+## Phase 6: Data Structures and Algorithms (`13 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -116,13 +116,13 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 2. Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/02_Binary_Search/`)
 - [x] 3. Variations of Binary Search (`Phase_06_Data_Structures_and_Algorithms/B_Searching/03_Variations_of_Binary_Search/`)
 
-### C. Sorting (`5 / 7`)
+### C. Sorting (`6 / 7`)
 - [x] 1. Bubble Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/01_Bubble_Sort/`)
 - [x] 2. Selection Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/02_Selection_Sort/`)
 - [x] 3. Insertion Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/03_Insertion_Sort/`)
 - [x] 4. Merge Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/04_Merge_Sort/`)
 - [x] 5. Quick Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/05_Quick_Sort/`)
-- [ ] 6. Heap Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/06_Heap_Sort/`)
+- [x] 6. Heap Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/06_Heap_Sort/`)
 - [ ] 7. Counting Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/07_Counting_Sort/`)
 
 ### D. Arrays and Strings (`0 / 6`)
