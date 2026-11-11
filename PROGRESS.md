@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `75 / 142` |
-| **Pending Topics** | `67` |
-| **Python Examples Created (`.py`)** | `225` |
-| **Meaningful Commits Made (Course)** | `222` |
-| **Practice Questions Created/Completed** | `225` |
+| **Completed Topics** | `76 / 142` |
+| **Pending Topics** | `66` |
+| **Python Examples Created (`.py`)** | `228` |
+| **Meaningful Commits Made (Course)** | `227` |
+| **Practice Questions Created/Completed** | `228` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`14 / 81`)
+## Phase 6: Data Structures and Algorithms (`15 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -125,8 +125,8 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 6. Heap Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/06_Heap_Sort/`)
 - [x] 7. Counting Sort (`Phase_06_Data_Structures_and_Algorithms/C_Sorting/07_Counting_Sort/`)
 
-### D. Arrays and Strings (`0 / 6`)
-- [ ] 1. Array Operations (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/01_Array_Operations/`)
+### D. Arrays and Strings (`1 / 6`)
+- [x] 1. Array Operations (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/01_Array_Operations/`)
 - [ ] 2. Two Pointer Technique (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/02_Two_Pointer_Technique/`)
 - [ ] 3. Sliding Window (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/03_Sliding_Window/`)
 - [ ] 4. Prefix Sum (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/04_Prefix_Sum/`)
