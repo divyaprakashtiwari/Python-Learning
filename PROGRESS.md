@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `85 / 142` |
-| **Pending Topics** | `57` |
-| **Python Examples Created (`.py`)** | `255` |
-| **Meaningful Commits Made (Course)** | `272` |
-| **Practice Questions Created/Completed** | `255` |
+| **Completed Topics** | `86 / 142` |
+| **Pending Topics** | `56` |
+| **Python Examples Created (`.py`)** | `258` |
+| **Meaningful Commits Made (Course)** | `277` |
+| **Practice Questions Created/Completed** | `258` |
 
 ---
 
@@ -103,7 +103,7 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 
 ---
 
-## Phase 6: Data Structures and Algorithms (`24 / 81`)
+## Phase 6: Data Structures and Algorithms (`25 / 81`)
 
 ### A. Complexity Analysis (`4 / 4` — COMPLETE)
 - [x] 1. Time Complexity (`Phase_06_Data_Structures_and_Algorithms/A_Complexity_Analysis/01_Time_Complexity/`)
@@ -133,12 +133,12 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 5. Kadane's Algorithm (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/05_Kadanes_Algorithm/`)
 - [x] 6. String Problems (`Phase_06_Data_Structures_and_Algorithms/D_Arrays_and_Strings/06_String_Problems/`)
 
-### E. Linked Lists (`4 / 6`)
+### E. Linked Lists (`5 / 6`)
 - [x] 1. Singly Linked List (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/01_Singly_Linked_List/`)
 - [x] 2. Doubly Linked List (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/02_Doubly_Linked_List/`)
 - [x] 3. Circular Linked List (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/03_Circular_Linked_List/`)
 - [x] 4. Reversal (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/04_Reversal/`)
-- [ ] 5. Cycle Detection (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/05_Cycle_Detection/`)
+- [x] 5. Cycle Detection (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/05_Cycle_Detection/`)
 - [ ] 6. Fast and Slow Pointers (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/06_Fast_and_Slow_Pointers/`)
 
 ### F. Stacks and Queues (`0 / 6`)
