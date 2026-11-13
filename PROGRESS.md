@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `90 / 142` |
-| **Pending Topics** | `52` |
-| **Python Examples Created (`.py`)** | `270` |
-| **Meaningful Commits Made (Course)** | `297` |
-| **Practice Questions Created/Completed** | `270` |
+| **Completed Topics** | `91 / 142` |
+| **Pending Topics** | `51` |
+| **Python Examples Created (`.py`)** | `273` |
+| **Meaningful Commits Made (Course)** | `302` |
+| **Practice Questions Created/Completed** | `273` |
 
 ---
 
@@ -141,11 +141,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 5. Cycle Detection (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/05_Cycle_Detection/`)
 - [x] 6. Fast and Slow Pointers (`Phase_06_Data_Structures_and_Algorithms/E_Linked_Lists/06_Fast_and_Slow_Pointers/`)
 
-### F. Stacks and Queues (`3 / 6`)
+### F. Stacks and Queues (`4 / 6`)
 - [x] 1. Stack Implementation (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/01_Stack_Implementation/`)
 - [x] 2. Queue Implementation (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/02_Queue_Implementation/`)
 - [x] 3. Circular Queue (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/03_Circular_Queue/`)
-- [ ] 4. Deque (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/04_Deque/`)
+- [x] 4. Deque (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/04_Deque/`)
 - [ ] 5. Monotonic Stack (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/05_Monotonic_Stack/`)
 - [ ] 6. Monotonic Queue (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/06_Monotonic_Queue/`)
 
