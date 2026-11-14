@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `98 / 142` |
-| **Pending Topics** | `44` |
-| **Python Examples Created (`.py`)** | `294` |
-| **Meaningful Commits Made (Course)** | `337` |
-| **Practice Questions Created/Completed** | `294` |
+| **Completed Topics** | `99 / 142` |
+| **Pending Topics** | `43` |
+| **Python Examples Created (`.py`)** | `297` |
+| **Meaningful Commits Made (Course)** | `342` |
+| **Practice Questions Created/Completed** | `297` |
 
 ---
 
@@ -156,8 +156,8 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 4. Frequency Counting (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/04_Frequency_Counting/`)
 - [x] 5. Hashing Problems (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/05_Hashing_Problems/`)
 
-### H. Trees (`0 / 7`)
-- [ ] 1. Binary Trees (`Phase_06_Data_Structures_and_Algorithms/H_Trees/01_Binary_Trees/`)
+### H. Trees (`1 / 7`)
+- [x] 1. Binary Trees (`Phase_06_Data_Structures_and_Algorithms/H_Trees/01_Binary_Trees/`)
 - [ ] 2. Binary Search Trees (`Phase_06_Data_Structures_and_Algorithms/H_Trees/02_Binary_Search_Trees/`)
 - [ ] 3. Tree Traversals (`Phase_06_Data_Structures_and_Algorithms/H_Trees/03_Tree_Traversals/`)
 - [ ] 4. Level Order Traversal (`Phase_06_Data_Structures_and_Algorithms/H_Trees/04_Level_Order_Traversal/`)
