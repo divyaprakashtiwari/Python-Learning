@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `94 / 142` |
-| **Pending Topics** | `48` |
-| **Python Examples Created (`.py`)** | `282` |
-| **Meaningful Commits Made (Course)** | `317` |
-| **Practice Questions Created/Completed** | `282` |
+| **Completed Topics** | `95 / 142` |
+| **Pending Topics** | `47` |
+| **Python Examples Created (`.py`)** | `285` |
+| **Meaningful Commits Made (Course)** | `322` |
+| **Practice Questions Created/Completed** | `285` |
 
 ---
 
@@ -149,9 +149,9 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 5. Monotonic Stack (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/05_Monotonic_Stack/`)
 - [x] 6. Monotonic Queue (`Phase_06_Data_Structures_and_Algorithms/F_Stacks_and_Queues/06_Monotonic_Queue/`)
 
-### G. Hashing (`1 / 5`)
+### G. Hashing (`2 / 5`)
 - [x] 1. Hash Tables (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/01_Hash_Tables/`)
-- [ ] 2. Hash Maps (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/02_Hash_Maps/`)
+- [x] 2. Hash Maps (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/02_Hash_Maps/`)
 - [ ] 3. Hash Sets (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/03_Hash_Sets/`)
 - [ ] 4. Frequency Counting (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/04_Frequency_Counting/`)
 - [ ] 5. Hashing Problems (`Phase_06_Data_Structures_and_Algorithms/G_Hashing/05_Hashing_Problems/`)
