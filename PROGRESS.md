@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `110 / 142` |
-| **Pending Topics** | `32` |
-| **Python Examples Created (`.py`)** | `330` |
-| **Meaningful Commits Made (Course)** | `397` |
-| **Practice Questions Created/Completed** | `330` |
+| **Completed Topics** | `111 / 142` |
+| **Pending Topics** | `31` |
+| **Python Examples Created (`.py`)** | `333` |
+| **Meaningful Commits Made (Course)** | `402` |
+| **Practice Questions Created/Completed** | `333` |
 
 ---
 
@@ -171,9 +171,9 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 3. Priority Queue (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/03_Priority_Queue/`)
 - [x] 4. Top K Problems (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/04_Top_K_Problems/`)
 
-### J. Graphs (`1 / 8`)
+### J. Graphs (`2 / 8`)
 - [x] 1. Graph Representation (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/01_Graph_Representation/`)
-- [ ] 2. BFS (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/02_BFS/`)
+- [x] 2. BFS (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/02_BFS/`)
 - [ ] 3. DFS (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/03_DFS/`)
 - [ ] 4. Cycle Detection (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/04_Cycle_Detection/`)
 - [ ] 5. Topological Sorting (`Phase_06_Data_Structures_and_Algorithms/J_Graphs/05_Topological_Sorting/`)
