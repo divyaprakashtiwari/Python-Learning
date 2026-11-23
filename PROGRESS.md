@@ -9,11 +9,11 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 | Metric | Count |
 | :--- | :--- |
 | **Completed Phases** | `5 / 6` |
-| **Completed Topics** | `107 / 142` |
-| **Pending Topics** | `35` |
-| **Python Examples Created (`.py`)** | `321` |
-| **Meaningful Commits Made (Course)** | `382` |
-| **Practice Questions Created/Completed** | `321` |
+| **Completed Topics** | `108 / 142` |
+| **Pending Topics** | `34` |
+| **Python Examples Created (`.py`)** | `324` |
+| **Meaningful Commits Made (Course)** | `387` |
+| **Practice Questions Created/Completed** | `324` |
 
 ---
 
@@ -165,10 +165,10 @@ Track your journey from **Python Fundamentals** to **Advanced Python & Data Stru
 - [x] 6. Lowest Common Ancestor (`Phase_06_Data_Structures_and_Algorithms/H_Trees/06_Lowest_Common_Ancestor/`)
 - [x] 7. Balanced Trees (`Phase_06_Data_Structures_and_Algorithms/H_Trees/07_Balanced_Trees/`)
 
-### I. Heaps (`2 / 4`)
+### I. Heaps (`3 / 4`)
 - [x] 1. Min Heap (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/01_Min_Heap/`)
 - [x] 2. Max Heap (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/02_Max_Heap/`)
-- [ ] 3. Priority Queue (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/03_Priority_Queue/`)
+- [x] 3. Priority Queue (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/03_Priority_Queue/`)
 - [ ] 4. Top K Problems (`Phase_06_Data_Structures_and_Algorithms/I_Heaps/04_Top_K_Problems/`)
 
 ### J. Graphs (`0 / 8`)
